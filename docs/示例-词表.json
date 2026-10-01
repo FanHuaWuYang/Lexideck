@@ -5,16 +5,21 @@
     {
       "word": "seek",
       "senses": [
-        { "pos": "v.", "meaning": "寻找；寻求；试图" }
+        { "pos": "v.", "meaning": "寻找；寻求；试图" },
+        { "pos": "n.", "meaning": "（古）搜寻" }
       ],
-      "forms": { "emphasize": true, "past": "sought", "past_participle": "sought" },
+      "forms": { "past": "sought", "past_participle": "sought" },
+      "derivations": [
+        { "word": "seeker", "senses": [ { "pos": "n.", "meaning": "探索者；追求者" } ] }
+      ],
       "phrases": [
         { "text": "seek to do sth.", "meaning": "试图做某事" },
         { "text": "seek out", "meaning": "找出；搜寻到" }
       ],
       "sentences": [
         { "en": "She sought advice from her teacher.", "zh": "她向老师寻求建议。" }
-      ]
+      ],
+      "note": "写作高频，注意 sought 的拼写"
     },
     {
       "word": "abandon",
@@ -22,19 +27,40 @@
         { "pos": "v.", "meaning": "抛弃；放弃；遗弃" },
         { "pos": "n.", "meaning": "放纵；放任" }
       ],
+      "derivations": [
+        { "word": "abandoned", "senses": [ { "pos": "adj.", "meaning": "被遗弃的；废弃的" } ] }
+      ],
       "phrases": [
         { "text": "abandon oneself to", "meaning": "沉溺于；纵情于" },
         { "text": "abandon doing sth.", "meaning": "放弃做某事" }
       ],
       "sentences": [
         { "en": "He abandoned his car in the snow and walked home.", "zh": "他把车丢在雪地里，步行回了家。" }
-      ]
+      ],
+      "hide": ["note"]
     },
     {
       "word": "Good habits are hard to form but easy to live with.",
       "senses": [
         { "meaning": "好习惯难于养成，却易于相伴一生。" }
       ]
+    },
+    {
+      "word": "gain",
+      "senses": [
+        { "pos": "v.", "meaning": "获得；增加；受益" },
+        { "pos": "n.", "meaning": "收益；增加" }
+      ],
+      "phrases": [
+        { "text": "gain weight", "meaning": "增重" }
+      ],
+      "note": "与 obtain 的区别：gain 强调「得到好处」",
+      "hide": ["note", "phrases"]
     }
+  ],
+  "display_time": [
+    { "word": "seek", "ranges": [ { "from": "2026-10-06", "to": "2026-10-12" } ] },
+    { "word": "abandon", "ranges": [ { "from": "2026-10-06", "to": "2026-10-12" } ] },
+    { "word": "gain", "ranges": [ { "from": "2026-10-13", "to": "2026-10-19" } ], "hide": ["sentences"] }
   ]
 }

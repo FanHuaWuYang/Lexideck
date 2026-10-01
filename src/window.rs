@@ -7,13 +7,14 @@ use egui::viewport::{ViewportBuilder, WindowLevel};
 
 use crate::config::Config;
 
-/// 主窗口（控制面板）
-pub fn main_options(_cfg: &Config) -> eframe::NativeOptions {
+/// 主窗口（控制面板）—— 可缩放，触摸屏也能拉；最小尺寸保证四板块都排得下
+pub fn main_options(cfg: &Config) -> eframe::NativeOptions {
     eframe::NativeOptions {
         viewport: ViewportBuilder::default()
             .with_title("Lexideck 词卡看板")
-            .with_inner_size([1004.0, 640.0]) // 面板设计为固定尺寸
-            .with_resizable(false)
+            .with_inner_size([cfg.window_w, cfg.window_h])
+            .with_min_inner_size([720.0, 460.0]) // 比这个再小说明列就挤没了
+            .with_resizable(true)
             .with_decorations(false), // 自绘顶栏（深色+金黄设计的一部分）
         ..Default::default()
     }

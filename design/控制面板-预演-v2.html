@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Lexideck 控制面板 · 预演 v2</title>
+<style>
+  :root{
+    /* 取自现有面板皮肤 PLAIN（浅色态） */
+    --bg:#F4F5F6; --card:#FFFFFF; --card-hover:#F9FAFB; --line:#E6E8EB; --line2:#D2D6DB;
+    --txt:#202428; --txt2:#5C646D; --txt3:#8B929A; --acc:#668D82; --acc-dark:#FFFFFF;
+    --danger:#C4524E; --btn-bg:#F1F3F5; --btn-hover:#E6EAEE; --btn-line:#D8DCE1;
+    --row-bg:#F3F4F6; --row-line:#E5E7EA; --ok:#3ED67A;
+    --top-h:48px; --tabs-h:44px; --bottom-h:56px; --pad:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#DDDEDF; font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    color:var(--txt); display:flex; gap:28px; padding:28px; align-items:flex-start; flex-wrap:wrap;
+  }
+  .win{
+    width:1004px; height:640px; background:var(--bg); display:flex; flex-direction:column;
+    box-shadow:0 12px 32px rgba(0,0,0,.22); overflow:hidden;
+  }
+  .win.small{width:720px;height:520px}
+  /* 顶栏 */
+  .topbar{height:var(--top-h);display:flex;align-items:center;padding:0 22px;flex:0 0 auto}
+  .logo{width:22px;height:22px;background:var(--acc);color:var(--acc-dark);font-size:13px;
+        display:grid;place-items:center}
+  .brand{margin-left:10px;font-size:15px;font-weight:700}
+  .brand-sub{margin-left:6px;font-size:11px;color:var(--txt3)}
+  .winbtns{margin-left:auto;display:flex;gap:4px}
+  .wbtn{width:34px;height:30px;display:grid;place-items:center;color:var(--txt2);cursor:pointer}
+  .wbtn:hover{background:var(--card-hover);color:var(--txt)}
+  /* 标签 */
+  .tabs{height:var(--tabs-h);display:flex;align-items:center;gap:30px;padding:0 22px;
+        border-bottom:1px solid var(--line);flex:0 0 auto;position:relative}
+  .tab{font-size:13.5px;color:var(--txt2);cursor:pointer;padding:0 4px;position:relative;height:100%;
+       display:flex;align-items:center}
+  .tab:hover{color:var(--txt)}
+  .tab.on{color:var(--txt)}
+  .tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--acc)}
+  /* 内容 */
+  .body{flex:1;display:flex;gap:32px;padding:18px var(--pad) 14px;min-height:0}
+  .col{min-width:0;display:flex;flex-direction:column;gap:14px;min-height:0}
+  .col.main{flex:1.6}
+  .col.side{flex:1}
+  .panel{display:none;flex:1;gap:32px;min-height:0}
+  .panel.on{display:flex}
+  .card{background:var(--card);border:1px solid var(--line);padding:16px;display:flex;flex-direction:column;gap:14px}
+  .card.hov:hover{background:var(--card-hover);border-color:var(--line2)}
+  .cardhead{display:flex;align-items:center;gap:14px}
+  .ico{width:40px;height:40px;background:var(--btn-bg);display:grid;place-items:center;font-size:17px;color:var(--txt2);flex:0 0 auto}
+  .t{font-size:14.5px;font-weight:700}
+  .s{font-size:12.5px;color:var(--txt2);margin-top:3px}
+  .right{margin-left:auto;display:flex;align-items:center;gap:6px;flex:0 0 auto}
+  /* 控件 */
+  .btn{height:34px;padding:0 14px;border:1px solid var(--btn-line);background:var(--btn-bg);
+       font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--txt)}
+  .btn:hover{background:var(--btn-hover);border-color:var(--line2)}
+  .btn.primary{background:var(--acc);border-color:var(--acc);color:var(--acc-dark);font-weight:700;height:40px;padding:0 22px;font-size:13.5px}
+  .btn.primary:hover{background:#587C72}
+  .btn.danger{color:var(--danger)}
+  .btn.danger:hover{background:#FAECEB;border-color:#E2B4B0}
+  .seg{height:34px;padding:0 13px;border:1px solid var(--btn-line);background:var(--btn-bg);font-size:12.5px;cursor:pointer}
+  .seg.on{background:var(--acc);border-color:var(--acc);color:var(--acc-dark);font-weight:700}
+  .search{flex:1;height:36px;border:1px solid var(--btn-line);background:var(--card);padding:0 12px;font-size:13px;color:var(--txt)}
+  .search::placeholder{color:var(--txt3)}
+  /* 词表列表 */
+  .list{flex:1;overflow:auto;border:1px solid var(--line);background:var(--card);min-height:0}
+  .row{border-bottom:1px solid var(--row-line);font-size:13.5px}
+  .row:last-child{border-bottom:0}
+  .rowhead{display:flex;align-items:center;gap:12px;padding:0 12px;height:40px;cursor:pointer}
+  .rowhead:hover{background:var(--row-bg)}
+  .row.sel .rowhead{background:#EDF4F2}
+  .chk{width:18px;height:18px;border:1px solid var(--line2);background:var(--card);flex:0 0 auto;
+       display:grid;place-items:center;font-size:12px;color:transparent}
+  .row.sel .chk{background:var(--acc);border-color:var(--acc);color:var(--acc-dark)}
+  .w{font-weight:700;min-width:150px}
+  .m{color:var(--txt2);flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .caret{color:var(--txt3);font-size:11px;margin-left:auto}
+  .detail{display:none;padding:4px 12px 14px 42px;color:var(--txt2);font-size:12.5px;gap:6px;flex-direction:column}
+  .row.open .detail{display:flex}
+  .detail b{color:var(--txt);font-weight:400}
+  .tagoff{font-size:11px;border:1px solid var(--line2);color:var(--txt3);padding:1px 6px;margin-left:6px}
+  .bar{display:flex;align-items:center;gap:12px;font-size:12.5px;color:var(--txt2)}
+  /* 底栏 */
+  .bottom{height:var(--bottom-h);border-top:1px solid var(--line);display:flex;align-items:center;
+          padding:0 var(--pad);font-size:12px;color:var(--txt3);flex:0 0 auto;gap:10px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+  .bottom .right{margin-left:auto}
+  /* 说明栏 */
+  h4{font-size:13.5px;margin-bottom:8px}
+  .side p{font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.55}
+  .side .gold{font-size:12.5px;color:var(--acc);margin-bottom:8px}
+  .side .mini{font-size:12px;color:var(--txt3);margin-bottom:8px;line-height:1.5}
+  .side hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+  .statrow{display:flex;justify-content:space-between;font-size:12.5px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--line)}
+  .statrow b{color:var(--txt)}
+  /* 弹窗 */
+  .modal{position:fixed;inset:0;background:rgba(20,22,24,.42);display:grid;place-items:center;z-index:9}
+  .dlg{width:520px;background:var(--card);border:1px solid var(--line2);padding:22px}
+  .dlg h3{font-size:15px;margin-bottom:10px}
+  .dlg .body2{font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:18px}
+  .dlg .cmp{background:var(--row-bg);border:1px solid var(--row-line);padding:10px 12px;font-size:12.5px;margin-bottom:8px}
+  .dlg .cmp b{color:var(--txt)}
+  .dlg .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+  .tip{font-size:12px;color:var(--txt3);margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- ══ 主窗口 ══ -->
+<div class="win">
+  <div class="topbar">
+    <div class="logo">L</div>
+    <div class="brand">Lexideck</div><div class="brand-sub">词卡看板</div>
+    <div class="winbtns"><div class="wbtn">—</div><div class="wbtn">✕</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab on" data-t="words">词表</div>
+    <div class="tab" data-t="cards">卡片</div>
+    <div class="tab" data-t="plan">策略</div>
+    <div class="tab" data-t="set">设置</div>
+  </div>
+
+  <div class="body">
+    <!-- ── 词表 ── -->
+    <div class="panel on" id="p-words">
+      <div class="col main">
+        <div class="card">
+          <div class="cardhead">
+            <div class="ico">▤</div>
+            <div>
+              <div class="t">词库：lexideck.json</div>
+              <div class="s">128 条词条 · 3 条展示时间 · 文件保存后 2 秒自动刷新</div>
+            </div>
+            <div class="right">
+              <div class="btn">重新读取</div>
+              <div class="btn primary" style="height:34px;padding:0 16px">导入词表…</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bar">
+          <input class="search" placeholder="搜索单词或释义…">
+          <div class="seg on">全部</div><div class="seg">未选</div><div class="seg">已选</div>
+        </div>
+
+        <div class="list">
+          <div class="row sel">
+            <div class="rowhead"><div class="chk">✓</div><div class="w">abandon</div><div class="m">v. 抛弃；放弃；遗弃</div><div class="caret">▾</div></div>
+            <div class="detail">
+              <div>v. 抛弃；放弃；遗弃　｜　n. 放纵；放任</div>
+              <div><b>短语</b>　abandon oneself to 沉溺于 · abandon doing sth. 放弃做某事</div>
+              <div><b>例句</b>　He abandoned his car in the snow and walked home.<br>他把车丢在雪地里，步行回了家。</div>
+              <div><b>备注</b>　写作高频<span class="tagoff">已关闭展示</span></div>
+            </div>
+          </div>
+          <div class="row sel">
+            <div class="rowhead"><div class="chk">✓</div><div class="w">seek</div><div class="m">v. 寻找；寻求；试图</div><div class="caret">▾</div></div>
+            <div class="detail">
+              <div>v. 寻找；寻求；试图</div>
+              <div><b>变形</b>　sought / sought</div>
+              <div><b>同根词</b>　seeker  n. 探索者；追求者</div>
+              <div><b>短语</b>　seek to do sth. 试图做某事 · seek out 找出；搜寻到</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="rowhead"><div class="chk">✓</div><div class="w">courage</div><div class="m">n. 勇气；胆量</div><div class="caret">▾</div></div>
+          </div>
+          <div class="row sel">
+            <div class="rowhead"><div class="chk">✓</div><div class="w">Practice makes perfect.</div><div class="m">熟能生巧。</div><div class="caret">▾</div></div>
+          </div>
+          <div class="row">
+            <div class="rowhead"><div class="chk">✓</div><div class="w">gain</div><div class="m">v. 获得；增加　｜　n. 收益</div><div class="caret">▾</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col side side-text">
+        <h4>词表</h4>
+        <p>词条只从 JSON 文件来。导入后与主库合并：<b>同名更新、其余追加</b>。</p>
+        <div class="gold">勾选左边几个词，点右下角「立即展示」就能让卡片出现在桌面上。</div>
+        <hr>
+        <div class="statrow"><span>词条总数</span><b>128</b></div>
+        <div class="statrow"><span>已选</span><b>3</b></div>
+        <div class="statrow"><span>展示时间条目</span><b>3（P2 生效）</b></div>
+        <hr>
+        <div class="mini">面板里不提供改词条内容的功能——改内容请改 JSON 再导入。</div>
+      </div>
+    </div>
+
+    <!-- ── 卡片 ── -->
+    <div class="panel" id="p-cards">
+      <div class="col main">
+        <div class="card">
+          <div class="cardhead">
+            <div class="ico">▦</div>
+            <div><div class="t">桌面卡片 · 3 张运行中</div><div class="s">每个卡片一条内容，位置由平铺规则决定</div></div>
+            <div class="right">
+              <div class="btn">全部重播动画</div>
+              <div class="btn danger">全部关闭</div>
+            </div>
+          </div>
+        </div>
+        <div class="list" style="flex:0 0 auto">
+          <div class="row"><div class="rowhead"><div class="w">#1 seek</div><div class="m">来自手动展示</div></div></div>
+          <div class="row"><div class="rowhead"><div class="w">#2 abandon</div><div class="m">来自手动展示</div></div></div>
+          <div class="row"><div class="rowhead"><div class="w">#3 courage</div><div class="m">来自手动展示</div></div></div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div class="ico">A+</div>
+            <div><div class="t">文字大小</div><div class="s">全局一个档位，所有卡片一起变</div></div>
+            <div class="right"><div class="btn">A−</div><div class="seg on">100%</div><div class="btn">A＋</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col side">
+        <h4>卡片</h4>
+        <p>卡片只显示、不带按钮。放不下时按顺序截断，面板上会标出实际显示数量。</p>
+      </div>
+    </div>
+
+    <!-- ── 策略 ── -->
+    <div class="panel" id="p-plan">
+      <div class="col main">
+        <div class="card">
+          <div class="cardhead">
+            <div class="ico">◷</div>
+            <div><div class="t">展示时间 · 3 条</div><div class="s">已随词表一并存入，展示行为在 P2 生效</div></div>
+          </div>
+        </div>
+        <div class="list">
+          <div class="row"><div class="rowhead"><div class="w">Unit 1 核心词</div><div class="m">2026-10-06 → 2026-10-12</div><div class="caret">3 个词</div></div></div>
+          <div class="row"><div class="rowhead"><div class="w">Unit 2 高频动词</div><div class="m">2026-10-13 → 2026-10-19</div><div class="caret">5 个词</div></div></div>
+        </div>
+      </div>
+      <div class="col side"><h4>策略</h4><p>一个词可以有多段日期；同一天多段生效时全部显示。</p></div>
+    </div>
+
+    <!-- ── 设置 ── -->
+    <div class="panel" id="p-set">
+      <div class="col main">
+        <div class="card">
+          <div class="cardhead">
+            <div class="ico">◐</div>
+            <div><div class="t">主题</div><div class="s">控制面板与卡片共用一套配色</div></div>
+            <div class="right"><div class="seg on">■ 纯白</div><div class="seg">■ 浅青</div><div class="seg">■ 黄黑</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div class="ico">⇱</div>
+            <div><div class="t">卡片层级</div><div class="s">置底：PPT 全屏时卡片被盖住，不干扰上课</div></div>
+            <div class="right"><div class="seg on">置底</div><div class="seg">置顶＋穿透</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div class="ico">ℹ</div>
+            <div><div class="t">Lexideck · 慕言</div><div class="s">v0.3 · 绿色单文件版（lexideck.exe）</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col side"><h4>设置</h4><p>托盘驻留、开机自启动、单实例在 P3 加入。</p></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="dot"></div>
+    <span>运行中 · lexideck.json · 128 条 · 设置自动保存</span>
+    <div class="right"><div class="btn primary">▶ 立即展示（3）</div></div>
+  </div>
+</div>
+
+<!-- ══ 冲突弹窗 ══ -->
+<div class="win small" style="position:relative">
+  <div style="position:absolute;inset:0;background:rgba(20,22,24,.30)"></div>
+  <div class="dlg" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)">
+    <h3>导入冲突 · 3 / 7</h3>
+    <div class="body2">「<b>seek</b>」在主库里已经存在，内容和这份文件里的不一样。</div>
+    <div class="cmp"><b>主库里</b>　v. 寻找；寻求（2 个短语，1 条例句）</div>
+    <div class="cmp"><b>这份文件</b>　v. 寻找；寻求；试图（3 个短语，1 条例句，含同根词 seeker）</div>
+    <div class="acts">
+      <div class="btn">全部跳过</div>
+      <div class="btn">全部替换</div>
+      <div class="btn">跳过</div>
+      <div class="btn primary" style="height:34px;padding:0 16px">替换</div>
+    </div>
+    <div class="tip">「全部」指本次导入剩下的 6 条，不再逐条询问。</div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  t.classList.add('on');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('p-'+t.dataset.t).classList.add('on');
+});
+document.querySelectorAll('.rowhead').forEach(h=>h.onclick=e=>{
+  const row=h.parentElement;
+  if(e.offsetX<40){row.classList.toggle('sel');return;}
+  row.classList.toggle('open');
+});
+document.querySelectorAll('.seg').forEach(s=>s.onclick=()=>{
+  const sib=[...s.parentElement.children].filter(x=>x.classList.contains('seg'));
+  sib.forEach(x=>x.classList.remove('on')); s.classList.add('on');
+});
+</script>
+</body>
+</html>

@@ -15,32 +15,30 @@ pub struct Config {
     pub window_y: Option<f32>,
     /// 用户字号微调（A+ / A-）；总缩放 = 本值 × 屏幕系数（程序自动，见 app::screen_scale）
     pub font_scale: f32,
+    /// 悬浮窗置顶（P2 会扩成「置底 / 置顶+穿透」两档）
     pub always_on_top: bool,
-    /// 筛选："all" | "word" | "phrase" | "sentence"
-    pub filter: String,
-    /// 主题："wuling" | "yellow"
+    /// 主题："plain" | "wuling" | "yellow"
     pub theme: String,
-    /// 目标悬浮窗数量（批量管理；0 = 全部关闭）
-    pub float_count: usize,
+    /// 当前在桌面上的卡片（词条 word，小写；顺序 = 平铺顺序）
+    pub shown: Vec<String>,
 }
 
 impl Default for Config {
     fn default() -> Self {
         Self {
-            window_w: 600.0,
-            window_h: 560.0,
+            window_w: 1004.0,
+            window_h: 640.0,
             window_x: None,
             window_y: None,
             font_scale: 0.7,
             always_on_top: true,
-            filter: "all".into(),
             theme: "plain".into(),
-            float_count: 1,
+            shown: Vec::new(),
         }
     }
 }
 
-/// exe 所在目录（绿色版：配置、词表都在这里）
+/// exe 所在目录（绿色版：配置、主库都在这里）
 pub fn exe_dir() -> PathBuf {
     std::env::current_exe()
         .ok()
@@ -73,14 +71,14 @@ pub fn load(path: &Path) -> Config {
             "window_w" => {
                 if let Ok(v) = val.parse::<f32>() {
                     if v.is_finite() {
-                        cfg.window_w = v.clamp(320.0, 10000.0);
+                        cfg.window_w = v.clamp(560.0, 10000.0);
                     }
                 }
             }
             "window_h" => {
                 if let Ok(v) = val.parse::<f32>() {
                     if v.is_finite() {
-                        cfg.window_h = v.clamp(140.0, 10000.0);
+                        cfg.window_h = v.clamp(360.0, 10000.0);
                     }
                 }
             }
@@ -109,24 +107,33 @@ pub fn load(path: &Path) -> Config {
                 cfg.always_on_top =
                     matches!(val.to_lowercase().as_str(), "true" | "1" | "on" | "是");
             }
-            "filter" => {
-                let v = val.to_lowercase();
-                if matches!(v.as_str(), "all" | "word" | "phrase" | "sentence") {
-                    cfg.filter = v;
-                }
-            }
             "theme" => {
                 cfg.theme = val.to_string();
             }
-            "float_count" => {
-                if let Ok(v) = val.parse::<usize>() {
-                    cfg.float_count = v.min(8);
-                }
+            "shown" => {
+                // 新格式是 JSON 数组：词条本身可能带逗号（"Well, done."），逗号分隔存不住
+                let t = val.trim();
+                cfg.shown = if t.starts_with('[') {
+                    serde_json::from_str::<Vec<String>>(t)
+                        .map(clean_keys)
+                        .unwrap_or_default()
+                } else {
+                    // 兼容旧格式
+                    clean_keys(t.split([',', '，']).map(|s| s.to_string()).collect())
+                };
             }
             _ => {}
         }
     }
     cfg
+}
+
+/// 统一 key 的形态：去空白、转小写、丢掉空串
+fn clean_keys(v: Vec<String>) -> Vec<String> {
+    v.into_iter()
+        .map(|s| s.trim().to_lowercase())
+        .filter(|s| !s.is_empty())
+        .collect()
 }
 
 /// 写入失败静默忽略（写不了就算了，程序照常跑）
@@ -145,8 +152,55 @@ pub fn save(path: &Path, cfg: &Config) {
     ));
     s.push_str(&format!("font_scale = {:.2}\n", cfg.font_scale));
     s.push_str(&format!("always_on_top = {}\n", cfg.always_on_top));
-    s.push_str(&format!("filter = {}\n", cfg.filter));
     s.push_str(&format!("theme = {}\n", cfg.theme));
-    s.push_str(&format!("float_count = {}\n", cfg.float_count));
+    s.push_str(&format!(
+        "shown = {}\n",
+        serde_json::to_string(&cfg.shown).unwrap_or_else(|_| "[]".into())
+    ));
     let _ = std::fs::write(path, s);
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn shown_round_trips() {
+        let dir = std::env::temp_dir().join("lexideck-test-cfg");
+        let _ = std::fs::create_dir_all(&dir);
+        let p = dir.join("设置.txt");
+        let mut c = Config::default();
+        c.shown = vec!["seek".into(), "abandon".into()];
+        save(&p, &c);
+        let back = load(&p);
+        assert_eq!(back.shown, vec!["seek".to_string(), "abandon".to_string()]);
+    }
+
+    #[test]
+    fn broken_file_falls_back_to_defaults() {
+        let dir = std::env::temp_dir().join("lexideck-test-cfg2");
+        let _ = std::fs::create_dir_all(&dir);
+        let p = dir.join("设置.txt");
+        std::fs::write(&p, "window_w = abc\n????\nshown = ,,\n").unwrap();
+        let c = load(&p);
+        assert_eq!(c.window_w, 1004.0);
+        assert!(c.shown.is_empty());
+    }
+
+    /// 词条本身带逗号（"as, well as"）时也要能原样存回来
+    #[test]
+    fn shown_keeps_commas_in_words() {
+        let dir = std::env::temp_dir().join(format!("lexideck-test-cfg-{}", std::process::id()));
+        let _ = std::fs::create_dir_all(&dir);
+        let p = dir.join("设置.txt");
+        let _ = std::fs::remove_file(&p);
+        let mut c = Config::default();
+        c.shown = vec!["as, well as".into(), "hello".into()];
+        save(&p, &c);
+        let back = load(&p);
+        assert_eq!(
+            back.shown,
+            vec!["as, well as".to_string(), "hello".to_string()]
+        );
+    }
 }

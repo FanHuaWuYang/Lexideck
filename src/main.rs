@@ -12,9 +12,12 @@ mod config;
 mod control;
 mod deck;
 mod float;
+mod icons;
+mod import;
+mod library;
 mod theme;
+mod util;
 mod window;
-mod words;
 
 fn main() -> eframe::Result<()> {
     let cfg = config::load(&config::settings_path());
