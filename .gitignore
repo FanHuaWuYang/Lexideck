@@ -8,6 +8,7 @@
 /lexideck.exe
 /设置.txt
 /词表.txt
+/lexideck.json
 *.log
 
 # ---- 早期版本的源码快照（留在本地做对照）----
