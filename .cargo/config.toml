@@ -1,0 +1,4 @@
+# 让生成的 exe 不再依赖 VCRUNTIME140.dll（把 VC 运行库静态编进去）
+# 目的：拷到任何一台 Windows 一体机都能直接双击运行，不需要装 VC++ 运行库
+[target.'cfg(all(windows, target_env = "msvc"))']
+rustflags = ["-C", "target-feature=+crt-static"]

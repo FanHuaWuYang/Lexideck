@@ -1,0 +1,57 @@
+name: CI
+
+# 什么时候跑：往 main 提交、给 main 提 PR、或者手动点一次
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    # 必须是 Windows：界面走 glow/OpenGL、运行库静态链接，别的系统上编不出同一个产物
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 缓存编译产物（不缓存的话每次都全量重编十分钟）
+        uses: Swatinem/rust-cache@v2
+
+      - name: 代码格式检查
+        run: cargo fmt --all -- --check
+
+      - name: Clippy 静态检查（暂时不卡 CI：还有历史遗留警告没清）
+        continue-on-error: true
+        run: cargo clippy --all-targets
+
+      - name: 单元测试
+        run: cargo test --release --all-targets
+
+      - name: 构建 release 版
+        run: cargo build --release
+
+      - name: 自检：产物体积与运行库依赖
+        shell: pwsh
+        run: |
+          $exe = "target/release/lexideck.exe"
+          if (-not (Test-Path $exe)) { Write-Error "没找到 $exe"; exit 1 }
+          $size = (Get-Item $exe).Length
+          Write-Host ("exe 体积: {0} 字节 ({1:N2} MB)" -f $size, ($size / 1MB))
+          $text = [System.Text.Encoding]::ASCII.GetString([System.IO.File]::ReadAllBytes($exe))
+          if ($text -match "VCRUNTIME140") {
+            Write-Error "产物仍然依赖 VCRUNTIME140.dll —— 教室机器上会双击没反应"
+            exit 1
+          }
+          Write-Host "运行库自检通过：没有 VCRUNTIME140 依赖"
+
+      - name: 上传 exe（每次构建都能在 Actions 页下载）
+        uses: actions/upload-artifact@v4
+        with:
+          name: lexideck-exe
+          path: target/release/lexideck.exe
+          if-no-files-found: error

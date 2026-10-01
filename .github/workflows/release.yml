@@ -1,0 +1,30 @@
+name: Release
+
+# 打 tag（例如 v0.2.0）时自动出 exe，挂到 Releases 页面，一体机上直接下载就能用
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write   # 建 Release 需要写权限
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 缓存编译产物
+        uses: Swatinem/rust-cache@v2
+
+      - name: 构建 release 版
+        run: cargo build --release
+
+      - name: 建 Release 并附上 exe
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create $env:GITHUB_REF_NAME target/release/lexideck.exe --title $env:GITHUB_REF_NAME --generate-notes

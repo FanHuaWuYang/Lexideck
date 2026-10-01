@@ -1,0 +1,20 @@
+# 让 IDE 和编辑器自动统一基础格式，省掉「谁用什么缩进」这类无意义的 diff。
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.rs]
+indent_style = space
+indent_size = 4
+
+[*.{toml,yml,yaml,json}]
+indent_style = space
+indent_size = 2
+
+[*.md]
+# Markdown 里行尾两个空格是有意义的（换行），别自动删
+trim_trailing_whitespace = false

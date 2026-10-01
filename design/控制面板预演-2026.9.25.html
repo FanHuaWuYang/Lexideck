@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lexideck 控制面板 · 设计预演 v1</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#0B0B0D; --card:#1B1C1F; --card2:#212227; --line:#26282D; --line2:#33363C;
+    --txt:#EDEEF0; --txt2:#9BA0A8; --txt3:#7D838C;
+    --acc:#F5D01A; --acc-dark:#141414;
+  }
+  html,body{height:100%}
+  body{
+    background:#E9EAEC; padding:44px 20px;
+    font-family:"Segoe UI","Microsoft YaHei UI","Microsoft YaHei",system-ui,sans-serif;
+    display:flex; justify-content:center; align-items:flex-start;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ── 应用窗口 ── */
+  .win{
+    width:1004px; max-width:100%;
+    background:var(--bg); color:var(--txt);
+    border-radius:14px; overflow:hidden;
+    box-shadow:0 24px 60px rgba(15,18,22,.35), 0 2px 8px rgba(15,18,22,.18);
+  }
+
+  /* ── 顶栏 ── */
+  .top{display:flex;align-items:center;height:56px;padding:0 22px;gap:10px}
+  .logo{width:22px;height:22px;border-radius:6px;background:var(--acc);color:#111;
+    display:grid;place-items:center;font-weight:800;font-size:13px}
+  .name{font-size:15px;font-weight:650;letter-spacing:.2px}
+  .sub{font-size:11px;color:var(--txt3);margin-left:2px;margin-top:3px}
+  .top .spacer{flex:1}
+  .wbtn{width:34px;height:30px;display:grid;place-items:center;color:#8B919B;font-size:13px;cursor:default;border-radius:6px}
+  .wbtn:hover{background:#1B1C1F;color:#E6E8EB}
+  .wbtn.close:hover{color:#FF6B6B}
+
+  /* ── 标签行 ── */
+  .tabs{display:flex;gap:32px;padding:0 22px;height:46px;align-items:stretch;border-bottom:1px solid #1D1F23}
+  .tab{position:relative;display:flex;align-items:center;font-size:13.5px;color:#C3C8CF;cursor:pointer;user-select:none}
+  .tab:hover{color:#EDEEF0}
+  .tab.on{color:#FFF;font-weight:600}
+  .tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--acc)}
+
+  /* ── 内容区 ── */
+  .pane{display:none}
+  .pane.show{display:flex;gap:36px;padding:26px 29px 12px;min-height:432px}
+  .col{flex:0 0 592px;display:flex;flex-direction:column;gap:14px}
+  .col.narrow{flex:1;min-width:0}
+
+  /* 卡片 */
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;
+    transition:background .12s,border-color .12s;
+  }
+  .card:hover{background:var(--card2);border-color:var(--line2)}
+  .ico{flex:0 0 40px;height:40px;border-radius:8px;background:#262A2F;display:grid;place-items:center;color:#E9EBEE}
+  .ico svg{width:20px;height:20px}
+  .ico .letter{font-size:15px;font-weight:700}
+  .ct{flex:1;min-width:0}
+  .ct .t{font-size:14.5px;font-weight:600}
+  .ct .s{font-size:12.5px;color:var(--txt2);margin-top:3px}
+  .chev{color:#9AA0A8;font-size:18px;margin-left:2px;transform:translateY(-1px)}
+  .card:hover .chev{color:#E9EBEE}
+  .row-actions{display:flex;gap:8px;margin-left:6px}
+  .sq{height:30px;min-width:30px;padding:0 9px;border-radius:7px;background:#262A2F;border:1px solid #33373D;
+    color:#DFE2E6;font-size:12.5px;display:grid;place-items:center;cursor:pointer}
+  .sq:hover{background:#2E323A;border-color:#40454D}
+  .sq.danger:hover{color:#FF7A7A;border-color:#5A3A3A}
+
+  /* 分段按钮 */
+  .seg{display:flex;gap:8px;margin-left:6px}
+  .seg button{height:32px;padding:0 16px;border-radius:8px;background:#262A2F;border:1px solid #33373D;
+    color:#D8DCE1;font-size:12.5px;cursor:pointer;font-family:inherit}
+  .seg button:hover{background:#2E323A}
+  .seg button.on{background:var(--acc);border-color:var(--acc);color:var(--acc-dark);font-weight:600}
+
+  /* 色板按钮 */
+  .sw{display:flex;gap:8px;margin-left:6px}
+  .sw button{height:32px;padding:0 12px;border-radius:8px;background:#262A2F;border:1px solid #33373D;
+    color:#D8DCE1;font-size:12.5px;display:flex;align-items:center;gap:7px;cursor:pointer;font-family:inherit}
+  .sw button .dot{width:12px;height:12px;border-radius:4px;border:1px solid rgba(255,255,255,.18)}
+  .sw button.on{border-color:var(--acc);color:#fff}
+
+  /* 悬浮窗分组卡 */
+  .group{display:block;cursor:default}
+  .group:hover{background:var(--card);border-color:var(--line)}
+  .group-head{display:flex;align-items:center;gap:14px}
+  .grows{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+  .frow{display:flex;align-items:center;gap:12px;background:#141518;border:1px solid #24262B;
+    border-radius:8px;padding:8px 12px}
+  .frow .no{flex:0 0 auto;font-size:12px;color:var(--txt3);width:20px}
+  .frow .w{font-size:13.5px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* 右栏帮助 */
+  .help{flex:1;min-width:0;padding-top:2px}
+  .help h4{font-size:13.5px;font-weight:650;color:#EDEEF0;margin:0 0 8px}
+  .help p{font-size:13px;line-height:1.8;color:#A6ACB5;margin-bottom:12px}
+  .help p:last-child{margin-bottom:0}
+  .help .hl{color:var(--acc)}
+  .help .sep{height:1px;background:#1D1F23;margin:14px 0}
+  .help .mini{font-size:12px;color:var(--txt3);line-height:1.7}
+
+  /* ── 底栏 ── */
+  .bottom{display:flex;align-items:center;height:62px;padding:0 29px;border-top:1px solid #1D1F23;gap:12px}
+  .status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--txt3)}
+  .status .dotg{width:8px;height:8px;border-radius:50%;background:#3ED67A;box-shadow:0 0 6px rgba(62,214,122,.55)}
+  .bottom .spacer{flex:1}
+  .cta{height:38px;padding:0 22px;border-radius:999px;background:var(--acc);color:var(--acc-dark);
+    font-size:13.5px;font-weight:650;display:flex;align-items:center;gap:8px;border:0;cursor:pointer;font-family:inherit;
+    box-shadow:0 4px 16px rgba(245,208,26,.22)}
+  .cta:hover{filter:brightness(1.06)}
+
+  @media (max-width:1060px){
+    body{padding:20px 10px}
+    .win{border-radius:12px}
+    .pane.show{flex-direction:column;gap:20px;padding:20px 20px 8px}
+    .col{flex:1 1 auto}
+    .tabs{gap:20px}
+  }
+</style>
+</head>
+<body>
+
+<div class="win">
+  <!-- 顶栏 -->
+  <div class="top">
+    <div class="logo">L</div>
+    <div class="name">Lexideck</div>
+    <div class="sub">词卡看板</div>
+    <div class="spacer"></div>
+    <div class="wbtn">─</div>
+    <div class="wbtn">▢</div>
+    <div class="wbtn close">✕</div>
+  </div>
+
+  <!-- 标签 -->
+  <div class="tabs">
+    <div class="tab on" data-pane="floats">悬浮窗</div>
+    <div class="tab" data-pane="words">词表</div>
+    <div class="tab" data-pane="look">外观</div>
+    <div class="tab" data-pane="about">关于</div>
+  </div>
+
+  <!-- ═ 悬浮窗 ═ -->
+  <div class="pane show" id="pane-floats">
+    <div class="col">
+      <div class="card group">
+        <div class="group-head">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg></div>
+          <div class="ct"><div class="t">悬浮窗 · 4 个运行中</div><div class="s">每个窗固定一条内容，整批统一管理</div></div>
+        </div>
+        <div class="grows">
+          <div class="frow"><span class="no">#1</span><span class="w">seek</span></div>
+          <div class="frow"><span class="no">#2</span><span class="w">abandon</span></div>
+          <div class="frow"><span class="no">#3</span><span class="w">habit</span></div>
+          <div class="frow"><span class="no">#4</span><span class="w">advice</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M8 4v16"/></svg></div>
+        <div class="ct"><div class="t">悬浮窗数量</div><div class="s">增减时自动开 / 关到对应数量</div></div>
+        <div class="row-actions"><div class="sq">−</div><div class="sq" style="min-width:44px;font-weight:600">4</div><div class="sq">＋</div></div>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M7 8h11M7 8l3-3M7 8l3 3"/><path d="M17 16H6M17 16l-3-3M17 16l-3 3"/></svg></div>
+        <div class="ct"><div class="t">换一批</div><div class="s">全部窗一起切到下一组 · 当前第 1–4 个</div></div>
+        <div class="row-actions"><div class="sq">上一批</div><div class="sq">下一批</div></div>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg></div>
+        <div class="ct"><div class="t">全部操作</div><div class="s">对所有悬浮窗生效</div></div>
+        <div class="row-actions"><div class="sq">重播动画</div><div class="sq danger">全部关闭</div></div>
+      </div>
+    </div>
+
+    <div class="help">
+      <h4>悬浮窗</h4>
+      <p>每个悬浮窗<span class="hl">固定显示一条内容</span>；这里做<span class="hl">整批管理</span>——调窗数、换一批、重播动画。</p>
+      <p>拖动悬浮窗本身可以移动位置，位置会<span class="hl">自动保存</span>。</p>
+      <div class="sep"></div>
+      <p class="mini">窗数增减时自动开 / 关末尾的窗；所有窗会错开叠放。</p>
+      <p class="mini">「换一批」= 全部窗一起切到词表里的下一组，比如 5–8 号单词。</p>
+    </div>
+  </div>
+
+  <!-- ═ 词表 ═ -->
+  <div class="pane" id="pane-words">
+    <div class="col">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/></svg></div>
+        <div class="ct"><div class="t">词表：词表.json</div><div class="s">12 条内容 · 保存后 2 秒内自动刷新</div></div>
+        <div class="row-actions"><div class="sq">重新读取</div></div>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h16l-6 7v6l-4 2v-8z"/></svg></div>
+        <div class="ct"><div class="t">显示内容</div><div class="s">悬浮窗与列表只显示所选类别</div></div>
+        <div class="seg">
+          <button class="on">全部</button><button>单词</button><button>短语</button><button>句子</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ico"><span class="letter">A</span></div>
+        <div class="ct"><div class="t">文字大小</div><div class="s">影响所有悬浮窗卡片</div></div>
+        <div class="seg"><button>A−</button><button>A+</button></div>
+        <div class="pos" style="margin-left:2px">字号 70%</div>
+      </div>
+    </div>
+
+    <div class="help">
+      <h4>词表与显示</h4>
+      <p>把<span class="hl">词表.json</span>放到程序旁边就行；老师那边换一份文件、保存，屏幕<span class="hl">2 秒内自动刷新</span>，不用重启程序。</p>
+      <div class="sep"></div>
+      <p class="mini">「显示内容」只影响<b>呈现</b>，不会修改词表文件本身。</p>
+      <p class="mini">字号以 100% 为基准，教室大屏建议 70–100%；换分辨率时整体会按屏幕比例自动缩放。</p>
+    </div>
+  </div>
+
+  <!-- ═ 外观 ═ -->
+  <div class="pane" id="pane-look">
+    <div class="col">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="9.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="9.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="9.5" cy="15" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+        <div class="ct"><div class="t">主题</div><div class="s">悬浮窗卡片的配色</div></div>
+        <div class="sw">
+          <button><span class="dot" style="background:#FFFFFF"></span>纯白</button>
+          <button class="on"><span class="dot" style="background:#C5E0D9"></span>浅青</button>
+          <button><span class="dot" style="background:#FFFA00"></span>黄黑</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 17v5M7 10V7a5 5 0 0 1 10 0v3"/><rect x="5" y="10" width="14" height="7" rx="2"/></svg></div>
+        <div class="ct"><div class="t">悬浮窗置顶</div><div class="s">悬浮窗始终盖在其他程序（PPT 等）上方</div></div>
+        <div class="seg"><button class="on">开</button><button>关</button></div>
+      </div>
+    </div>
+
+    <div class="help">
+      <h4>外观</h4>
+      <p>面板和卡片分属两套配色：控制面板<span class="hl">固定深色</span>（就是现在这套设计）；「主题」只改<span class="hl">悬浮窗卡片</span>的颜色。</p>
+      <div class="sep"></div>
+      <p class="mini">黄黑主题的卡片为黑底荧光黄，对比度最高，适合亮堂的教室；浅青更柔和。</p>
+      <p class="mini">投影或一体机偏色时，建议先用「黄黑」试一堂课。</p>
+    </div>
+  </div>
+
+  <!-- ═ 关于 ═ -->
+  <div class="pane" id="pane-about">
+    <div class="col">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></div>
+        <div class="ct"><div class="t">Lexideck 词卡看板</div><div class="s">v0.1 · 绿色单文件版（lexideck.exe）</div></div>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h9"/></svg></div>
+        <div class="ct"><div class="t">退出程序</div><div class="s">关闭控制面板与全部悬浮窗</div></div>
+      </div>
+    </div>
+
+    <div class="help">
+      <h4>关于</h4>
+      <p>程序<span class="hl">不写注册表、不写 AppData</span>——设置与词表都在 exe 同目录，整个文件夹拷走就带走了全部配置。</p>
+      <div class="sep"></div>
+      <p class="mini">设置自动保存到 exe 旁的「设置.txt」；词表文件保存后自动刷新。</p>
+      <p class="mini">透明 / 置顶 / 触摸等表现需要在教室一体机上最终确认。</p>
+    </div>
+  </div>
+
+  <!-- 底栏 -->
+  <div class="bottom">
+    <div class="status"><span class="dotg"></span>运行中 · 词表.json · 12 条 · 设置自动保存</div>
+    <div class="spacer"></div>
+    <button class="cta">▶ 下一批</button>
+  </div>
+</div>
+
+<script>
+  // 标签切换
+  document.querySelectorAll('.tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('on'); });
+      document.querySelectorAll('.pane').forEach(function (x) { x.classList.remove('show'); });
+      t.classList.add('on');
+      document.getElementById('pane-' + t.dataset.pane).classList.add('show');
+    });
+  });
+  // 分段按钮
+  document.querySelectorAll('.seg').forEach(function (g) {
+    g.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        g.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+      });
+    });
+  });
+  // 色板
+  document.querySelectorAll('.sw').forEach(function (g) {
+    g.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        g.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+      });
+    });
+  });
+</script>
+</body>
+</html>

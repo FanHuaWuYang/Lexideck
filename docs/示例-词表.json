@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "deck_name": "示例词表 · Unit 1",
+  "words": [
+    {
+      "word": "seek",
+      "senses": [
+        { "pos": "v.", "meaning": "寻找；寻求；试图" }
+      ],
+      "forms": { "emphasize": true, "past": "sought", "past_participle": "sought" },
+      "phrases": [
+        { "text": "seek to do sth.", "meaning": "试图做某事" },
+        { "text": "seek out", "meaning": "找出；搜寻到" }
+      ],
+      "sentences": [
+        { "en": "She sought advice from her teacher.", "zh": "她向老师寻求建议。" }
+      ]
+    },
+    {
+      "word": "abandon",
+      "senses": [
+        { "pos": "v.", "meaning": "抛弃；放弃；遗弃" },
+        { "pos": "n.", "meaning": "放纵；放任" }
+      ],
+      "phrases": [
+        { "text": "abandon oneself to", "meaning": "沉溺于；纵情于" },
+        { "text": "abandon doing sth.", "meaning": "放弃做某事" }
+      ],
+      "sentences": [
+        { "en": "He abandoned his car in the snow and walked home.", "zh": "他把车丢在雪地里，步行回了家。" }
+      ]
+    },
+    {
+      "word": "Good habits are hard to form but easy to live with.",
+      "senses": [
+        { "meaning": "好习惯难于养成，却易于相伴一生。" }
+      ]
+    }
+  ]
+}

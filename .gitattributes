@@ -1,0 +1,12 @@
+# 仓库里一律存 LF 换行，检出到各人机器上用什么换行交给本地 core.autocrlf 决定。
+# 这样 Windows 上写着舒服，万一以后在 Linux/Mac 上拉下来也不会满屏「文件被改了」。
+* text=auto
+
+# 二进制文件：不做换行转换，不按文本 diff（否则 git 会以为二进制文件被改坏了）
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.ico  binary
+*.exe  binary
+*.ttf  binary
+*.otf  binary
