@@ -6,6 +6,36 @@
 
 use std::path::{Path, PathBuf};
 
+/// 卡片层级（设计 §5.2）：默认**置底**（贴桌面最底层，PPT 全屏时被盖住）；
+/// 置顶时配合鼠标穿透，卡片常显但点击穿过去落到 PPT 上。
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum Layer {
+    #[default]
+    Bottom,
+    Top,
+}
+
+impl Layer {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Layer::Bottom => "bottom",
+            Layer::Top => "top",
+        }
+    }
+    pub fn parse(s: &str) -> Option<Layer> {
+        match s.trim().to_lowercase().as_str() {
+            "top" | "置顶" => Some(Layer::Top),
+            "bottom" | "置底" => Some(Layer::Bottom),
+            _ => None,
+        }
+    }
+}
+
+/// 老设置里 `always_on_top` 这类开关的宽松解析
+fn parse_bool(s: &str) -> bool {
+    matches!(s.trim().to_lowercase().as_str(), "true" | "1" | "on" | "是")
+}
+
 #[derive(Debug, Clone)]
 pub struct Config {
     pub window_w: f32,
@@ -15,8 +45,13 @@ pub struct Config {
     pub window_y: Option<f32>,
     /// 用户字号微调（A+ / A-）；总缩放 = 本值 × 屏幕系数（程序自动，见 app::screen_scale）
     pub font_scale: f32,
-    /// 悬浮窗置顶（P2 会扩成「置底 / 置顶+穿透」两档）
-    pub always_on_top: bool,
+    /// 卡片层级：置底（默认）/ 置顶
+    pub layer: Layer,
+    /// 鼠标穿透（设计 §5.2）：开启后卡片窗口收不到任何鼠标事件，只能从面板关掉
+    pub passthrough: bool,
+    /// 垂直同步：开（默认）= 跟着显示器刷新率走，不撕裂、不白烧 CPU/GPU；
+    /// 关 = 不限帧（高刷屏上想看满帧、或面板在 60Hz 屏而卡片在 165Hz 屏时用）
+    pub vsync: bool,
     /// 主题："plain" | "wuling" | "yellow"
     pub theme: String,
     /// 当前在桌面上的卡片（词条 word，小写；顺序 = 平铺顺序）
@@ -31,7 +66,9 @@ impl Default for Config {
             window_x: None,
             window_y: None,
             font_scale: 0.7,
-            always_on_top: true,
+            layer: Layer::Bottom,
+            passthrough: false,
+            vsync: true,
             theme: "plain".into(),
             shown: Vec::new(),
         }
@@ -103,9 +140,24 @@ pub fn load(path: &Path) -> Config {
                     }
                 }
             }
+            "layer" => {
+                if let Some(l) = Layer::parse(val) {
+                    cfg.layer = l;
+                }
+            }
+            "passthrough" => {
+                cfg.passthrough = parse_bool(val);
+            }
+            "vsync" => {
+                cfg.vsync = parse_bool(val);
+            }
+            // 老键兼容：P1 的设置文件里是 always_on_top = true|false
             "always_on_top" => {
-                cfg.always_on_top =
-                    matches!(val.to_lowercase().as_str(), "true" | "1" | "on" | "是");
+                cfg.layer = if parse_bool(val) {
+                    Layer::Top
+                } else {
+                    Layer::Bottom
+                };
             }
             "theme" => {
                 cfg.theme = val.to_string();
@@ -151,7 +203,9 @@ pub fn save(path: &Path, cfg: &Config) {
         cfg.window_y.map(|v| v.round()).unwrap_or(-1.0)
     ));
     s.push_str(&format!("font_scale = {:.2}\n", cfg.font_scale));
-    s.push_str(&format!("always_on_top = {}\n", cfg.always_on_top));
+    s.push_str(&format!("layer = {}\n", cfg.layer.as_str()));
+    s.push_str(&format!("passthrough = {}\n", cfg.passthrough));
+    s.push_str(&format!("vsync = {}\n", cfg.vsync));
     s.push_str(&format!("theme = {}\n", cfg.theme));
     s.push_str(&format!(
         "shown = {}\n",
@@ -202,5 +256,40 @@ mod tests {
             back.shown,
             vec!["as, well as".to_string(), "hello".to_string()]
         );
+    }
+
+    /// 层级两档：新键 layer/passthrough 往返；老键 always_on_top 迁成 layer
+    #[test]
+    fn layer_round_trips_and_old_key_migrates() {
+        let dir =
+            std::env::temp_dir().join(format!("lexideck-test-cfg-layer-{}", std::process::id()));
+        let _ = std::fs::create_dir_all(&dir);
+        let p = dir.join("设置.txt");
+        let _ = std::fs::remove_file(&p);
+
+        let mut c = Config::default();
+        assert_eq!(c.layer, Layer::Bottom, "默认置底");
+        assert!(!c.passthrough, "默认不穿透");
+        c.layer = Layer::Top;
+        c.passthrough = true;
+        save(&p, &c);
+        let text = std::fs::read_to_string(&p).unwrap();
+        assert!(text.contains("layer = top"), "{text}");
+        assert!(text.contains("passthrough = true"), "{text}");
+        assert!(
+            !text.contains("always_on_top"),
+            "新文件不该再写老键：{text}"
+        );
+        let back = load(&p);
+        assert_eq!(back.layer, Layer::Top);
+        assert!(back.passthrough);
+
+        // 老文件只有 always_on_top = true → 迁成置顶
+        std::fs::write(&p, "always_on_top = true\n").unwrap();
+        assert_eq!(load(&p).layer, Layer::Top);
+        // always_on_top = false → 置底
+        std::fs::write(&p, "always_on_top = false\n").unwrap();
+        assert_eq!(load(&p).layer, Layer::Bottom);
+        let _ = std::fs::remove_file(&p);
     }
 }

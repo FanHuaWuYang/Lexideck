@@ -237,6 +237,9 @@ pub struct DisplayItem {
     pub ranges: Vec<Range>,
     #[serde(default)]
     pub hide: Vec<String>,
+    /// 来源文件标签（导自哪份文件；只作展示，**不参与**冲突判定）
+    #[serde(default)]
+    pub source: String,
 }
 
 impl DisplayItem {
@@ -584,6 +587,17 @@ pub fn sanitize(deck: &mut Deck) -> Vec<String> {
         it.hide.retain(|h| is_hide_key(h));
         dedup_in_place(&mut it.hide);
     }
+    // P2：展示时间项记住"来自哪份文件"（只作展示，不参与冲突判定）。空白的用 deck_name 兜底。
+    let deck_name = deck.deck_name.trim().to_string();
+    let fallback = if deck_name.is_empty() {
+        "未命名".to_string()
+    } else {
+        deck_name
+    };
+    for it in &mut deck.display_time {
+        let s = it.source.trim().to_string();
+        it.source = if s.is_empty() { fallback.clone() } else { s };
+    }
     deck.display_time.retain(|it| !it.word.is_empty());
     warns
 }
@@ -822,6 +836,7 @@ mod tests {
                 to: b.into(),
             }],
             hide: vec![],
+            source: "Unit 1".into(),
         };
         let mut base = vec![mk("seek", "2026-10-06", "2026-10-12")];
         let (added, dup) = merge_display_time(

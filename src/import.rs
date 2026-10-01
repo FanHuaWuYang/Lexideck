@@ -277,6 +277,7 @@ mod tests {
                     to: "2026-10-12".into(),
                 }],
                 hide: vec![],
+                source: "unit1.json".into(),
             },
             DisplayItem {
                 word: "seek".into(),
@@ -285,6 +286,7 @@ mod tests {
                     to: "2026-10-12".into(),
                 }],
                 hide: vec![],
+                source: "unit1.json".into(),
             },
             DisplayItem {
                 word: "seek".into(),
@@ -293,6 +295,7 @@ mod tests {
                     to: "2026-11-07".into(),
                 }],
                 hide: vec![],
+                source: "unit1.json".into(),
             },
         ];
         let s = Session::new("f.json".into(), incoming, &base.words);

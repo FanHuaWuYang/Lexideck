@@ -54,14 +54,18 @@ pub struct CardPlan {
     pub seps: Vec<Rect>,
 }
 
-/// 排一张卡。区块为空或被 hide 关掉 → 直接不出现。
-pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32) -> CardPlan {
+/// 排一张卡。区块为空、被词条自身的 `hide` 关掉、或被**策略内**额外隐藏 →
+/// 直接不出现（`extra_hide` 来自当前展示时间项的 hide，与词条自身 hide 取并集）。
+pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[String]) -> CardPlan {
     let mut lines: Vec<(Pos2, Arc<Galley>)> = Vec::new();
     let mut seps: Vec<Rect> = Vec::new();
 
     let x0 = PAD_L * k;
     let content_w = (CARD_W - BAR_W - PAD_L - PAD_R) * k;
     let right = x0 + content_w;
+
+    // 区块是否隐藏：词条自身的 hide 与策略内 hide 取并集
+    let hid = |key: &str| e.hidden(key) || extra_hide.iter().any(|h| h == key);
 
     // 文本排版走 Painter（内部自动处理字体缓存锁，&self 即可用）
     let painter = ctx.layer_painter(egui::LayerId::new(
@@ -112,11 +116,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32) -> CardPlan {
 
     // ── ① 词头：主体大字（保证单行）+ 变形小字跟在后面 ──
     let word = e.word.trim();
-    let forms = if e.hidden("forms") {
-        None
-    } else {
-        e.forms_line()
-    };
+    let forms = if hid("forms") { None } else { e.forms_line() };
     let forms_g = forms
         .as_deref()
         .map(|t| lay(t, sz::FORMS, th.accent, f32::INFINITY));
@@ -156,7 +156,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32) -> CardPlan {
     }
 
     // ── ② 词义（词性 + 意思，紧贴主体下方） ──
-    if !e.senses.is_empty() && !e.hidden("senses") {
+    if !e.senses.is_empty() && !hid("senses") {
         y += 6.0 * k;
         for (i, s) in e.senses.iter().enumerate() {
             if i > 0 {
@@ -185,7 +185,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32) -> CardPlan {
     y += sz::B1_BOTTOM * k;
 
     // ── ③ 同根词（如 seeker  n. 探索者） ──
-    if !e.derivations.is_empty() && !e.hidden("derivations") {
+    if !e.derivations.is_empty() && !hid("derivations") {
         seps.push(sep_rect(x0, right, y));
         y += sz::B23_TOP * k;
         for (i, d) in e.derivations.iter().enumerate() {
@@ -226,7 +226,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32) -> CardPlan {
     }
 
     // ── ④ 短语 ──
-    if !e.phrases.is_empty() && !e.hidden("phrases") {
+    if !e.phrases.is_empty() && !hid("phrases") {
         seps.push(sep_rect(x0, right, y));
         y += sz::B23_TOP * k;
         for (i, p) in e.phrases.iter().enumerate() {
@@ -247,7 +247,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32) -> CardPlan {
     }
 
     // ── ⑤ 例句（英文 + 小一号译文） ──
-    if !e.sentences.is_empty() && !e.hidden("sentences") {
+    if !e.sentences.is_empty() && !hid("sentences") {
         seps.push(sep_rect(x0, right, y));
         y += sz::B23_TOP * k;
         for (i, s) in e.sentences.iter().enumerate() {
@@ -271,7 +271,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32) -> CardPlan {
     }
 
     // ── ⑥ 备注（小字） ──
-    if !e.note.trim().is_empty() && !e.hidden("note") {
+    if !e.note.trim().is_empty() && !hid("note") {
         seps.push(sep_rect(x0, right, y));
         y += sz::B23_TOP * k;
         let ng = lay(e.note.trim(), sz::NOTE, th.fg3, content_w);
@@ -306,4 +306,56 @@ fn sep_rect(x0: f32, x1: f32, y: f32) -> Rect {
 /// 词表列表里「已关闭展示」小标签用的名字（面板复用 deck 的映射）
 pub fn hidden_label(key: &str) -> &'static str {
     hide_label(key)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::deck::{Phrase, Sense};
+    use crate::theme::ThemeKind;
+
+    /// 策略内额外隐藏（extra_hide）要真的把那个区块从排版里去干净
+    #[test]
+    fn extra_hide_drops_a_section() {
+        let ctx = egui::Context::default();
+        let th = crate::theme::get(ThemeKind::Plain);
+        let e = Entry {
+            word: "seek".into(),
+            senses: vec![Sense {
+                pos: "v.".into(),
+                meaning: "寻找".into(),
+            }],
+            phrases: vec![Phrase {
+                text: "seek out".into(),
+                meaning: "找出".into(),
+            }],
+            ..Default::default()
+        };
+        // 排版要用到字体，必须在一次真正的 frame 里做（和 control.rs 的离屏测试同理）
+        let raw = egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(
+                egui::Pos2::ZERO,
+                egui::vec2(CARD_W, 640.0),
+            )),
+            ..Default::default()
+        };
+        let mut got: Option<(usize, f32, usize, f32)> = None;
+        let mut out = ctx.run_ui(raw, |ui| {
+            let base = plan(ui.ctx(), &e, &th, 1.0, &[]);
+            let hidden = plan(ui.ctx(), &e, &th, 1.0, &["phrases".to_string()]);
+            got = Some((
+                base.lines.len(),
+                base.height,
+                hidden.lines.len(),
+                hidden.height,
+            ));
+        });
+        // 离屏测试没人消费纹理增量，清掉再丢弃（否则 epaint 会断言 panic）
+        out.textures_delta.clear();
+        let (bl, bh, hl, hh) = got.expect("plan 应当在 frame 里跑过");
+        assert!(
+            hl < bl && hh < bh,
+            "策略内隐藏短语后，行数与高度都应减少：base={bl} 行 / {bh} 高，hidden={hl} 行 / {hh} 高"
+        );
+    }
 }

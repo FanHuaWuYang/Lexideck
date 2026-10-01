@@ -18,3 +18,12 @@ lto = true
 codegen-units = 1
 panic = "abort"
 strip = true
+
+# 开发构建也要能跑得动动画：egui/epaint 这些依赖必须优化编译（它们才是每帧的大头），
+# 自己的代码留 opt-level 1（保住调试信息，增量编译也快）。
+# 实测：全 opt-level 0 时面板每帧 34.5ms → 卡片入场动画只有 29fps，实机上手感就是"卡"。
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3

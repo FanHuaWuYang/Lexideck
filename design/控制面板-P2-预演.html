@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lexideck · P2 面板预演</title>
+<style>
+  /* ── 三套配色取自程序里的真实取值（src/theme.rs 的 PLAIN / WULING / YELLOW）── */
+  :root{
+    --bg:#F4F5F6; --card:#FFFFFF; --card-hover:#F9FAFB;
+    --line:#E6E8EB; --line2:#D2D6DB;
+    --txt:#202428; --txt2:#5C646D; --txt3:#686F77;
+    --acc:#668D82; --danger:#C4524E;
+    --btn:#F1F3F5; --btn-hover:#E6EAEE; --btn-line:#D8DCE1;
+    --row:#F3F4F6; --row-line:#E5E7EA; --row-sel:#EDF4F2;
+    --icon:#2A3036; --top:#17191C; --on-top:#E8EAED;
+    --shadow:0 1px 2px rgba(16,24,32,.06), 0 8px 24px rgba(16,24,32,.06);
+  }
+  body[data-skin="wuling"]{
+    --bg:#E9F2F0; --card:#F8FCFB; --card-hover:#EFF7F5;
+    --line:#D3E3E0; --line2:#B7D2CC;
+    --txt:#1E3B36; --txt2:#4E6D67; --txt3:#59726C;
+    --acc:#668D82; --btn:#ECF5F3; --btn-hover:#DFEEEA; --btn-line:#C8DFDA;
+    --row:#ECF4F2; --row-line:#D9E8E4; --row-sel:#DFEEEA; --icon:#24443E;
+  }
+  body[data-skin="yellow"]{
+    --bg:#0B0B0D; --card:#1B1C1F; --card-hover:#212227;
+    --line:#26282D; --line2:#3A3E45;
+    --txt:#EDEEF0; --txt2:#9BA0A8; --txt3:#858B94;
+    --acc:#F5D01A; --danger:#FF7A7A;
+    --btn:#262A2F; --btn-hover:#2E323A; --btn-line:#33373D;
+    --row:#141518; --row-line:#24262B; --row-sel:#25261B; --icon:#E8EAED;
+    --top:#0B0B0D; --on-top:#EDEEF0;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 30px rgba(0,0,0,.35);
+  }
+  /* 预演页自己的底色也跟主题走，否则看黄黑主题时四周一片亮灰很跳 */
+  body{background:#DDDFE3}
+  body[data-skin="wuling"]{background:#DCE8E5}
+  body[data-skin="yellow"]{background:#141519}
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:#DDDFE3; color:var(--txt);
+    font:14px/1.5 "Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:22px; display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;
+  }
+  h1{font-size:15px;margin:0 0 6px;font-weight:600;letter-spacing:.02em}
+  .hint{font-size:12.5px;color:#4B5259;line-height:1.7;max-width:230px}
+  .hint b{color:#20242A}
+  .tweaks{border:1px solid #C7CBD0;background:#F7F8F9;padding:14px;width:250px}
+  .tweaks .t{font-size:12px;color:#5A6169;letter-spacing:.08em;margin:0 0 10px}
+  .seg{display:flex;gap:6px;margin-bottom:12px}
+  .seg button{
+    flex:1;height:36px;border:1px solid #C7CBD0;background:#fff;color:#20242A;
+    font:inherit;font-size:13px;cursor:pointer
+  }
+  .seg button[aria-pressed="true"]{background:#20242A;color:#fff;border-color:#20242A}
+
+  /* ── 面板本体：直角、白底、自绘顶栏 ── */
+  .panel{
+    width:1000px;max-width:100%;background:var(--bg);border:1px solid var(--line2);
+    box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden;
+  }
+  .top{
+    height:48px;flex:0 0 48px;background:var(--top);color:var(--on-top);
+    display:flex;align-items:center;padding:0 14px 0 16px;gap:10px;user-select:none
+  }
+  .top .logo{width:16px;height:16px;border:1.5px solid var(--on-top);position:relative;flex:0 0 16px}
+  .top .logo::after{content:"";position:absolute;right:-1.5px;top:3px;bottom:3px;width:3px;background:var(--acc)}
+  .top .name{font-size:14px;letter-spacing:.04em;font-weight:600}
+  .top .ver{font-size:11.5px;opacity:.55;margin-left:2px}
+  .top .spacer{flex:1}
+  .winbtn{width:34px;height:34px;display:grid;place-items:center;cursor:pointer;border:0;background:transparent;color:var(--on-top)}
+  .winbtn:hover{background:rgba(255,255,255,.11)}
+  .winbtn.close:hover{background:#C4524E;color:#fff}
+  .winbtn svg{display:block}
+
+  .tabs{height:44px;flex:0 0 44px;display:flex;border-bottom:1px solid var(--line);background:var(--card)}
+  .tab{
+    flex:0 0 auto;min-width:104px;height:44px;border:0;background:transparent;color:var(--txt2);
+    font:inherit;font-size:14.5px;cursor:pointer;position:relative;padding:0 18px
+  }
+  .tab:hover{background:var(--card-hover);color:var(--txt)}
+  .tab[aria-selected="true"]{color:var(--txt);font-weight:600}
+  .tab[aria-selected="true"]::after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:var(--acc)}
+
+  .body{display:flex;height:536px}
+  .main{flex:1 1 auto;padding:20px 24px;min-width:0;overflow-y:auto;overscroll-behavior:contain}
+  .side{
+    flex:0 0 300px;border-left:1px solid var(--line);background:var(--card);padding:20px 22px;
+  }
+  .panel[data-narrow="1"] .side{display:none}
+
+  .bottom{
+    height:58px;flex:0 0 58px;border-top:1px solid var(--line);background:var(--card);
+    display:flex;align-items:center;gap:12px;padding:0 20px
+  }
+  .status{font-size:13px;color:var(--txt2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* 按钮：≥34px 触摸高度 */
+  .btn{
+    height:38px;min-width:92px;padding:0 16px;border:1px solid var(--btn-line);background:var(--btn);
+    color:var(--txt);font:inherit;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px
+  }
+  .btn:hover{background:var(--btn-hover)}
+  .btn:focus-visible,.tab:focus-visible,.winbtn:focus-visible,.sw:focus-visible,.seg button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+  .btn.primary{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+  .btn.primary:hover{filter:brightness(1.06)}
+  .btn.quiet{background:transparent;border-color:transparent;color:var(--txt2);min-width:0}
+  .btn.quiet:hover{color:var(--txt);background:var(--btn-hover)}
+  .btn:disabled{opacity:.45;cursor:default}
+
+  /* 板块标题 */
+  .h4{font-size:15px;font-weight:600;margin:0 0 6px;display:flex;align-items:center;gap:9px}
+  .h4 .ic{width:22px;height:22px;flex:0 0 22px;color:var(--icon)}
+  p.lead{margin:0;font-size:13px;color:var(--txt2);line-height:1.65}
+  hr.sep{border:0;border-top:1px solid var(--line);margin:14px 0}
+  .mini{font-size:12.5px;color:var(--txt3);line-height:1.7}
+
+  /* 统计块 */
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px}
+  .stat{flex:1 1 120px;background:var(--card);border:1px solid var(--line);padding:12px 14px}
+  .stat .k{font-size:12px;color:var(--txt3)}
+  .stat .v{font-size:22px;font-weight:600;margin-top:4px;letter-spacing:.01em}
+  .stat.acc .v{color:var(--acc)}
+  .stat.warn .v{color:var(--danger)}
+
+  /* 策略分段 */
+  .grp{margin-top:16px}
+  .grp > .gh{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}
+  .grp > .gh h5{margin:0;font-size:13.5px;font-weight:600}
+  .grp > .gh .cnt{font-size:12px;color:var(--txt3)}
+  .grp > .gh .note{margin-left:auto;font-size:12px;color:var(--txt3)}
+
+  /* 列表行：整行可点，展开区与开关分开，不打架 */
+  .rows{border:1px solid var(--line);background:var(--card)}
+  .row{border-top:1px solid var(--row-line);padding:0 12px 0 14px}
+  .row:first-child{border-top:0}
+  .row.off{background:var(--row)}
+  .row .r1{display:block}
+  .row .r1:hover{background:var(--card-hover)}
+  .row.off .r1:hover{background:var(--row-sel)}
+  /* 第一行：词 + 日期段 + 开关（这几个永远完整显示，绝不截断） */
+  .l1{display:flex;align-items:center;gap:12px;min-height:50px;padding:2px 0}
+  /* 第二行：来源文件、这段隐藏了哪些区块（注释性信息，放小标签） */
+  .l2{display:flex;align-items:center;gap:8px;padding:0 0 12px 2px;margin-top:-7px}
+  .l2:empty{display:none}
+  .word{font-size:15.5px;font-weight:600;flex:0 0 auto;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .row.off .word{color:var(--txt3);text-decoration:line-through;text-decoration-thickness:1px}
+  .chip{font-size:12px;color:var(--txt2);border:1px solid var(--line2);padding:2px 7px;white-space:nowrap;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis;max-width:210px}
+  .chip.src{border-style:dashed}
+  .chip.hide{border-color:var(--acc);color:var(--acc)}
+  .chip.past{border-color:var(--line2);color:var(--txt3)}
+  .row .sp{flex:1 1 0;min-width:8px}
+  .expand{width:34px;height:34px;border:0;background:transparent;color:var(--txt3);cursor:pointer;display:grid;place-items:center}
+  .expand:hover{background:var(--btn-hover);color:var(--txt)}
+  .r2{display:none;padding:0 14px 14px 14px;border-top:1px dashed var(--line);margin-top:-1px}
+  .row.open .r2{display:block;padding-top:12px}
+  .kv{display:flex;gap:10px;font-size:12.5px;color:var(--txt2);line-height:1.9}
+  .kv .k{flex:0 0 68px;color:var(--txt3)}
+
+  /* 开关（永久关闭一条策略） */
+  .sw{position:relative;width:52px;height:30px;flex:0 0 52px;border:1px solid var(--btn-line);background:var(--btn);cursor:pointer}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;background:var(--txt3);transition:left .16s ease,background .16s ease}
+  .sw[aria-pressed="true"]{background:var(--acc);border-color:var(--acc)}
+  .sw[aria-pressed="true"]::after{left:25px;background:#fff}
+  .swlab{font-size:12px;color:var(--txt3);width:74px;flex:0 0 74px;text-align:right}
+
+  /* 卡片页 */
+  .cardrow{display:flex;align-items:center;gap:12px;min-height:52px;padding:8px 14px;border-top:1px solid var(--row-line)}
+  .cardrow:first-child{border-top:0}
+  .pos{width:26px;flex:0 0 26px;font-size:13px;color:var(--txt3);text-align:right}
+  .mode{display:flex;gap:0;border:1px solid var(--line2);align-self:flex-start}
+  .mode button{height:36px;padding:0 14px;border:0;background:var(--card);color:var(--txt2);font:inherit;font-size:13.5px;cursor:pointer}
+  .mode button[aria-pressed="true"]{background:var(--acc);color:#fff;font-weight:600}
+  .fontstep{display:flex;align-items:center;gap:12px}
+  .fontstep .box{width:64px;height:38px;border:1px solid var(--btn-line);background:var(--card);display:grid;place-items:center;font-size:14px}
+
+  /* 设置页的两档层级 */
+  .choice{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .opt{
+    flex:1 1 240px;border:1px solid var(--line2);background:var(--card);padding:14px;cursor:pointer;text-align:left;
+    color:var(--txt);font:inherit
+  }
+  .opt:hover{background:var(--card-hover)}
+  .opt[aria-pressed="true"]{border-color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}
+  .opt .ot{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .opt .od{font-size:12.5px;color:var(--txt2);margin-top:6px;line-height:1.7}
+  .opt[aria-pressed="true"] .ot::after{content:"当前";font-size:11px;font-weight:600;color:#fff;background:var(--acc);padding:1px 6px}
+  .callout{border:1px solid var(--danger);background:transparent;padding:12px 14px;margin-top:12px;font-size:12.5px;color:var(--txt2);line-height:1.7}
+  .callout b{color:var(--danger)}
+
+  .settline{display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--line)}
+  .settline:first-of-type{border-top:0}
+  .settline .sl{flex:1;min-width:0}
+  .settline .st{font-size:14px}
+  .settline .sd{font-size:12.5px;color:var(--txt3);margin-top:3px}
+  .pill{font-size:11.5px;color:var(--txt3);border:1px solid var(--line2);padding:1px 7px}
+  .ghost{opacity:.5}
+  .thumb{display:flex;gap:8px}
+  .th{width:44px;height:34px;border:1px solid var(--line2);cursor:pointer;position:relative;padding:0;background:transparent}
+  .th[aria-pressed="true"]{box-shadow:inset 0 0 0 2px var(--acc)}
+  .th i{position:absolute;left:0;right:0;top:0;height:9px;display:block}
+  .th u{position:absolute;left:5px;right:5px;bottom:5px;height:5px;display:block}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body data-skin="plain">
+
+<!-- 左侧：Tweaks（只在预演页出现，程序里没有） -->
+<div class="tweaks">
+  <p class="t">预演用 · 配色切换</p>
+  <div class="seg" role="group" aria-label="主题">
+    <button data-skin-btn="plain" aria-pressed="true">纯白</button>
+    <button data-skin-btn="wuling" aria-pressed="false">浅青</button>
+    <button data-skin-btn="yellow" aria-pressed="false">黄黑</button>
+  </div>
+  <div class="seg" role="group" aria-label="宽度">
+    <button data-width="1000" aria-pressed="true">正常宽</button>
+    <button data-width="760" aria-pressed="false">窄窗</button>
+  </div>
+  <p class="hint">
+    <b>这一屏是 Operate 型界面</b>：你在这里做取舍和开关，所以密度、状态反馈优先，
+    没有大标题和卡片墙。<br><br>
+    窄窗会把右侧说明列收起来（程序里低于 900px 就收）。<br><br>
+    页面上所有配色、尺寸都取自程序真实取值，不是另画一套。
+  </p>
+</div>
+
+<!-- 面板 -->
+<div class="panel" id="panel">
+  <div class="top">
+    <span class="logo" aria-hidden="true"></span>
+    <span class="name">Lexideck 词卡看板</span>
+    <span class="ver">P2 预演</span>
+    <span class="spacer"></span>
+    <button class="winbtn" title="最小化"><svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="5.2" width="10" height="1.6" fill="currentColor"/></svg></button>
+    <button class="winbtn close" title="关闭"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.6"/></svg></button>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="words" aria-selected="false">词表</button>
+    <button class="tab" role="tab" data-tab="cards" aria-selected="false">卡片</button>
+    <button class="tab" role="tab" data-tab="plans" aria-selected="true">策略</button>
+    <button class="tab" role="tab" data-tab="settings" aria-selected="false">设置</button>
+  </div>
+
+  <div class="body">
+    <div class="main" id="tabbody"></div>
+    <aside class="side" id="side"></aside>
+  </div>
+
+  <div class="bottom">
+    <span class="status" id="status">运行中 · 今日 2026-10-06 · 生效 2 条 / 上屏 2 张 · 主库 lexideck.json</span>
+    <button class="btn quiet" id="replay">重播动画</button>
+    <button class="btn primary" id="mainbtn">按今日展示</button>
+  </div>
+</div>
+
+<script>
+/* 预演数据：词与日期段取自项目里真实的示例主库；已结束那两条是补齐的样例，用来演示折叠区 */
+const PLANS = [
+  {word:"seek",    from:"2026-10-06", to:"2026-10-12", src:"示例词表 · Unit 1", hide:[],          why:"今天生效"},
+  {word:"abandon", from:"2026-10-06", to:"2026-10-12", src:"示例词表 · Unit 1", hide:[],          why:"今天生效"},
+  {word:"gain",    from:"2026-10-13", to:"2026-10-19", src:"示例词表 · Unit 1", hide:["例句"],    why:"下周一才开始"},
+  {word:"seek",    from:"2026-10-20", to:"2026-10-26", src:"Unit 2 复习",       hide:["备注","例句"], why:"十月下旬再轮一次"},
+  {word:"courage", from:"2026-09-22", to:"2026-09-28", src:"Unit 1 词汇",       hide:[],          why:"已结束"},
+  {word:"form",    from:"2026-09-29", to:"2026-10-05", src:"Unit 1 词汇",       hide:["备注"],    why:"已结束"}
+];
+const off = new Set();
+const open = new Set();
+let mode = "auto";          // auto = 按今日展示；manual = 手动画面上那几个词
+let fontScale = 0.70;
+
+const ell = (s,n)=> s.length>n ? s.slice(0,n-1)+"…" : s;
+const ic = {
+  plans:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="22" height="22"><rect x="3" y="5" width="18" height="16"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>',
+  cards:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="22" height="22"><rect x="3" y="4" width="14" height="16"/><path d="M20 7v13H7"/></svg>',
+  geo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" width="22" height="22"><path d="M12 4l8 6-3 10H7L4 10z"/><path d="M12 4v16"/></svg>',
+  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M6 9l6 6 6-6"/></svg>'
+};
+
+function planRow(p, i){
+  const isOff = off.has(i);
+  const isOpen = open.has(i);
+  return `<div class="row ${isOff?'off':''} ${isOpen?'open':''}" data-i="${i}">
+    <div class="r1">
+      <div class="l1">
+        <span class="word">${p.word}</span>
+        <span class="chip date">${p.from} → ${p.to}</span>
+        <span class="sp"></span>
+        <span class="swlab">${isOff?"已关闭":"出卡片"}</span>
+        <button class="sw" data-sw="${i}" aria-pressed="${isOff?false:true}" title="关掉这条策略的卡片（永久，直到在这里打开）"></button>
+        <button class="expand" data-open="${i}" aria-expanded="${isOpen}" title="展开看这条策略的细节">${ic.chev}</button>
+      </div>
+      <div class="l2">
+        <span class="chip src" title="来自哪份导入文件">${ell(p.src,16)}</span>
+        ${p.hide.length?`<span class="chip hide">这段隐藏 ${p.hide.join(" / ")}</span>`:""}
+      </div>
+    </div>
+    <div class="r2">
+      <div class="kv"><span class="k">来源文件</span><span>${p.src}（导入时记下，只作展示）</span></div>
+      <div class="kv"><span class="k">日期段</span><span>${p.from} → ${p.to}　·　${p.why}</span></div>
+      <div class="kv"><span class="k">这段隐藏</span><span>${p.hide.length?p.hide.join("、")+"（只在这段时间里生效，不改词条本身）":"无，按词条自己的显隐来"}</span></div>
+      <div class="kv"><span class="k">操作</span><span>${isOff?"这条已永久关闭，卡片不会出现在屏幕上":"点右侧开关可永久关闭这条策略的卡片"}</span></div>
+    </div>
+  </div>`;
+}
+function group(title, note, idxs){
+  if(!idxs.length) return "";
+  return `<div class="grp"><div class="gh"><h5>${title}</h5><span class="cnt">${idxs.length} 条</span>${note?`<span class="note">${note}</span>`:""}</div>
+  <div class="rows">${idxs.map(i=>planRow(PLANS[i],i)).join("")}</div></div>`;
+}
+
+function tabPlans(){
+  const now=[], future=[], past=[];
+  PLANS.forEach((p,i)=> (p.why==="已结束"?past:(p.from<="2026-10-06"?now:future)).push(i));
+  return `
+  <p class="h4">${ic.plans}展示策略</p>
+  <p class="lead">一条策略 = <b>一个词的一段展示时间</b>。关掉它，这个词在这段时间就不上屏，永久生效，直到你在这里重新打开。</p>
+  <div class="stats">
+    <div class="stat acc"><div class="k">今日生效</div><div class="v">${now.filter(i=>!off.has(i)).length}</div></div>
+    <div class="stat"><div class="k">今天上屏</div><div class="v">${mode==="auto"?now.filter(i=>!off.has(i)).length:1}</div></div>
+    <div class="stat ${off.size?"warn":""}"><div class="k">被永久关闭</div><div class="v">${off.size}</div></div>
+    <div class="stat"><div class="k">未来排期</div><div class="v">${future.length}</div></div>
+  </div>
+  ${group("正在生效","今天就在屏幕上",now)}
+  ${group("还没开始","按日期自动接上",future)}
+  <div class="grp"><div class="gh"><h5>已经结束</h5><span class="cnt">${past.length} 条</span></div>
+    <button class="btn" id="pastToggle" data-open-past="0">展示已经结束的展示策略 ${ic.chev}</button>
+    <div id="pastBox" style="display:none;margin-top:10px"><div class="rows">${past.map(i=>planRow(PLANS[i],i)).join("")}</div></div>
+  </div>`;
+}
+
+function tabCards(){
+  const now=PLANS.map((p,i)=>({p,i})).filter(x=>x.p.why!=="已结束"&&x.p.from<="2026-10-06");
+  return `
+  <p class="h4">${ic.cards}桌面卡片</p>
+  <p class="lead">屏幕上现在的内容。位置由平铺规则决定（右上角起、往下排、满列向左），放不下按顺序截断。</p>
+  <div class="stats">
+    <div class="stat acc"><div class="k">今日生效</div><div class="v">${now.length}</div></div>
+    <div class="stat"><div class="k">已上屏</div><div class="v">${mode==="auto"?now.length:1}</div></div>
+    <div class="stat"><div class="k">字号档位</div><div class="v">${fontScale.toFixed(2)}</div></div>
+  </div>
+  <div class="grp"><div class="gh"><h5>屏幕上的卡片</h5><span class="cnt">顺序 = 上屏顺序</span><span class="note">截断时先来先上</span></div>
+    <div class="rows">
+      ${(mode==="auto"?now:[now[1]]).map((x,k)=>`<div class="cardrow">
+        <span class="pos">${k+1}</span>
+        <span class="word">${x.p.word}</span>
+        <span class="chip">${x.p.from} → ${x.p.to}</span>
+        <span class="chip src">${ell(x.p.src,14)}</span>
+        <span class="sp" style="flex:1"></span>
+        <span class="chip">${x.p.hide.length?"隐藏 "+x.p.hide.join("/"):"完整"}</span>
+      </div>`).join("")}
+    </div>
+  </div>
+  <div class="grp"><div class="gh"><h5>屏幕内容从哪来</h5></div>
+    <div class="mode" role="group" aria-label="内容来源">
+      <button data-mode="auto" aria-pressed="${mode==="auto"}">按今日展示</button>
+      <button data-mode="manual" aria-pressed="${mode==="manual"}">手动展示</button>
+    </div>
+    <p class="mini" style="margin-top:10px">${mode==="auto"
+      ? "自动：按今天的策略上屏，跨过零点自动换下一批；今天没有排期就是空白屏幕。"
+      : "手动：只显示你在「词表」里勾选的那几个词（调试用）；想回到自动就点「按今日展示」。"}</p>
+  </div>
+  <div class="grp"><div class="gh"><h5>字号</h5><span class="note">全局一个档位，所有卡片一起变</span></div>
+    <div class="fontstep"><button class="btn" data-font="-1">A−</button><span class="box">${fontScale.toFixed(2)}</span><button class="btn" data-font="1">A＋</button>
+    <button class="btn quiet" data-font="0">复位 0.70</button></div>
+  </div>`;
+}
+
+function tabSettings(){
+  return `
+  <p class="h4">${ic.geo}设置</p>
+  <p class="lead">面板与卡片共用主题；设置自动存到 exe 旁的「设置.txt」，策略的开关存在「状态.json」。</p>
+  <div class="grp"><div class="gh"><h5>卡片层级</h5><span class="note">其他课的 PPT 不能被挡住，所以默认置底</span></div>
+    <div class="choice">
+      <button class="opt" data-layer="bottom" aria-pressed="true">
+        <span class="ot">置底（默认）</span>
+        <span class="od">卡片贴在桌面最底层，任何窗口都会盖住它。<br>代价：<b>全屏放 PPT 时卡片看不见</b>，只在课间/桌面状态看得到。</span>
+      </button>
+      <button class="opt" data-layer="top" aria-pressed="false">
+        <span class="ot">置顶 ＋ 鼠标穿透</span>
+        <span class="od">卡片始终在最上层，点击全部穿过去落到 PPT 上。<br>代价：卡片会压在 PPT 右侧，视觉上占用版面。</span>
+      </button>
+    </div>
+    <div class="callout">穿透是<b>整个窗口</b>粒度的：开启后卡片收不到任何鼠标事件，恢复通道只有这个面板 —— 面板里提供「关闭穿透」和「隐藏全部卡片」。</div>
+  </div>
+  <div class="grp"><div class="gh"><h5>主题</h5><span class="note">只换配色，不动版式（版式一变，教室可读性要重测）</span></div>
+    <div class="thumb">
+      <button class="th" data-th="plain" aria-pressed="true" title="纯白"><i style="background:#F4F5F6"></i><u style="background:#668D82"></u></button>
+      <button class="th" data-th="wuling" aria-pressed="false" title="浅青"><i style="background:#E9F2F0"></i><u style="background:#668D82"></u></button>
+      <button class="th" data-th="yellow" aria-pressed="false" title="黄黑"><i style="background:#0B0B0D"></i><u style="background:#F5D01A"></u></button>
+    </div>
+  </div>
+  <hr class="sep">
+  <div class="settline"><div class="sl"><div class="st">关闭面板窗口</div><div class="sd">P2 阶段：关闭 = 退出程序</div></div><span class="pill">托盘在 P3</span></div>
+  <div class="settline"><div class="sl"><div class="st">开机自启动</div><div class="sd">写当前用户的启动项，免管理员</div></div><span class="pill">P3</span></div>
+  <div class="settline"><div class="sl"><div class="st">单实例</div><div class="sd">第二次启动不再开新窗口，把已有窗口唤到前台</div></div><span class="pill">P3</span></div>
+  <div class="settline"><div class="sl"><div class="st">关于</div><div class="sd">Lexideck · 慕言　·　github.com/FanHuaWuYang/Lexideck</div></div></div>`;
+}
+
+function tabWords(){
+  const words=[["abandon","v. 抛弃；放弃；遗弃　n. 放纵；放任"],["gain","v. 获得；增加；受益"],["Good habits are hard to form.","好习惯难于养成。你总是日积月累。"],["seek","v. 寻找；寻求；试图"]];
+  return `
+  <p class="h4">${ic.plans}词库：lexideck.json</p>
+  <div class="kv" style="margin:10px 0 0"><span class="k">词条总览</span><span>4 个词条 · 3 条展示时间 · 导入后自动生效</span></div>
+  <div class="grp"><div class="gh"><h5>词表</h5><span class="cnt">${words.length} 条</span><span class="note">点行展开看全部内容</span></div>
+    <div class="rows">
+      ${words.map(w=>`<div class="row"><div class="r1">
+        <span class="word">${w[0]}</span><span class="chip" style="border:0;padding:0;color:var(--txt3)">${w[1]}</span>
+        <span class="sp"></span><button class="expand">${ic.chev}</button></div></div>`).join("")}
+    </div>
+  </div>
+  <p class="mini" style="margin-top:14px">面板里不提供改词条内容的功能 —— 改内容请改 JSON 再导入；格式不对的文件会被整份拒绝，主库不受影响。</p>`;
+}
+
+const SIDE = {
+  plans:["怎么理解这一页","一条策略 = 一个词的一段展示时间。<br>同一个词可以有好几段（比如第 5 周再轮一次），每段各自开关。","关掉会怎样","关掉就是永久的：屏幕上不再出现这个词这段时间的卡片，第二天也不会自己恢复，必须在这里手动打开。","关掉是不是删了内容","不是。词条和日期段都还在主库里，只是这段时间不上屏。"],
+  cards:["屏幕内容从哪来","两种来源：按今日展示（自动）／手动展示（调试用）。启动时默认按今日展示。","截断规则","放不下就按顺序截断：先排的先上屏，后面的不显示，面板会把「生效 N 个 / 已显示 M 个」写清楚。","为什么卡片不能拖","位置完全由排列规则决定，教室机器上被拖乱就没人能还原。"],
+  settings:["为什么默认置底","其他课上 PPT 不能被卡片遮挡，所以默认藏在最底层；需要常显就切「置顶 + 穿透」。","穿透的风险","开启后卡片点不到，只能从这个面板恢复。所以面板本身永远是正常可交互的。","设置都写在哪","主库 lexideck.json、设置 设置.txt、策略开关 状态.json —— 全在 exe 同目录，整个文件夹拷走就带走全部状态。"]
+};
+function sideFor(tab){
+  const d=SIDE[tab]||[];
+  let h="";
+  for(let i=0;i<d.length;i+=2) h+=`<p class="h4" style="font-size:13.5px">${d[i]}</p><p class="mini" style="margin:0 0 16px">${d[i+1]}</p>`;
+  return h;
+}
+const TAB={words:tabWords,cards:tabCards,plans:tabPlans,settings:tabSettings};
+let tab="plans";
+function render(){
+  document.getElementById("tabbody").innerHTML = TAB[tab]();
+  document.getElementById("side").innerHTML = sideFor(tab);
+  const b=document.getElementById("mainbtn");
+  b.disabled = false;
+  b.textContent = tab==="settings" ? "保存设置" : "按今日展示";
+  b.classList.toggle("primary", true);
+  b.dataset.act = tab==="settings" ? "save" : "auto";
+}
+
+/* —— 交互 —— */
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  tab=t.dataset.tab;
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected", String(x===t)));
+  render();
+}));
+document.getElementById("tabbody").addEventListener("click",e=>{
+  const sw=e.target.closest("[data-sw]");
+  if(sw){ const i=+sw.dataset.sw; off.has(i)?off.delete(i):off.add(i);
+    setStatus(off.has(i)?`已永久关闭：${PLANS[i].word}  ${PLANS[i].from} → ${PLANS[i].to}`:`已重新打开：${PLANS[i].word}`);
+    render(); return; }
+  const ex=e.target.closest("[data-open]");
+  if(ex){ const i=+ex.dataset.open; open.has(i)?open.delete(i):open.add(i); render(); return; }
+  const pt=e.target.closest("[data-open-past]");
+  if(pt){ const box=document.getElementById("pastBox"); const on=box.style.display==="none";
+    box.style.display=on?"block":"none"; pt.setAttribute("data-open-past",on?"1":"0"); return; }
+  const m=e.target.closest("[data-mode]");
+  if(m){ mode=m.dataset.mode; setStatus(mode==="auto"?"已切回按今日展示":"已切到手动展示（只显示勾选的词）"); render(); return; }
+  const f=e.target.closest("[data-font]");
+  if(f){ const d=+f.dataset.font;
+    fontScale = d===0?0.70:Math.min(1.4,Math.max(0.5,+(fontScale+d*0.05).toFixed(2)));
+    setStatus(`字号档位 ${fontScale.toFixed(2)}（所有卡片一起变）`); render(); return; }
+  const L=e.target.closest("[data-layer]");
+  if(L){ document.querySelectorAll("[data-layer]").forEach(o=>o.setAttribute("aria-pressed",String(o===L)));
+    setStatus(L.dataset.layer==="bottom"?"卡片层级：置底（PPT 会盖住卡片）":"卡片层级：置顶 + 鼠标穿透（点击全部穿透到 PPT）"); return; }
+  const T=e.target.closest("[data-th]");
+  if(T){ document.querySelectorAll("[data-th]").forEach(o=>o.setAttribute("aria-pressed",String(o===T)));
+    document.body.dataset.skin=T.dataset.th;
+    document.querySelectorAll("[data-skin-btn]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.skinBtn===T.dataset.th))); return; }
+});
+document.querySelectorAll("[data-skin-btn]").forEach(b=>b.addEventListener("click",()=>{
+  document.body.dataset.skin=b.dataset.skinBtn;
+  document.querySelectorAll("[data-skin-btn]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  document.querySelectorAll("[data-th]").forEach(x=>x.setAttribute("aria-pressed",String(x.dataset.th===b.dataset.skinBtn)));
+}));
+document.querySelectorAll("[data-width]").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("[data-width]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+  document.getElementById("panel").style.width=b.dataset.width+"px";
+  document.getElementById("panel").dataset.narrow = b.dataset.width<900 ? "1":"0";
+}));
+document.getElementById("replay").addEventListener("click",()=>setStatus("已让屏幕上每张卡片重播入场动画（错峰 0.2 秒）"));
+document.getElementById("mainbtn").addEventListener("click",()=>{
+  if(document.getElementById("mainbtn").dataset.act==="save"){ setStatus("设置已保存到 exe 旁的「设置.txt」（改完即时生效）"); return; }
+  mode="auto"; setStatus("已切回按今日展示：现在按今天的策略上屏"); render();
+});
+function setStatus(t){ document.getElementById("status").textContent=t; }
+render();
+</script>
+</body>
+</html>

@@ -15,6 +15,7 @@ mod float;
 mod icons;
 mod import;
 mod library;
+mod schedule;
 mod theme;
 mod util;
 mod window;
