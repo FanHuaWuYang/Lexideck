@@ -12,6 +12,7 @@
 
 - 设计与调研记录：`Obsidian/Novawiki/concepts/教室单词悬浮窗-设计记录.md`
 - 技术路线调研报告：`Nova/07_报告/reports/教室一体机英语单词悬浮窗-技术路线调研-2026.09.17.md`
+- 最早的一句话想法：`IDEA.md`
 - 产品目标与形态（要做什么）：`AGENT.md`
 - 开发规范（分支 / 提交 / 发布）：`CONTRIBUTING.md` · 版本变化：`CHANGELOG.md`
 - 上传 GitHub 的操作步骤：`docs/GitHub上传步骤.md`
