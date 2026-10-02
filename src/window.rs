@@ -8,6 +8,56 @@ use egui::viewport::{ViewportBuilder, WindowLevel};
 use crate::config::Config;
 use crate::menu;
 
+/// 任务栏显隐：`WS_EX_TOOLWINDOW`（不进任务栏 / 不进 Alt+Tab）
+/// 与 `WS_EX_APPWINDOW`（强制进任务栏）这两位，数值和 Win32 一致。
+const WS_EX_TOOLWINDOW_BIT: isize = 0x0000_0080;
+const WS_EX_APPWINDOW_BIT: isize = 0x0004_0000;
+
+/// 按「要不要露在任务栏」算出新的扩展样式位（纯函数；两个标记互斥，单测覆盖）。
+pub fn ex_style_for_taskbar(ex: isize, visible: bool) -> isize {
+    if visible {
+        (ex & !WS_EX_TOOLWINDOW_BIT) | WS_EX_APPWINDOW_BIT
+    } else {
+        (ex | WS_EX_TOOLWINDOW_BIT) & !WS_EX_APPWINDOW_BIT
+    }
+}
+
+/// 让面板窗口从任务栏（以及 Alt+Tab 列表）里消失 / 回来。
+///
+/// 为什么需要：egui 0.36 的 `with_taskbar` **只在建窗口时生效**，`ViewportCommand`
+/// 里没有对应变体（查过 0.36.2 的全部变体），而「收进托盘」是把面板挪到屏幕外 ——
+/// 窗口仍是「可见」态，任务栏按钮会一直留着（用户实测报的就是这个）。
+/// 这里直接改扩展样式：不显示 = 置 `WS_EX_TOOLWINDOW` 并清 `WS_EX_APPWINDOW`，
+/// 显示 = 反过来。改完必须发一次 `SWP_FRAMECHANGED`，否则按钮会赖着不走。
+/// hwnd = 0（拿不到句柄）时静默跳过：少一道效果，不影响别的功能。
+pub fn set_taskbar_visible(hwnd: isize, visible: bool) {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        GetWindowLongPtrW, SetWindowLongPtrW, SetWindowPos, GWL_EXSTYLE, SWP_FRAMECHANGED,
+        SWP_NOACTIVATE, SWP_NOMOVE, SWP_NOSIZE, SWP_NOZORDER,
+    };
+    if hwnd == 0 {
+        return;
+    }
+    unsafe {
+        let h = hwnd as windows_sys::Win32::Foundation::HWND;
+        let ex = GetWindowLongPtrW(h, GWL_EXSTYLE);
+        let new = ex_style_for_taskbar(ex, visible);
+        if new == ex {
+            return; // 已经是对的状态，别白折腾（每次显示都改会让任务栏闪）
+        }
+        SetWindowLongPtrW(h, GWL_EXSTYLE, new);
+        SetWindowPos(
+            h,
+            std::ptr::null_mut(),
+            0,
+            0,
+            0,
+            0,
+            SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
+        );
+    }
+}
+
 /// 主窗口（控制面板）—— 可缩放，触摸屏也能拉；最小尺寸保证四板块都排得下
 pub fn main_options(cfg: &Config) -> eframe::NativeOptions {
     let mut opts = eframe::NativeOptions {
@@ -68,4 +118,35 @@ pub fn menu_viewport(pos: egui::Pos2) -> ViewportBuilder {
         .with_resizable(false)
         .with_taskbar(false)
         .with_position(pos)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// 收进托盘 = 摘掉 APPWINDOW、置上 TOOLWINDOW；唤回 = 反过来；其它位一个都不许动。
+    #[test]
+    fn taskbar_style_bits() {
+        // 实测的面板扩展样式：APPWINDOW | WINDOWEDGE | ACCEPTFILES
+        let base = 0x0004_0110isize;
+        let hidden = ex_style_for_taskbar(base, false);
+        assert_eq!(hidden & WS_EX_APPWINDOW_BIT, 0, "收进托盘要摘掉 APPWINDOW");
+        assert_eq!(
+            hidden & WS_EX_TOOLWINDOW_BIT,
+            WS_EX_TOOLWINDOW_BIT,
+            "收进托盘要置上 TOOLWINDOW"
+        );
+        assert_eq!(
+            hidden & !(WS_EX_TOOLWINDOW_BIT | WS_EX_APPWINDOW_BIT),
+            base & !WS_EX_APPWINDOW_BIT,
+            "除这两位外，其它样式位不许变"
+        );
+
+        let shown = ex_style_for_taskbar(hidden, true);
+        assert_eq!(shown, base, "一来一回要回到原样（否则唤回后样式越改越乱）");
+
+        // 幂等：状态已经对了就别再改（每帧都 SetWindowPos 会让任务栏闪）
+        assert_eq!(ex_style_for_taskbar(hidden, false), hidden);
+        assert_eq!(ex_style_for_taskbar(shown, true), shown);
+    }
 }

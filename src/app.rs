@@ -146,6 +146,9 @@ pub struct LexideckApp {
     panel_visible: bool,
     /// 收进托盘前的位置（窗口被挪到屏幕外；唤回时放回去）
     panel_home: Option<egui::Pos2>,
+    /// 面板窗口的原生句柄（每帧从 `eframe::Frame` 取一次；0 = 还没拿到）。
+    /// 收进托盘时要用它摘掉任务栏按钮（见 window::set_taskbar_visible）。
+    panel_hwnd: isize,
     /// 明确退出（面板退出按钮 / 托盘菜单「退出」）：绕过关闭拦截，不再 CancelClose
     exiting: bool,
     // ── 托盘右键菜单（P3a，自绘；见 menu.rs）──
@@ -212,6 +215,7 @@ impl LexideckApp {
             panel_visible: true,
             panel_home: None,
             exiting: false,
+            panel_hwnd: 0,
             menu_open: false,
             menu_pos: None,
             menu_need_focus: false,
@@ -841,12 +845,18 @@ impl LexideckApp {
             self.panel_home = ctx.input(|i| i.viewport().outer_rect).map(|r| r.min);
         }
         ctx.send_viewport_cmd(ViewportCommand::OuterPosition(Self::PARK_POS));
+        // 只挪屏外不够：窗口还是「可见」态，任务栏按钮会一直留着（用户实测报过）。
+        // 摘掉 WS_EX_APPWINDOW、置成 WS_EX_TOOLWINDOW —— 任务栏和 Alt+Tab 里都不再出现，
+        // 但窗口本身仍是「可见」的，所有帧走正常路径（新建浮窗不会踩 eframe 那条旁路）。
+        window::set_taskbar_visible(self.panel_hwnd, false);
         self.panel_visible = false;
     }
 
     /// 把面板放回屏幕里并拿到前台。三处共用：托盘图标 / 托盘菜单 / 第二次启动（单实例唤回）。
     /// 收进托盘时窗口被挪到了屏幕外，所以唤回必须显式放回原位。
     fn show_panel(&mut self, ctx: &egui::Context) {
+        // 先把任务栏按钮还回来（收进托盘时摘掉了）
+        window::set_taskbar_visible(self.panel_hwnd, true);
         ctx.send_viewport_cmd(ViewportCommand::Visible(true));
         // 用记住的屏（此刻还没翻回可见，实时值会是屏外那个「最近的屏」）
         let ms = self.monitor_size(ctx);
@@ -882,7 +892,7 @@ impl LexideckApp {
         if self.use_tray() {
             ctx.send_viewport_cmd(ViewportCommand::CancelClose);
             self.hide_panel(ctx);
-            self.status = Some("已收进托盘（托盘图标右键可以唤回来）".into());
+            self.status = Some("已收进托盘（图标在右下角 ^ 折叠区，右键唤回）".into());
             return;
         }
         // 直接退出（或托盘不可用时的退化路径）：沿用已有的 5 秒二次确认
@@ -906,8 +916,10 @@ impl LexideckApp {
                 Ok(t) => {
                     self.tray = Some(t);
                     // 一次性确认：截图/用户都能看到"托盘建好了"（P3a 新功能，给个明确反馈）
-                    self.status =
-                        Some("托盘图标已就绪：关掉面板＝收进托盘（可在设置里改成直接退出）".into());
+                    self.status = Some(
+                        "托盘图标已就绪：关掉面板＝收进托盘（图标在右下角 ^ 折叠区，可拖出来常驻）"
+                            .into(),
+                    );
                 }
                 Err(e) => {
                     self.status = Some(format!(
@@ -941,7 +953,7 @@ impl LexideckApp {
             tray::TrayAction::TogglePanel => {
                 if self.panel_visible {
                     self.hide_panel(ctx);
-                    self.status = Some("面板已收进托盘（托盘图标可以唤回来）".into());
+                    self.status = Some("面板已收进托盘（图标在右下角 ^ 折叠区，右键唤回）".into());
                 } else {
                     self.show_panel(ctx);
                     self.status = Some("面板已唤回".into());
@@ -1126,7 +1138,7 @@ impl LexideckApp {
             if self.use_tray() {
                 // 托盘模式：面板的 ✕ 首击 = 收进托盘（不进入退出确认）
                 self.hide_panel(ctx);
-                self.status = Some("已收进托盘（托盘图标右键可以唤回来）".into());
+                self.status = Some("已收进托盘（图标在右下角 ^ 折叠区，右键唤回）".into());
             } else {
                 self.confirm_exit = true;
             }
@@ -1149,7 +1161,7 @@ impl LexideckApp {
             config::save(&config::settings_path(), &self.cfg);
             self.status = Some(match a {
                 CloseAction::Tray => {
-                    "关闭窗口时：驻留托盘（点 ✕ 收进托盘，托盘图标可以唤回来）".into()
+                    "关闭窗口时：驻留托盘（点 ✕ 收进托盘；图标在右下角 ^ 折叠区）".into()
                 }
                 CloseAction::Exit => "关闭窗口时：直接退出（5 秒内点两次 ✕ 才会退）".into(),
             });
@@ -1314,6 +1326,8 @@ impl eframe::App for LexideckApp {
             return;
         }
         fps_tick(&ctx, "root");
+        // 面板句柄每帧记一次：收进托盘时要靠它摘任务栏按钮（见 hide_panel）
+        self.panel_hwnd = panel_hwnd(frame);
 
         // P3a：托盘懒创建 + 收事件；关闭拦截必须在 place_once 之前
         // （CancelClose 必须和 close_requested 同帧发出，eframe 只认那一帧）
