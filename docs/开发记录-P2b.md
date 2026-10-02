@@ -138,3 +138,29 @@
 - 「重播动画」只抓到一帧中间态，没有逐帧确认时长与错峰是否符合预期。
 - 层级切到「置顶」时，**真的把 PPT 全屏盖住**这件事没在 PPT 上跑（用 ex 样式的 topmost/transparent 佐证）。
 - 策略条数很多（>8）时的滚动与分段标题黏性没有专门验。
+
+## 9 层级与穿透解耦（2026-10-02 慕言要求）
+
+原设计（`Lexideck.md` §5.2 / 设计原稿）把两者绑成两档：「置底」= 不穿透，「置顶」= 必然穿透
+（理由是置顶会挡 PPT，所以必须穿透）。慕言用下来要求拆开：**层级和穿透各自独立，四种组合都能选**
+——「置顶但不穿透」适合想点卡片的场合，「置底且穿透」适合把卡片当壁纸用。
+
+改法：
+
+- `config.rs` 本来就是两个字段（`layer` / `passthrough`）→ 存储格式不用改、不需要迁移，
+  老设置文件照旧能读（`always_on_top` 那条老键的迁移逻辑保留）。
+- 设置页原来是一组「二选一整卡」，现在拆成两组各二选一：「卡片层级」（置底／置顶）与
+  「鼠标穿透」（不穿透／穿透）。`layer_pair()`（把两者绑在一起的映射）删掉，换成
+  `set_level()` / `set_passthrough()` 两个只动自己那个字段的函数。
+- `ControlResult.top_changed` 改名 `style_changed`（层级或穿透变了 → app 给所有浮窗重发
+  `WindowLevel` + `MousePassthrough`）。
+- 层级 → `WindowLevel` 的映射从 app 里两处重复的 `match` 收成 `window::level_of()`（可单测）。
+- 浮窗创建路径本来就分别接收两者（`window::float_viewport(id, pos, level, pt, size)`），没动。
+
+测试：`level_and_passthrough_are_independent`（切谁都不许动另一个）、
+`float_viewport_carries_level_and_passthrough_independently`（四种组合都原样传给 builder，
+且悬浮窗永远不进任务栏）、`level_mapping`。设置页那个按坐标扫点击的用例把画布加高到 1800px
+（多了一组控件，内容变长）。
+
+顺带修：`single.rs` 的单实例名在 `cfg(test)` 下换成 `.test` 后缀 —— 否则用户开着 app 时
+`cargo test` 会被真实实例占着命名对象、`wake_round_trip` 假红（实测过）。

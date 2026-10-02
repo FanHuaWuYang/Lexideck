@@ -15,10 +15,20 @@ use std::sync::Arc;
 
 use eframe::egui;
 
-/// 互斥体名：拿到 = 本进程是第一个实例
+/// 互斥体名：拿到 = 本进程是第一个实例。
+///
+/// 测试里换一套名字：`cargo test` 不该被**正在运行的 app** 影响 —— 用户开着 app 时，
+/// 真实的命名互斥体/事件被它占着，单实例用例会假红（真机验过）。机制本身一样，只是名字不同。
+#[cfg(not(test))]
 pub const MUTEX_NAME: &str = "Local\\Lexideck.SingleInstance";
+#[cfg(test)]
+pub const MUTEX_NAME: &str = "Local\\Lexideck.SingleInstance.test";
+
 /// 唤回事件名：第二个实例敲它，已有实例收到就把窗口拿到前台
+#[cfg(not(test))]
 pub const WAKE_NAME: &str = "Local\\Lexideck.Wake";
+#[cfg(test)]
+pub const WAKE_NAME: &str = "Local\\Lexideck.Wake.test";
 
 /// 进程级的句柄（拿住不放：互斥体一关就等于「退出了」；事件句柄等待线程一直在用）。
 /// 0 = 还没有。

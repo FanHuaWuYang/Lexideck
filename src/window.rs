@@ -5,7 +5,7 @@
 use eframe::egui;
 use egui::viewport::{ViewportBuilder, WindowLevel};
 
-use crate::config::Config;
+use crate::config::{Config, Layer};
 use crate::menu;
 
 /// 任务栏显隐：`WS_EX_TOOLWINDOW`（不进任务栏 / 不进 Alt+Tab）
@@ -75,6 +75,15 @@ pub fn main_options(cfg: &Config) -> eframe::NativeOptions {
     opts
 }
 
+/// 卡片层级 → 窗口层级。app 里两处要用（建浮窗、改层级时给已有浮窗重发命令），
+/// 拎出来是为了能单测：层级和穿透是两件事，谁都不许影响谁。
+pub fn level_of(layer: Layer) -> WindowLevel {
+    match layer {
+        Layer::Top => WindowLevel::AlwaysOnTop,
+        Layer::Bottom => WindowLevel::AlwaysOnBottom,
+    }
+}
+
 /// 悬浮窗 viewport（尺寸由词卡内容决定，创建后程序会自动微调）
 ///
 /// `level` = 卡片层级（置底 / 置顶）；`passthrough` = 鼠标穿透（设计 §5.2）。
@@ -123,6 +132,34 @@ pub fn menu_viewport(pos: egui::Pos2) -> ViewportBuilder {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// 层级与穿透**各自独立**地传进 viewport builder —— 四种组合都必须能表达
+    /// （旧实现只允许「置底不穿透」和「置顶+穿透」两档）。
+    #[test]
+    fn float_viewport_carries_level_and_passthrough_independently() {
+        for (level, pt) in [
+            (WindowLevel::AlwaysOnTop, true),
+            (WindowLevel::AlwaysOnTop, false),
+            (WindowLevel::AlwaysOnBottom, false),
+            (WindowLevel::AlwaysOnBottom, true),
+        ] {
+            let b = float_viewport(1, None, level, pt, egui::vec2(100.0, 50.0));
+            assert_eq!(b.window_level, Some(level), "层级要原样传下去");
+            assert_eq!(
+                b.mouse_passthrough,
+                Some(pt),
+                "穿透要原样传下去，不许被层级带跑"
+            );
+            assert_eq!(b.taskbar, Some(false), "悬浮窗永远不进任务栏");
+        }
+    }
+
+    /// 层级两档的映射（默认置底）
+    #[test]
+    fn level_mapping() {
+        assert_eq!(level_of(Layer::Top), WindowLevel::AlwaysOnTop);
+        assert_eq!(level_of(Layer::Bottom), WindowLevel::AlwaysOnBottom);
+    }
 
     /// 收进托盘 = 摘掉 APPWINDOW、置上 TOOLWINDOW；唤回 = 反过来；其它位一个都不许动。
     #[test]

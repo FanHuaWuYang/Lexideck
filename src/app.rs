@@ -8,7 +8,7 @@ use std::time::{Duration, Instant, SystemTime};
 
 use eframe::egui::{
     self,
-    viewport::{ViewportCommand, ViewportId, WindowLevel},
+    viewport::{ViewportCommand, ViewportId},
 };
 
 use crate::anim::Anim;
@@ -710,11 +710,8 @@ impl LexideckApp {
     /// 逐帧声明所有悬浮窗 viewport（含排版计划重建）
     fn draw_floats(&mut self, ctx: &egui::Context, th: &Theme) {
         let scale = self.cfg.font_scale * self.screen_scale(ctx);
-        // 层级两档（设计 §5.2）：置底 = AlwaysOnBottom（默认），置顶 = AlwaysOnTop
-        let level = match self.cfg.layer {
-            config::Layer::Top => WindowLevel::AlwaysOnTop,
-            config::Layer::Bottom => WindowLevel::AlwaysOnBottom,
-        };
+        // 层级与穿透各管各的（两者独立，四种组合都可能）
+        let level = window::level_of(self.cfg.layer);
         let passthrough = self.cfg.passthrough;
         let theme_kind = th.kind;
 
@@ -892,7 +889,8 @@ impl LexideckApp {
         if self.use_tray() {
             ctx.send_viewport_cmd(ViewportCommand::CancelClose);
             self.hide_panel(ctx);
-            self.status = Some("已收进托盘（图标在右下角 ^ 折叠区，右键唤回）".into());
+            self.status =
+                Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
             return;
         }
         // 直接退出（或托盘不可用时的退化路径）：沿用已有的 5 秒二次确认
@@ -953,7 +951,10 @@ impl LexideckApp {
             tray::TrayAction::TogglePanel => {
                 if self.panel_visible {
                     self.hide_panel(ctx);
-                    self.status = Some("面板已收进托盘（图标在右下角 ^ 折叠区，右键唤回）".into());
+                    self.status = Some(
+                        "面板已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）"
+                            .into(),
+                    );
                 } else {
                     self.show_panel(ctx);
                     self.status = Some("面板已唤回".into());
@@ -1027,18 +1028,22 @@ impl LexideckApp {
     // ── 意图处理 ──
 
     fn handle_control(&mut self, ctx: &egui::Context, res: control::ControlResult) {
-        if res.top_changed {
-            let lvl = match self.cfg.layer {
-                config::Layer::Top => WindowLevel::AlwaysOnTop,
-                config::Layer::Bottom => WindowLevel::AlwaysOnBottom,
-            };
-            // 层级与穿透是两件事，两个都要发全
+        if res.style_changed {
+            let lvl = window::level_of(self.cfg.layer);
+            // 层级与穿透是两件事，两个都要发全（两者独立，四种组合都可能）
             let pt = self.cfg.passthrough;
             for f in &self.floats {
                 let vid = ViewportId::from_hash_of(("lexideck-float", f.id));
                 ctx.send_viewport_cmd_to(vid, ViewportCommand::WindowLevel(lvl));
                 ctx.send_viewport_cmd_to(vid, ViewportCommand::MousePassthrough(pt));
             }
+        }
+        if res.open_taskbar_settings {
+            open_taskbar_settings();
+            self.status = Some(
+                "已打开「任务栏」设置：把 Lexideck 从「其他系统托盘图标」里打开，图标就常驻了"
+                    .into(),
+            );
         }
         if res.reload {
             self.reload_library(); // 里面已经 prune_state
@@ -1138,7 +1143,8 @@ impl LexideckApp {
             if self.use_tray() {
                 // 托盘模式：面板的 ✕ 首击 = 收进托盘（不进入退出确认）
                 self.hide_panel(ctx);
-                self.status = Some("已收进托盘（图标在右下角 ^ 折叠区，右键唤回）".into());
+                self.status =
+                    Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
             } else {
                 self.confirm_exit = true;
             }
@@ -1453,6 +1459,17 @@ impl eframe::App for LexideckApp {
 }
 
 // ── 帧率探针（诊断用） ──
+
+/// 打开 Windows 的「任务栏」设置页。
+///
+/// 用在哪：Windows 11 默认把新托盘图标收进右下角的 `^` 折叠区，**应用自己抢不到常驻位**
+/// （只能由用户在设置里打开）—— 面板里给一个直达入口，省得用户找不到唤回面板的图标。
+/// 目标页是「设置 → 个性化 → 任务栏」，里面就有「其他系统托盘图标」。
+fn open_taskbar_settings() {
+    let _ = std::process::Command::new("cmd")
+        .args(["/C", "start", "", "ms-settings:taskbar"])
+        .spawn();
+}
 
 /// 面板窗口句柄（托盘唤醒要用，见 tray.rs 文件头）。拿不到就回 0 ——
 /// 只是少一道唤醒保险，其它功能不受影响。
