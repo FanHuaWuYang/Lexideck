@@ -897,4 +897,41 @@ mod tests {
         let (d, _) = load_file(&p).unwrap();
         assert_eq!(d.words[0].hide.len(), 2);
     }
+
+    /// `skill-词表生成.md` 里每个 ```json 代码块都必须过得了 `parse_file`
+    /// —— 文档里的示例一旦和校验器脱钩（字段改名、结构变了），这条会先炸。
+    /// 裸词条示例（只有 word/senses 那种）自动包一层文件壳再试。
+    #[test]
+    fn skill_doc_examples_all_parse() {
+        let doc = include_str!("../skill-词表生成.md");
+        let mut blocks: Vec<String> = Vec::new();
+        let mut cur: Option<String> = None;
+        for line in doc.lines() {
+            let t = line.trim();
+            if cur.is_none() {
+                if t == "```json" {
+                    cur = Some(String::new());
+                }
+            } else if t == "```" {
+                blocks.push(cur.take().unwrap());
+            } else if let Some(b) = cur.as_mut() {
+                b.push_str(line);
+                b.push('\n');
+            }
+        }
+        assert!(
+            blocks.len() >= 5,
+            "从文档里只抓到 {} 个 json 块，抽取逻辑可能坏了",
+            blocks.len()
+        );
+        for (i, b) in blocks.iter().enumerate() {
+            if parse_file(b).is_ok() {
+                continue;
+            }
+            let wrapped = format!("{{\"version\":1,\"words\":[{b}]}}");
+            if let Err(e) = parse_file(&wrapped) {
+                panic!("文档第 {} 个 json 块过不了校验：{e:?}", i + 1);
+            }
+        }
+    }
 }
