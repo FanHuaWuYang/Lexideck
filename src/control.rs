@@ -8,7 +8,8 @@ use eframe::egui::{self, Align2, Color32, CornerRadius, FontId, RichText, Stroke
 
 use std::collections::HashSet;
 
-use crate::config::{Config, Layer};
+use crate::autostart;
+use crate::config::{CloseAction, Config, Layer};
 use crate::deck::{self, Range};
 use crate::schedule::RangeState;
 use crate::theme::ThemeKind;
@@ -177,6 +178,10 @@ pub struct PanelState {
     pub plans_open: HashSet<String>,
     /// 策略页「已经结束」那段是否展开（默认收起）
     pub past_open: bool,
+    /// 设置页「开机自启动」的现状（`None` = 还没查过 / 该重查）。
+    /// 状态以**注册表**为准，所以：离开设置页就丢掉缓存（见 draw），
+    /// 拨过开关也丢掉缓存 —— 下一帧现读一次。
+    pub autostart: Option<autostart::State>,
 }
 
 impl Default for PanelState {
@@ -187,6 +192,7 @@ impl Default for PanelState {
             filter: WordFilter::All,
             plans_open: HashSet::new(),
             past_open: false,
+            autostart: None,
         }
     }
 }
@@ -224,6 +230,13 @@ pub struct ControlResult {
     pub toggle_off: Option<(String, Range)>,
     /// 屏幕内容来源：Some(true) = 按今日展示，Some(false) = 手动展示
     pub set_screen_auto: Option<bool>,
+    /// 关闭窗口时：Some(档位) = 用户在设置页换了档（app 侧更新 cfg + 存盘 + 反馈）
+    pub set_close_action: Option<CloseAction>,
+    /// 开机自启动（P3b）：Some(true/false) = 用户拨了开关。
+    /// 真假由 app 去读写注册表决定成败，面板下一帧重新读注册表显示结果。
+    pub set_autostart: Option<bool>,
+    /// 设置页「退出 Lexideck」按钮：明确退出（不走二次确认，绕过托盘关闭拦截）
+    pub quit_now: bool,
     /// 面板产生的一句反馈，交给 app 显示在底栏
     pub status_msg: Option<String>,
     pub replay_anim: bool,
@@ -330,6 +343,10 @@ pub fn draw(
 ) -> ControlResult {
     set_skin(ThemeKind::parse(&cfg.theme));
     let mut r = ControlResult::default();
+    // 离开设置页就丢掉「开机自启动」的缓存：下次进设置页现读一次注册表（状态以注册表为准）
+    if panel.tab != PanelTab::Settings {
+        panel.autostart = None;
+    }
     let full = ui.max_rect();
     ui.painter().rect_filled(full, 0.0, sk().bg);
 
@@ -463,7 +480,7 @@ pub fn draw(
             PanelTab::Words => words_tab(ui, panel, cx, rows, &mut r),
             PanelTab::Cards => cards_tab(ui, cfg, cx, &mut r),
             PanelTab::Plans => plans_tab(ui, panel, cx, &mut r),
-            PanelTab::Settings => settings_tab(ui, cfg, cx, &mut r),
+            PanelTab::Settings => settings_tab(ui, cfg, panel, cx, &mut r),
         }
     });
     if wide {
@@ -861,13 +878,25 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
     }
 }
 
-fn settings_tab(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
+fn settings_tab(
+    ui: &mut egui::Ui,
+    cfg: &mut Config,
+    panel: &mut PanelState,
+    cx: &Ctx,
+    r: &mut ControlResult,
+) {
     egui::ScrollArea::vertical()
         .auto_shrink([false, false])
-        .show(ui, |ui| settings_body(ui, cfg, cx, r));
+        .show(ui, |ui| settings_body(ui, cfg, panel, cx, r));
 }
 
-fn settings_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
+fn settings_body(
+    ui: &mut egui::Ui,
+    cfg: &mut Config,
+    panel: &mut PanelState,
+    cx: &Ctx,
+    r: &mut ControlResult,
+) {
     h4(ui, "geo", "设置");
     lead(
         ui,
@@ -982,25 +1011,110 @@ fn settings_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlR
 
     ui.add_space(18.0);
     sep_line(ui);
-    sett_line(
+    group_head(
         ui,
-        "关闭面板窗口",
-        "P2 阶段：关闭 = 退出程序",
-        Some("托盘在 P3"),
+        "关闭窗口时",
+        "",
+        Some("面板顶栏的 ✕（或系统关闭）：驻留托盘 = 收进托盘；直接退出 = 走 5 秒二次确认"),
     );
-    sett_line(ui, "开机自启动", "写当前用户的启动项，免管理员", Some("P3"));
+    ui.horizontal(|ui| {
+        let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
+        if layer_option(
+            ui,
+            w,
+            "驻留托盘（默认）",
+            "关掉面板后程序继续跑，卡片不掉；点托盘图标、或用托盘右键菜单可随时唤回面板。",
+            cfg.close_action == CloseAction::Tray,
+        ) && cfg.close_action != CloseAction::Tray
+        {
+            r.set_close_action = Some(CloseAction::Tray);
+        }
+        ui.add_space(10.0);
+        if layer_option(
+            ui,
+            w,
+            "直接退出",
+            "关掉面板 = 退出程序（5 秒内点两次 ✕ 确认）。教室策略挡掉托盘图标时用这档。",
+            cfg.close_action == CloseAction::Exit,
+        ) && cfg.close_action != CloseAction::Exit
+        {
+            r.set_close_action = Some(CloseAction::Exit);
+        }
+    });
+    ui.add_space(10.0);
+    ui.horizontal(|ui| {
+        if sq_btn_danger_icon(ui, "exit", "退出 Lexideck", true) {
+            r.quit_now = true;
+        }
+        ui.add_space(10.0);
+        ui.label(
+            RichText::new("点了立即退出（驻留托盘时也能从这里退）")
+                .size(12.0)
+                .color(sk().txt3),
+        );
+    });
+
+    ui.add_space(18.0);
+    sep_line(ui);
+    // ── 开机自启动（P3b）──
+    // 状态以注册表为准：这格现读一次就缓存住，离开设置页或拨过开关就丢掉重读（见 draw / 下面两处）
+    group_head(
+        ui,
+        "开机自启动",
+        "",
+        Some("写当前用户的启动项，免管理员；开关位置反映注册表里的实际情况"),
+    );
+    if panel.autostart.is_none() {
+        panel.autostart = Some(autostart::query());
+    }
+    let st = panel.autostart.clone().unwrap_or(autostart::State::Off);
+    let on = !matches!(st, autostart::State::Off | autostart::State::Unknown(_));
+    let desc = match &st {
+        autostart::State::On => "已开启：登录这台机器后自动启动（登记的就是当前这个 exe）".to_string(),
+        autostart::State::Off if cfg.autostart => {
+            "未开启 —— 设置文件里记的是「开启」，但注册表里没有这一项（多半被安全软件清过）。拨一下开关重新登记。".to_string()
+        }
+        autostart::State::Off => "未开启：开机后要手动打开 Lexideck".to_string(),
+        autostart::State::Stale(p) => format!("已开启，但指向的是旧位置：{p}"),
+        autostart::State::Unknown(e) => format!("读不到启动项：{e}"),
+    };
+    if let Some(next) = sett_switch(ui, "开机自启动", &desc, on) {
+        r.set_autostart = Some(next);
+        panel.autostart = None; // 下一帧现读注册表，显示真实结果
+    }
+    if matches!(st, autostart::State::Stale(_)) {
+        ui.add_space(8.0);
+        ui.horizontal(|ui| {
+            if sq_btn(ui, "重写为当前位置", true) {
+                r.set_autostart = Some(true);
+                panel.autostart = None;
+            }
+            ui.add_space(10.0);
+            ui.label(
+                RichText::new("把启动项改成当前这个 exe（整个文件夹搬过位置以后点这里）")
+                    .size(12.0)
+                    .color(sk().txt3),
+            );
+        });
+        ui.add_space(6.0);
+    }
+    ui.add_space(8.0);
+    callout(
+        ui,
+        "自启动只在登录后把程序拉起来，卡片照常按今天该显示的词上屏；把启动项里这一条删掉就等于关闭。\
+         教室一体机如果被组策略挡着，这一项会写不进去，面板会如实报错。",
+    );
+
+    ui.add_space(12.0);
     sett_line(
         ui,
         "单实例",
-        "第二次启动不再开新窗口，把已有窗口唤到前台",
-        Some("P3"),
-    );
-    sett_line(
-        ui,
-        "关于",
-        "Lexideck · 慕言　·　github.com/FanHuaWuYang/Lexideck",
+        "已启用：第二次双击不会再开一个窗口，会把已有窗口（藏在托盘里也行）唤到前台",
         None,
     );
+
+    ui.add_space(14.0);
+    about_block(ui);
     ui.add_space(12.0);
     if !cx.warns.is_empty() {
         mini(ui, "解析与校验提示");
@@ -1876,7 +1990,8 @@ fn expand_btn(ui: &mut egui::Ui, rect: egui::Rect, id: egui::Id, open: bool) -> 
         ui.painter().rect_filled(
             rect,
             CornerRadius::ZERO,
-            mix(Color32::TRANSPARENT, sk().btn_hover, hov),
+            // 淡入别用 mix(TRANSPARENT, ..)：alpha 被一起插值再预乘，中段会闪灰
+            sk().btn_hover.gamma_multiply(hov),
         );
     }
     let col = mix(sk().txt3, sk().txt, hov);
@@ -2070,7 +2185,9 @@ fn win_btn(ui: &mut egui::Ui, icon: &str) -> bool {
     ui.painter().rect_filled(
         r,
         CornerRadius::ZERO,
-        mix(Color32::TRANSPARENT, sk().card_hover, hov),
+        // 淡入别用 mix(TRANSPARENT, ..)：alpha 被一起插值再预乘，中段会闪灰
+        // （实测采样 BCBDBD→D1D2D2→F9FAFB = 闪两帧深灰；gamma_multiply 才是真淡入）
+        sk().card_hover.gamma_multiply(hov),
     );
     let color = mix(sk().txt2, sk().txt, hov);
     icon_paint(
@@ -2522,6 +2639,89 @@ fn sett_line(ui: &mut egui::Ui, title: &str, desc: &str, pill: Option<&str>) {
     }
 }
 
+/// 设置页的一行开关（标题 + 说明 + 右侧方形开关，和策略行同一种开关）。
+/// 返回 `Some(true/false)` = 用户刚拨了开关 —— 面板不自己改状态：
+/// 开关位置的真假由 app 去读写注册表决定，下一帧现读注册表显示结果。
+fn sett_switch(ui: &mut egui::Ui, title: &str, desc: &str, on: bool) -> Option<bool> {
+    let h = 76.0;
+    let (rect, _) =
+        ui.allocate_exact_size(egui::vec2(ui.available_width(), h), egui::Sense::hover());
+    let p = ui.painter().clone();
+    p.rect_filled(
+        egui::Rect::from_min_max(rect.min, egui::pos2(rect.right(), rect.top() + 1.0)),
+        0.0,
+        sk().line,
+    );
+    let text_w = (rect.width() - 110.0).max(120.0);
+    let tg = p.layout(
+        title.to_string(),
+        FontId::proportional(14.0),
+        sk().txt,
+        text_w,
+    );
+    let dg = p.layout(
+        desc.to_string(),
+        FontId::proportional(12.5),
+        sk().txt3,
+        text_w,
+    );
+    let total = tg.size().y + 6.0 + dg.size().y;
+    let tg_h = tg.size().y;
+    let top = rect.center().y - total / 2.0;
+    p.galley(egui::pos2(rect.left(), top), tg, sk().txt);
+    p.galley(egui::pos2(rect.left(), top + tg_h + 6.0), dg, sk().txt3);
+    let sw = egui::Rect::from_center_size(
+        egui::pos2(rect.right() - 26.0, rect.center().y),
+        egui::vec2(44.0, 24.0),
+    );
+    if switch_btn(ui, sw, ui.id().with(("sett-sw", title)), on) {
+        Some(!on)
+    } else {
+        None
+    }
+}
+
+/// 关于：一块静态信息（名称、版本、地址、绿色版一句话）。
+/// 版本号取编译期常量，不写死 —— 改 Cargo.toml 的 version 就是改这里。
+fn about_block(ui: &mut egui::Ui) {
+    let h = 96.0;
+    let (rect, _) =
+        ui.allocate_exact_size(egui::vec2(ui.available_width(), h), egui::Sense::hover());
+    let p = ui.painter().clone();
+    p.rect_filled(rect, CornerRadius::ZERO, sk().card);
+    p.rect_stroke(
+        rect,
+        CornerRadius::ZERO,
+        Stroke::new(1.0, sk().line2),
+        StrokeKind::Inside,
+    );
+    let x = rect.left() + 16.0;
+    p.text(
+        egui::pos2(x, rect.top() + 24.0),
+        Align2::LEFT_CENTER,
+        "Lexideck · 慕言",
+        FontId::proportional(14.0),
+        sk().txt,
+    );
+    p.text(
+        egui::pos2(x, rect.top() + 46.0),
+        Align2::LEFT_CENTER,
+        format!(
+            "版本 {}　·　github.com/FanHuaWuYang/Lexideck",
+            env!("CARGO_PKG_VERSION")
+        ),
+        FontId::proportional(12.5),
+        sk().txt3,
+    );
+    p.text(
+        egui::pos2(x, rect.top() + 68.0),
+        Align2::LEFT_CENTER,
+        "免安装绿色版：设置、主库、状态都放在 exe 同目录，整个文件夹拷走就带走全部状态",
+        FontId::proportional(12.0),
+        sk().txt3,
+    );
+}
+
 /// 卡片层级的一档（整卡可点，选中 = 绿框 + 「当前」标签）
 fn layer_option(ui: &mut egui::Ui, w: f32, title: &str, disc: &str, on: bool) -> bool {
     let pw = (w - 28.0).max(80.0);
@@ -2685,7 +2885,8 @@ fn quiet_btn(ui: &mut egui::Ui, icon: &str, label: &str, enabled: bool) -> bool 
         ui.painter().rect_filled(
             rect,
             CornerRadius::ZERO,
-            mix(Color32::TRANSPARENT, sk().btn_hover, hov),
+            // 淡入别用 mix(TRANSPARENT, ..)：alpha 被一起插值再预乘，中段会闪灰
+            sk().btn_hover.gamma_multiply(hov),
         );
     }
     let txt = if enabled {
@@ -3073,6 +3274,71 @@ mod tests {
             }
         });
         assert!(res.top_changed && res.changed, "点「置顶」要回传层级切换");
+    }
+
+    /// 设置页「关闭窗口时」两档（P3a）：画布开高一点让整页可见，
+    /// 在右半列逐行扫点击——点「直接退出」档位必须回传 set_close_action。
+    /// （扫描而不是写死坐标：控件高度由文案换行数决定，写死坐标一改文案就假红。）
+    #[test]
+    fn settings_close_action_reports_choice() {
+        let errors: Vec<String> = Vec::new();
+        let warns: Vec<String> = Vec::new();
+        let import = import_ctx(&errors, None, "");
+        let cx = base_ctx(&import, &[], &[], &warns);
+        let rows: Vec<WordRow> = Vec::new();
+        let size = egui::vec2(1004.0, 1400.0);
+        let ctx = egui::Context::default();
+        let raw = |ev: Vec<egui::Event>, t: f64| egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(egui::pos2(0.0, 0.0), size)),
+            time: Some(t),
+            events: ev,
+            ..Default::default()
+        };
+        let mut cfg = Config::default();
+        let mut panel = PanelState {
+            tab: PanelTab::Settings,
+            ..PanelState::default()
+        };
+        // 第一帧：登记控件矩形（交互命中靠上一帧）
+        let mut first = ctx.run_ui(raw(Vec::new(), 0.0), |ui| {
+            let _ = draw(ui, &mut cfg, &mut panel, &cx, &rows);
+        });
+        first.textures_delta.clear();
+
+        let mut found = false;
+        let mut t = 0.5;
+        for y in (300..1380).step_by(3) {
+            let pos = egui::pos2(460.0, y as f32);
+            let ev = vec![
+                egui::Event::PointerMoved(pos),
+                egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed: true,
+                    modifiers: egui::Modifiers::default(),
+                },
+                egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed: false,
+                    modifiers: egui::Modifiers::default(),
+                },
+            ];
+            t += 0.05;
+            let out = std::cell::RefCell::new(ControlResult::default());
+            let mut f = ctx.run_ui(raw(ev, t), |ui| {
+                *out.borrow_mut() = draw(ui, &mut cfg, &mut panel, &cx, &rows);
+            });
+            f.textures_delta.clear();
+            if out.into_inner().set_close_action == Some(CloseAction::Exit) {
+                found = true;
+                break;
+            }
+        }
+        assert!(
+            found,
+            "点设置页「直接退出」档位应回传 set_close_action = Some(Exit)"
+        );
     }
 
     /// 四个板块都能画出来，且都不是空白
