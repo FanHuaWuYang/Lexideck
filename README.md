@@ -51,7 +51,7 @@
 
 ```bash
 cargo run --release     # 控制面板 + 已启用的悬浮窗
-cargo test              # 71 个测试（含面板的离屏渲染测试）
+cargo test              # 72 个测试（含面板的离屏渲染测试、词表生成文档的示例校验）
 ```
 
 数据都写在 exe 同目录：主库 `lexideck.json` + 设置 `设置.txt`。首次运行程序会自己建主库；
