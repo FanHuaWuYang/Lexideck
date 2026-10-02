@@ -79,6 +79,9 @@ pub struct Config {
     pub vsync: bool,
     /// 关闭面板窗口时的行为：驻留托盘（默认）/ 直接退出（P3a）
     pub close_action: CloseAction,
+    /// 开机自启动的**意图**（P3b）：设置页的开关状态显示的是注册表事实（`autostart::query`），
+    /// 这一份只在「注册表里没有、但设置里记着要开」时提示用户重新登记（比如整个文件夹拷到新机器）。
+    pub autostart: bool,
     /// 主题："plain" | "wuling" | "yellow"
     pub theme: String,
     /// 当前在桌面上的卡片（词条 word，小写；顺序 = 平铺顺序）
@@ -97,6 +100,7 @@ impl Default for Config {
             passthrough: false,
             vsync: true,
             close_action: CloseAction::Tray,
+            autostart: false,
             theme: "plain".into(),
             shown: Vec::new(),
         }
@@ -185,6 +189,10 @@ pub fn load(path: &Path) -> Config {
                     cfg.close_action = a;
                 }
             }
+            // 开机自启动（P3b）：这里只是「人的意图」，开关的真实状态看注册表
+            "autostart" => {
+                cfg.autostart = parse_bool(val);
+            }
             // 老键兼容：P1 的设置文件里是 always_on_top = true|false
             "always_on_top" => {
                 cfg.layer = if parse_bool(val) {
@@ -241,6 +249,7 @@ pub fn save(path: &Path, cfg: &Config) {
     s.push_str(&format!("passthrough = {}\n", cfg.passthrough));
     s.push_str(&format!("vsync = {}\n", cfg.vsync));
     s.push_str(&format!("close_action = {}\n", cfg.close_action.as_str()));
+    s.push_str(&format!("autostart = {}\n", cfg.autostart));
     s.push_str(&format!("theme = {}\n", cfg.theme));
     s.push_str(&format!(
         "shown = {}\n",
@@ -371,5 +380,40 @@ mod tests {
         assert_eq!(CloseAction::parse("直接退出"), Some(CloseAction::Exit));
         assert_eq!(CloseAction::parse("啥"), None);
         assert_eq!(CloseAction::parse(""), None);
+    }
+
+    /// 开机自启动（P3b）：默认关闭；save/load 往返；宽松解析（on/是/1 都算开）
+    #[test]
+    fn autostart_round_trips_and_parses_loosely() {
+        let dir =
+            std::env::temp_dir().join(format!("lexideck-test-cfg-auto-{}", std::process::id()));
+        let _ = std::fs::create_dir_all(&dir);
+        let p = dir.join("设置.txt");
+        let _ = std::fs::remove_file(&p);
+
+        let mut c = Config::default();
+        assert!(
+            !c.autostart,
+            "默认不开机自启（不改用户机器，要开得他自己点）"
+        );
+
+        c.autostart = true;
+        save(&p, &c);
+        let text = std::fs::read_to_string(&p).unwrap();
+        assert!(text.contains("autostart = true"), "{text}");
+        assert!(load(&p).autostart);
+
+        c.autostart = false;
+        save(&p, &c);
+        assert!(!load(&p).autostart);
+
+        // 宽松写法都认（手改文件的人不一定写 true）
+        for v in ["on", "1", "是", "TRUE"] {
+            std::fs::write(&p, format!("autostart = {v}\n")).unwrap();
+            assert!(load(&p).autostart, "{v} 应当算开");
+        }
+        std::fs::write(&p, "autostart = 乱写\n").unwrap();
+        assert!(!load(&p).autostart, "读不懂 = 不开");
+        let _ = std::fs::remove_file(&p);
     }
 }

@@ -7,6 +7,7 @@
 
 mod anim;
 mod app;
+mod autostart;
 mod card;
 mod config;
 mod control;
@@ -17,12 +18,20 @@ mod import;
 mod library;
 mod menu;
 mod schedule;
+mod single;
 mod theme;
 mod tray;
 mod util;
 mod window;
 
 fn main() -> eframe::Result<()> {
+    // P3c 单实例：已经有实例在跑时不另开窗口，而是把那个实例的面板唤到前台，然后自己退出。
+    // 判定必须发生在建窗口之前 —— 这才叫「第二次双击不开新窗口」。
+    if !single::install() {
+        single::wake_existing();
+        return Ok(());
+    }
+
     let cfg = config::load(&config::settings_path());
     let opts = window::main_options(&cfg);
     eframe::run_native(

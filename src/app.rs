@@ -12,6 +12,7 @@ use eframe::egui::{
 };
 
 use crate::anim::Anim;
+use crate::autostart;
 use crate::card::{self, CardPlan};
 use crate::config::{self, CloseAction, Config};
 use crate::control::{
@@ -23,6 +24,7 @@ use crate::import;
 use crate::library;
 use crate::menu;
 use crate::schedule;
+use crate::single;
 use crate::theme::{self, Theme, ThemeKind};
 use crate::tray;
 use crate::window;
@@ -84,7 +86,7 @@ impl FloatWin {
     }
 }
 
-/// 一次导入的过程状态（逻辑在 import 模块里，这里只持有）
+// 一次导入的过程状态（逻辑在 import 模块里，这里只持有）
 
 /// 屏幕上卡片内容的来源（设计 §5.5）：启动时必须是 Auto。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -155,6 +157,10 @@ pub struct LexideckApp {
     menu_need_focus: bool,
     /// 菜单这一辈子拿到过焦点没有（拿到后失焦才判定为「点了别处」）
     menu_got_focus: bool,
+    // ── 单实例（P3c）──
+    /// 唤回事件的等待线程（有人又启动了一次 → 把面板拿到前台）。字段只为「持有」而存在。
+    #[allow(dead_code)]
+    single_watch: single::Watcher,
 }
 
 /// 关闭拦截里「再点一次」提示的固定文案（和底栏确认文案同一件事，过期后要认得出来）
@@ -210,6 +216,7 @@ impl LexideckApp {
             menu_pos: None,
             menu_need_focus: false,
             menu_got_focus: false,
+            single_watch: single::watch(&cc.egui_ctx),
         };
         app.lib_mtime = library::mtime(&app.lib_path);
         app.prune_selection();
@@ -837,6 +844,20 @@ impl LexideckApp {
         self.panel_visible = false;
     }
 
+    /// 把面板放回屏幕里并拿到前台。三处共用：托盘图标 / 托盘菜单 / 第二次启动（单实例唤回）。
+    /// 收进托盘时窗口被挪到了屏幕外，所以唤回必须显式放回原位。
+    fn show_panel(&mut self, ctx: &egui::Context) {
+        ctx.send_viewport_cmd(ViewportCommand::Visible(true));
+        // 用记住的屏（此刻还没翻回可见，实时值会是屏外那个「最近的屏」）
+        let ms = self.monitor_size(ctx);
+        let fallback = Some(egui::pos2(60.0, (ms.y - self.cfg.window_h - 80.0).max(0.0)));
+        if let Some(p) = self.panel_home.take().or(fallback) {
+            ctx.send_viewport_cmd(ViewportCommand::OuterPosition(p));
+        }
+        ctx.send_viewport_cmd(ViewportCommand::Focus);
+        self.panel_visible = true;
+    }
+
     /// 明确退出：置上 `exiting`（关闭拦截放行）→ 存设置 → 请 eframe 关根窗口。
     /// 面板退出按钮、托盘菜单「退出」都走这里。
     fn quit_now(&mut self, ctx: &egui::Context) {
@@ -922,17 +943,7 @@ impl LexideckApp {
                     self.hide_panel(ctx);
                     self.status = Some("面板已收进托盘（托盘图标可以唤回来）".into());
                 } else {
-                    ctx.send_viewport_cmd(ViewportCommand::Visible(true));
-                    // 收进托盘时挪到了屏幕外：放回原位（记不到就按设置/主屏兜底）
-                    // 用记住的屏（此刻还没翻回可见，实时值会是屏外那个「最近的屏」）
-                    let ms = self.monitor_size(ctx);
-                    let fallback =
-                        Some(egui::pos2(60.0, (ms.y - self.cfg.window_h - 80.0).max(0.0)));
-                    if let Some(p) = self.panel_home.take().or(fallback) {
-                        ctx.send_viewport_cmd(ViewportCommand::OuterPosition(p));
-                    }
-                    ctx.send_viewport_cmd(ViewportCommand::Focus);
-                    self.panel_visible = true;
+                    self.show_panel(ctx);
                     self.status = Some("面板已唤回".into());
                 }
             }
@@ -1143,6 +1154,31 @@ impl LexideckApp {
                 CloseAction::Exit => "关闭窗口时：直接退出（5 秒内点两次 ✕ 才会退）".into(),
             });
         }
+        // 设置页「开机自启动」：写注册表（开关显示以注册表为准，所以写完成败都照实反馈）
+        if let Some(on) = res.set_autostart {
+            let exe = autostart::current_exe();
+            let done = if on {
+                autostart::enable(&exe)
+            } else {
+                autostart::disable()
+            };
+            match done {
+                Ok(()) => {
+                    self.cfg.autostart = on;
+                    config::save(&config::settings_path(), &self.cfg);
+                    self.status = Some(if on {
+                        format!("开机自启动已开启：{}", exe.display())
+                    } else {
+                        "开机自启动已关闭（启动项已删掉）".into()
+                    });
+                }
+                Err(e) => {
+                    self.status = Some(format!(
+                        "开机自启动没改成：{e}（开关位置显示的是注册表里的实际状态）"
+                    ));
+                }
+            }
+        }
     }
 
     /// 永久关闭 / 打开一条策略（词 + 日期段）。
@@ -1282,6 +1318,11 @@ impl eframe::App for LexideckApp {
         // P3a：托盘懒创建 + 收事件；关闭拦截必须在 place_once 之前
         // （CancelClose 必须和 close_requested 同帧发出，eframe 只认那一帧）
         self.tray_tick(&ctx, frame);
+        // P3c 单实例：别人又启动了一次（第二次双击 exe）→ 敲门线程已置标记，这里把面板唤到前台
+        if single::take_wake() {
+            self.show_panel(&ctx);
+            self.status = Some("Lexideck 已经在跑：把面板唤到了前台".into());
+        }
         self.intercept_close(&ctx);
 
         self.place_once(&ctx);
