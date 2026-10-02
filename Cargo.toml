@@ -1,6 +1,6 @@
 [package]
 name = "lexideck"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "悬浮在教室一体机屏幕上的英语词卡看板（内容由外部词表文件驱动）"
 
