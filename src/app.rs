@@ -138,10 +138,12 @@ pub struct LexideckApp {
     applied_theme: Option<ThemeKind>,
     confirm_exit: bool,
     // ── 托盘（P3a）──
-    /// 托盘句柄（第一帧懒创建；创建失败为 None，程序照常跑）
+    /// 托盘句柄（第一帧懒创建；建不起来时为 None，关闭行为退化成「直接退出」）
     tray: Option<tray::Tray>,
-    /// 托盘是否已经尝试创建过（失败不重试）
-    tray_tried: bool,
+    /// 托盘创建尝试过几次（失败会重试，见 tray_tick）
+    tray_attempts: u32,
+    /// 下一次允许重试的时刻（None = 还没试过，立刻可试）
+    tray_next_try: Option<Instant>,
     /// 面板窗口当前是否可见（自己维护：ViewportInfo 里拿不到 Visible(false) 的状态）
     panel_visible: bool,
     /// 收进托盘前的位置（窗口被挪到屏幕外；唤回时放回去）
@@ -211,7 +213,8 @@ impl LexideckApp {
             applied_theme: None,
             confirm_exit: false,
             tray: None,
-            tray_tried: false,
+            tray_attempts: 0,
+            tray_next_try: None,
             panel_visible: true,
             panel_home: None,
             exiting: false,
@@ -907,12 +910,39 @@ impl LexideckApp {
         self.status = Some(EXIT_CONFIRM_HINT.into());
     }
 
+    /// 托盘创建失败后，第 `attempts` 次尝试之后该等多久再试。
+    /// 前几次快试（覆盖「启动那一瞬间外壳没准备好」这类瞬时失败），之后每分钟慢补一次。
+    fn tray_retry_gap(attempts: u32) -> Duration {
+        if attempts < 5 {
+            Duration::from_secs(2)
+        } else {
+            Duration::from_secs(60)
+        }
+    }
+
+    /// 这一帧该不该再试一次建托盘；该试就把下次时间点排上（见 tray_tick 的说明）。
+    fn tray_due(&mut self) -> bool {
+        let now = Instant::now();
+        if let Some(t) = self.tray_next_try {
+            if now < t {
+                return false;
+            }
+        }
+        self.tray_next_try = Some(now + Self::tray_retry_gap(self.tray_attempts));
+        true
+    }
+
     /// 托盘懒创建 + 每帧把事件收干。
-    /// 托盘必须在主线程、事件循环起来之后创建（win32 消息循环要求），
-    /// 所以放在 ui() 里；失败只写一句 status，不重试。
+    /// 托盘必须在主线程、事件循环起来之后创建（win32 消息循环要求），所以放在 ui() 里。
+    ///
+    /// **创建失败会重试**（2026-10-02 改）。原先写的是「失败只写一句 status，不重试」，
+    /// 于是**一次瞬时失败就毁掉整个进程的托盘** —— 真机实测：同一个 exe，16:16 起的实例
+    /// 图标正常（注册表里有对应条目），16:26 起的实例 `Shell_NotifyIconGetRect` 直接返回
+    /// `E_FAIL`、注册表里连条目都没建，那一整轮托盘就是空的（而托盘正是唤回面板的唯一通道）。
+    /// 现在：前几次每 2 秒试一遍，之后每分钟补试一次，成功即恢复正常状态。
     fn tray_tick(&mut self, ctx: &egui::Context, frame: &eframe::Frame) {
-        if self.tray.is_none() && !self.tray_tried {
-            self.tray_tried = true;
+        if self.tray.is_none() && self.tray_due() {
+            self.tray_attempts += 1;
             match tray::Tray::create(ctx, panel_hwnd(frame)) {
                 Ok(t) => {
                     self.tray = Some(t);
@@ -923,8 +953,11 @@ impl LexideckApp {
                     );
                 }
                 Err(e) => {
+                    // 失败原因照实写出来（含 crate 给的细节）—— 用户看不到图标时，
+                    // 这一行就是唯一线索；面板底部状态栏一直在。
                     self.status = Some(format!(
-                        "托盘图标创建失败：{e}（关闭窗口按「直接退出」处理）"
+                        "托盘图标创建失败（第 {} 次）：{e}；关闭窗口按「直接退出」处理，稍后自动重试",
+                        self.tray_attempts
                     ));
                 }
             }
@@ -1633,6 +1666,16 @@ fn apply_panel_visuals(ctx: &egui::Context, kind: ThemeKind) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// 托盘创建失败后的重试节奏：前 5 次每 2 秒，之后每分钟补一次
+    #[test]
+    fn tray_retry_gap_escalates() {
+        use std::time::Duration;
+        assert_eq!(LexideckApp::tray_retry_gap(0), Duration::from_secs(2));
+        assert_eq!(LexideckApp::tray_retry_gap(4), Duration::from_secs(2));
+        assert_eq!(LexideckApp::tray_retry_gap(5), Duration::from_secs(60));
+        assert_eq!(LexideckApp::tray_retry_gap(99), Duration::from_secs(60));
+    }
 
     /// 单张比屏幕还高的卡：按顺序截断，绝不硬塞到屏幕上
     #[test]
