@@ -144,6 +144,10 @@ pub struct LexideckApp {
     tray_attempts: u32,
     /// 下一次允许重试的时刻（None = 还没试过，立刻可试）
     tray_next_try: Option<Instant>,
+    /// 托盘自检的下一次时刻（None = 当前没在自检）；见 tray_tick 的自检说明
+    tray_check_at: Option<Instant>,
+    /// 这轮自检已经查了几次（外壳确认之前最多查 TRAY_CHECK_MAX 次）
+    tray_check_tries: u32,
     /// 面板窗口当前是否可见（自己维护：ViewportInfo 里拿不到 Visible(false) 的状态）
     panel_visible: bool,
     /// 收进托盘前的位置（窗口被挪到屏幕外；唤回时放回去）
@@ -215,6 +219,8 @@ impl LexideckApp {
             tray: None,
             tray_attempts: 0,
             tray_next_try: None,
+            tray_check_at: None,
+            tray_check_tries: 0,
             panel_visible: true,
             panel_home: None,
             exiting: false,
@@ -910,6 +916,19 @@ impl LexideckApp {
         self.status = Some(EXIT_CONFIRM_HINT.into());
     }
 
+    /// 托盘自检节奏：建好之后隔这么久查第一次，之后每次再隔这么久重查。
+    /// 见 tray_tick 的自检说明（为什么要查）。
+    const TRAY_CHECK_GAP: Duration = Duration::from_millis(700);
+    /// 托盘自检最多查几次：外壳可能慢半拍，多给两次机会再判「没进托盘」。
+    const TRAY_CHECK_MAX: u32 = 3;
+
+    /// 自检判定：`ok` = 外壳这次确认图标在托盘里了吗；`tries` = 已查次数（含这次）。
+    /// 返回 true = 还要再查一次（还没确认、但还有机会）；false = 到此为止（确认了、或查够次数判失败）。
+    /// 纯函数，好测。
+    fn tray_check_again(ok: bool, tries: u32) -> bool {
+        !ok && tries < Self::TRAY_CHECK_MAX
+    }
+
     /// 托盘创建失败后，第 `attempts` 次尝试之后该等多久再试。
     /// 前几次快试（覆盖「启动那一瞬间外壳没准备好」这类瞬时失败），之后每分钟慢补一次。
     fn tray_retry_gap(attempts: u32) -> Duration {
@@ -946,11 +965,11 @@ impl LexideckApp {
             match tray::Tray::create(ctx, panel_hwnd(frame)) {
                 Ok(t) => {
                     self.tray = Some(t);
-                    // 一次性确认：截图/用户都能看到"托盘建好了"（P3a 新功能，给个明确反馈）
-                    self.status = Some(
-                        "托盘图标已就绪：关掉面板＝收进托盘（图标在右下角 ^ 折叠区，可拖出来常驻）"
-                            .into(),
-                    );
+                    // 建成功 ≠ 图标真的进了通知区（见 tray::Tray::verify 的说明：
+                    // 实测有「NIM_ADD 报成功、外壳没登记、注册表无条目」的情况）。
+                    // 所以先别报「已就绪」，隔一会儿回问外壳一次，以自检结果为准。
+                    self.tray_check_tries = 0;
+                    self.tray_check_at = Some(Instant::now() + Self::TRAY_CHECK_GAP);
                 }
                 Err(e) => {
                     // 失败原因照实写出来（含 crate 给的细节）—— 用户看不到图标时，
@@ -959,6 +978,35 @@ impl LexideckApp {
                         "托盘图标创建失败（第 {} 次）：{e}；关闭窗口按「直接退出」处理，稍后自动重试",
                         self.tray_attempts
                     ));
+                }
+            }
+        }
+        // 自检分支：只在刚建好的那几次跑（见 TRAY_CHECK_GAP/MAX）。
+        if let Some(at) = self.tray_check_at {
+            if Instant::now() >= at {
+                self.tray_check_tries += 1;
+                let ok = self.tray.as_ref().is_some_and(|t| t.verify());
+                if ok {
+                    self.tray_check_at = None;
+                    // 到这一步才算真的「已就绪」——之前那句是建成功就报，会骗人。
+                    self.status = Some(
+                        "托盘图标已就绪：关掉面板＝收进托盘（图标在右下角 ^ 折叠区，可拖出来常驻）"
+                            .into(),
+                    );
+                } else if Self::tray_check_again(false, self.tray_check_tries) {
+                    self.tray_check_at = Some(Instant::now() + Self::TRAY_CHECK_GAP);
+                } else {
+                    // 查够次数还是没有：如实报「没进托盘」，并把图标丢掉交给重试重建。
+                    self.tray_check_at = None;
+                    self.tray = None;
+                    self.tray_next_try =
+                        Some(Instant::now() + Self::tray_retry_gap(self.tray_attempts));
+                    self.status = Some(
+                        "注意：托盘图标没能进入系统通知区（外壳静默拒绝了它）——\
+                         已按「没有托盘」处理并自动重试；已知一类原因是 exe 所在的文件夹，\
+                         把 exe 换到别的文件夹通常立刻恢复"
+                            .into(),
+                    );
                 }
             }
         }
@@ -1666,6 +1714,21 @@ fn apply_panel_visuals(ctx: &egui::Context, kind: ThemeKind) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// 托盘自检判定：确认即停；没确认时给足 TRAY_CHECK_MAX 次机会才判失败
+    #[test]
+    fn tray_check_again_until_confirm_or_give_up() {
+        assert!(!LexideckApp::tray_check_again(true, 1), "确认了就别再查");
+        assert!(LexideckApp::tray_check_again(false, 1), "没确认但还有机会");
+        assert!(LexideckApp::tray_check_again(
+            false,
+            LexideckApp::TRAY_CHECK_MAX - 1
+        ));
+        assert!(
+            !LexideckApp::tray_check_again(false, LexideckApp::TRAY_CHECK_MAX),
+            "查够次数就判失败（不能无限查）"
+        );
+    }
 
     /// 托盘创建失败后的重试节奏：前 5 次每 2 秒，之后每分钟补一次
     #[test]

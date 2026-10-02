@@ -11,6 +11,18 @@
 //!
 //! 左键单击 = 切换面板；右键 = 打开**自绘菜单**（src/menu.rs，无模态循环）。
 //!
+//! # 为什么建完还要自检（`verify`，2026-10-02 加）
+//!
+//! `TrayIconBuilder::build()` 返回 `Ok` 只说明 `Shell_NotifyIcon` 的 `NIM_ADD`
+//! 返回了 TRUE —— **不代表图标真的进了通知区**。实测到过一类「静默丢弃」：
+//! 同一份 exe 放在 `RustroverProjects\Lexideck\` 这个文件夹里跑时，`build()` 成功、
+//! 但 `Shell_NotifyIconGetRect` 定位不到图标、注册表
+//! `HKCU\Control Panel\NotifyIconSettings` 里也没建条目（＝外壳压根没登记它）；
+//! 把同一个 exe 放到别的任何目录，图标立刻正常。触发条件还没查明，
+//! 所以**不猜原因，只回问外壳一次**：`verify()` 用 `Shell_NotifyIconGetRect` 判，
+//! 查不到就如实当成失败（调用方见 app.rs 的 tray_tick 自检分支）。
+//! 教训写进 README「坑 10」：`build()` 成功不能当成「图标已就绪」。
+//!
 //! # 为什么要 poke + 心跳（含实测记录）
 //!
 //! 曾经用系统原生菜单（muda/TrackPopupMenu）：它是**系统级模态循环**，
@@ -31,15 +43,19 @@
 //! 开销与现有空闲节流 `request_repaint_after(300ms)` 同量级；心跳线程随 `Tray` 的 Drop 结束。
 //! 图标逐字节画（雾青圆角方块 + 白色「L」，和面板顶栏标记同源），不引图片素材。
 
+use std::cell::Cell;
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::Arc;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
 use eframe::egui;
 use tray_icon::{Icon, MouseButton, MouseButtonState, TrayIcon, TrayIconBuilder, TrayIconEvent};
-use windows_sys::Win32::Foundation::{HWND, POINT};
+use windows_sys::Win32::Foundation::{HWND, POINT, RECT};
 use windows_sys::Win32::Graphics::Gdi::ScreenToClient;
-use windows_sys::Win32::UI::WindowsAndMessaging::{GetCursorPos, PostMessageW, WM_MOUSEMOVE};
+use windows_sys::Win32::UI::Shell::{Shell_NotifyIconGetRect, NOTIFYICONIDENTIFIER};
+use windows_sys::Win32::UI::WindowsAndMessaging::{
+    EnumWindows, GetClassNameW, GetCursorPos, GetWindowThreadProcessId, PostMessageW, WM_MOUSEMOVE,
+};
 
 /// 托盘产生的意图；app 每帧收干后执行。
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -66,6 +82,10 @@ pub struct Tray {
     alive: Arc<AtomicBool>,
     /// 最近一帧的时刻（app 每帧 `touch()`）；心跳据此判断主循环冻没冻
     last_frame_ms: Arc<AtomicU64>,
+    /// crate 内部隐藏消息窗口的句柄（自检用；懒查找 + 缓存，0 = 还没找到/没找到）
+    msg_hwnd: Cell<isize>,
+    /// 自检是否已通过（通过后不再重复扫，见 `verify`）
+    verified: Cell<bool>,
 }
 
 impl Drop for Tray {
@@ -83,9 +103,20 @@ const HEARTBEAT_MS: u64 = 250;
 /// 超过这么久没有新帧就按「主循环冻住了」处理（正常空闲是 250~300ms 出一帧）。
 const FROZEN_MS: u64 = 800;
 
+/// crate 内部那个隐藏消息窗口的类名（tray-icon 0.26 定的常量）。
+/// 自检要按「进程 + 类名」找到它，才能拿它的 (hWnd, uID) 回问外壳。
+const MSG_WINDOW_CLASS: &str = "tray_icon_app";
+
+/// 自检时扫的 uID 上限：crate 的 uID 是**进程内递增计数器**（从 0 起，实测命中的是 2）。
+/// 一个进程里正常只会有 1~2 个托盘图标，扫到 32 足够；成本是几十次壳调用，只在自检时跑。
+const UID_SWEEP_MAX: u32 = 32;
+
 impl Tray {
     /// 创建托盘图标。必须**在主线程、事件循环跑起来之后**调用。
     /// 失败只回 `Err(说明)`，绝不 panic —— 调用方降级为「没有托盘照常用」。
+    ///
+    /// 注意：返回 `Ok` 只代表 `NIM_ADD` 报告成功，**不保证图标真的进了通知区** ——
+    /// 调用方还要过一道 [`Tray::verify`]（见文件头）。
     pub fn create(ctx: &egui::Context, hwnd: isize) -> Result<Tray, String> {
         let icon = make_icon()?;
         let icon = TrayIconBuilder::new()
@@ -125,7 +156,69 @@ impl Tray {
             icon,
             alive,
             last_frame_ms,
+            msg_hwnd: Cell::new(0),
+            verified: Cell::new(false),
         })
+    }
+
+    /// 自检：图标到底进没进系统通知区。
+    ///
+    /// 做法是**回问外壳**：找到 crate 那个隐藏消息窗口，用它的 `hWnd` + 逐个 `uID`
+    /// 调 `Shell_NotifyIconGetRect` —— 外壳认得这个图标才会返回成功（并给出它在托盘里的位置）。
+    /// 一个都问不到 = 图标没进托盘（`NIM_ADD` 报成功也没用，见文件头）。
+    ///
+    /// 通过一次就记住（`verified`），之后不再扫。
+    pub fn verify(&self) -> bool {
+        if self.verified.get() {
+            return true;
+        }
+        let hwnd = self.msg_hwnd();
+        if hwnd.is_null() {
+            Tray::trace("自检：找不到 crate 的消息窗口（tray_icon_app）");
+            return false;
+        }
+        for uid in 0..=UID_SWEEP_MAX {
+            let id = NOTIFYICONIDENTIFIER {
+                cbSize: std::mem::size_of::<NOTIFYICONIDENTIFIER>() as u32,
+                hWnd: hwnd,
+                uID: uid,
+                guidItem: unsafe { std::mem::zeroed() },
+            };
+            let mut rect = RECT::default();
+            // S_OK（0）= 外壳知道这个 (hWnd, uID) 的图标，并报得出它在托盘里的位置。
+            if unsafe { Shell_NotifyIconGetRect(&id, &mut rect) } == 0 {
+                self.verified.set(true);
+                Tray::trace(&format!(
+                    "自检通过：图标在托盘里 uID={uid} rect=({},{})-({},{})",
+                    rect.left, rect.top, rect.right, rect.bottom
+                ));
+                return true;
+            }
+        }
+        Tray::trace(&format!(
+            "自检未通过：外壳认不出本进程的托盘图标（uID 0~{UID_SWEEP_MAX} 全问不到）"
+        ));
+        false
+    }
+
+    /// crate 内部隐藏消息窗口的句柄（懒查找 + 缓存；找不到返回 0）。
+    fn msg_hwnd(&self) -> HWND {
+        let cached = self.msg_hwnd.get();
+        if cached != 0 {
+            return cached as HWND;
+        }
+        let mut target = MsgWindowTarget {
+            pid: std::process::id(),
+            hwnd: 0,
+        };
+        unsafe {
+            EnumWindows(
+                Some(enum_msg_window),
+                &mut target as *mut MsgWindowTarget as isize,
+            );
+        }
+        self.msg_hwnd.set(target.hwnd);
+        target.hwnd as HWND
     }
 
     /// app 每帧调一次：心跳用它判断主循环冻没冻（见文件头）。
@@ -160,6 +253,30 @@ impl Tray {
         }
         out
     }
+}
+
+/// `EnumWindows` 回调要找的东西：本进程里那个类名 `tray_icon_app` 的窗口。
+struct MsgWindowTarget {
+    pid: u32,
+    hwnd: isize,
+}
+
+/// `EnumWindows` 回调：只认「属于本进程 + 类名是 tray_icon_app」的顶层窗口。
+/// 走到就停下（返回 0 终止枚举），结果写回 `MsgWindowTarget.hwnd`。
+unsafe extern "system" fn enum_msg_window(hwnd: HWND, lparam: isize) -> i32 {
+    let target = &mut *(lparam as *mut MsgWindowTarget);
+    let mut wnd_pid = 0u32;
+    GetWindowThreadProcessId(hwnd, &mut wnd_pid);
+    if wnd_pid != target.pid {
+        return 1; // 继续枚举
+    }
+    let mut buf = [0u16; 64];
+    let n = GetClassNameW(hwnd, buf.as_mut_ptr(), buf.len() as i32);
+    if n > 0 && String::from_utf16_lossy(&buf[..n as usize]) == MSG_WINDOW_CLASS {
+        target.hwnd = hwnd as isize;
+        return 0; // 找到了，停
+    }
+    1
 }
 
 /// 托盘点击 → 动作。纯映射（托盘在 CI 里点不了，接线是否正确全靠它 + 单测保证）。
@@ -280,6 +397,13 @@ mod tests {
             click_action(MouseButton::Middle, MouseButtonState::Up, 0.0, 0.0),
             None
         );
+    }
+
+    /// 自检要按「进程 + 类名」找窗口，类名写错就永远找不到 —— 钉住这个常量。
+    #[test]
+    fn msg_window_class_and_sweep() {
+        assert_eq!(MSG_WINDOW_CLASS, "tray_icon_app");
+        assert!(UID_SWEEP_MAX >= 2, "实测命中的 uID 是 2，扫描范围要覆盖它");
     }
 
     /// 图标数据：尺寸正确、圆角外透明、底色雾青、中心是白色「L」
