@@ -27,4 +27,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create $env:GITHUB_REF_NAME target/release/lexideck.exe --title $env:GITHUB_REF_NAME --generate-notes
+          # 幂等：Release 已经存在（手动发过、或重复打同一个 tag）就复用它，只把 exe 补上去 ——
+          # 否则 gh release create 会因同名 Release 报错，整个 job 变红
+          gh release view $env:GITHUB_REF_NAME 2>$null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $env:GITHUB_REF_NAME --title $env:GITHUB_REF_NAME --generate-notes
+          }
+          gh release upload $env:GITHUB_REF_NAME target/release/lexideck.exe --clobber
