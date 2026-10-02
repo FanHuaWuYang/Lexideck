@@ -8,7 +8,7 @@ use std::time::{Duration, Instant, SystemTime};
 
 use eframe::egui::{
     self,
-    viewport::{ViewportCommand, ViewportId, WindowLevel},
+    viewport::{ViewportCommand, ViewportId},
 };
 
 use crate::anim::Anim;
@@ -138,14 +138,23 @@ pub struct LexideckApp {
     applied_theme: Option<ThemeKind>,
     confirm_exit: bool,
     // ── 托盘（P3a）──
-    /// 托盘句柄（第一帧懒创建；创建失败为 None，程序照常跑）
+    /// 托盘句柄（第一帧懒创建；建不起来时为 None，关闭行为退化成「直接退出」）
     tray: Option<tray::Tray>,
-    /// 托盘是否已经尝试创建过（失败不重试）
-    tray_tried: bool,
+    /// 托盘创建尝试过几次（失败会重试，见 tray_tick）
+    tray_attempts: u32,
+    /// 下一次允许重试的时刻（None = 还没试过，立刻可试）
+    tray_next_try: Option<Instant>,
+    /// 托盘自检的下一次时刻（None = 当前没在自检）；见 tray_tick 的自检说明
+    tray_check_at: Option<Instant>,
+    /// 这轮自检已经查了几次（外壳确认之前最多查 TRAY_CHECK_MAX 次）
+    tray_check_tries: u32,
     /// 面板窗口当前是否可见（自己维护：ViewportInfo 里拿不到 Visible(false) 的状态）
     panel_visible: bool,
     /// 收进托盘前的位置（窗口被挪到屏幕外；唤回时放回去）
     panel_home: Option<egui::Pos2>,
+    /// 面板窗口的原生句柄（每帧从 `eframe::Frame` 取一次；0 = 还没拿到）。
+    /// 收进托盘时要用它摘掉任务栏按钮（见 window::set_taskbar_visible）。
+    panel_hwnd: isize,
     /// 明确退出（面板退出按钮 / 托盘菜单「退出」）：绕过关闭拦截，不再 CancelClose
     exiting: bool,
     // ── 托盘右键菜单（P3a，自绘；见 menu.rs）──
@@ -208,10 +217,14 @@ impl LexideckApp {
             applied_theme: None,
             confirm_exit: false,
             tray: None,
-            tray_tried: false,
+            tray_attempts: 0,
+            tray_next_try: None,
+            tray_check_at: None,
+            tray_check_tries: 0,
             panel_visible: true,
             panel_home: None,
             exiting: false,
+            panel_hwnd: 0,
             menu_open: false,
             menu_pos: None,
             menu_need_focus: false,
@@ -706,11 +719,8 @@ impl LexideckApp {
     /// 逐帧声明所有悬浮窗 viewport（含排版计划重建）
     fn draw_floats(&mut self, ctx: &egui::Context, th: &Theme) {
         let scale = self.cfg.font_scale * self.screen_scale(ctx);
-        // 层级两档（设计 §5.2）：置底 = AlwaysOnBottom（默认），置顶 = AlwaysOnTop
-        let level = match self.cfg.layer {
-            config::Layer::Top => WindowLevel::AlwaysOnTop,
-            config::Layer::Bottom => WindowLevel::AlwaysOnBottom,
-        };
+        // 层级与穿透各管各的（两者独立，四种组合都可能）
+        let level = window::level_of(self.cfg.layer);
         let passthrough = self.cfg.passthrough;
         let theme_kind = th.kind;
 
@@ -738,6 +748,9 @@ impl LexideckApp {
 
             ctx.show_viewport_immediate(vid, builder, |ui, _class| {
                 fps_tick(ui.ctx(), "card");
+                // eframe 0.36 不认 with_taskbar（见 window::ensure_no_taskbar 的说明），
+                // 卡片会被塞进任务栏；每帧自查自纠一次，窗口重建也能纠回来
+                window::ensure_no_taskbar(f.id);
                 f.start_anim_if_due();
                 if f.anim_at.is_some() {
                     ui.ctx().request_repaint_of(ui.ctx().viewport_id());
@@ -841,12 +854,18 @@ impl LexideckApp {
             self.panel_home = ctx.input(|i| i.viewport().outer_rect).map(|r| r.min);
         }
         ctx.send_viewport_cmd(ViewportCommand::OuterPosition(Self::PARK_POS));
+        // 只挪屏外不够：窗口还是「可见」态，任务栏按钮会一直留着（用户实测报过）。
+        // 摘掉 WS_EX_APPWINDOW、置成 WS_EX_TOOLWINDOW —— 任务栏和 Alt+Tab 里都不再出现，
+        // 但窗口本身仍是「可见」的，所有帧走正常路径（新建浮窗不会踩 eframe 那条旁路）。
+        window::set_taskbar_visible(self.panel_hwnd, false);
         self.panel_visible = false;
     }
 
     /// 把面板放回屏幕里并拿到前台。三处共用：托盘图标 / 托盘菜单 / 第二次启动（单实例唤回）。
     /// 收进托盘时窗口被挪到了屏幕外，所以唤回必须显式放回原位。
     fn show_panel(&mut self, ctx: &egui::Context) {
+        // 先把任务栏按钮还回来（收进托盘时摘掉了）
+        window::set_taskbar_visible(self.panel_hwnd, true);
         ctx.send_viewport_cmd(ViewportCommand::Visible(true));
         // 用记住的屏（此刻还没翻回可见，实时值会是屏外那个「最近的屏」）
         let ms = self.monitor_size(ctx);
@@ -882,7 +901,8 @@ impl LexideckApp {
         if self.use_tray() {
             ctx.send_viewport_cmd(ViewportCommand::CancelClose);
             self.hide_panel(ctx);
-            self.status = Some("已收进托盘（托盘图标右键可以唤回来）".into());
+            self.status =
+                Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
             return;
         }
         // 直接退出（或托盘不可用时的退化路径）：沿用已有的 5 秒二次确认
@@ -896,23 +916,97 @@ impl LexideckApp {
         self.status = Some(EXIT_CONFIRM_HINT.into());
     }
 
+    /// 托盘自检节奏：建好之后隔这么久查第一次，之后每次再隔这么久重查。
+    /// 见 tray_tick 的自检说明（为什么要查）。
+    const TRAY_CHECK_GAP: Duration = Duration::from_millis(700);
+    /// 托盘自检最多查几次：外壳可能慢半拍，多给两次机会再判「没进托盘」。
+    const TRAY_CHECK_MAX: u32 = 3;
+
+    /// 自检判定：`ok` = 外壳这次确认图标在托盘里了吗；`tries` = 已查次数（含这次）。
+    /// 返回 true = 还要再查一次（还没确认、但还有机会）；false = 到此为止（确认了、或查够次数判失败）。
+    /// 纯函数，好测。
+    fn tray_check_again(ok: bool, tries: u32) -> bool {
+        !ok && tries < Self::TRAY_CHECK_MAX
+    }
+
+    /// 托盘创建失败后，第 `attempts` 次尝试之后该等多久再试。
+    /// 前几次快试（覆盖「启动那一瞬间外壳没准备好」这类瞬时失败），之后每分钟慢补一次。
+    fn tray_retry_gap(attempts: u32) -> Duration {
+        if attempts < 5 {
+            Duration::from_secs(2)
+        } else {
+            Duration::from_secs(60)
+        }
+    }
+
+    /// 这一帧该不该再试一次建托盘；该试就把下次时间点排上（见 tray_tick 的说明）。
+    fn tray_due(&mut self) -> bool {
+        let now = Instant::now();
+        if let Some(t) = self.tray_next_try {
+            if now < t {
+                return false;
+            }
+        }
+        self.tray_next_try = Some(now + Self::tray_retry_gap(self.tray_attempts));
+        true
+    }
+
     /// 托盘懒创建 + 每帧把事件收干。
-    /// 托盘必须在主线程、事件循环起来之后创建（win32 消息循环要求），
-    /// 所以放在 ui() 里；失败只写一句 status，不重试。
+    /// 托盘必须在主线程、事件循环起来之后创建（win32 消息循环要求），所以放在 ui() 里。
+    ///
+    /// **创建失败会重试**（2026-10-02 改）。原先写的是「失败只写一句 status，不重试」，
+    /// 于是**一次瞬时失败就毁掉整个进程的托盘** —— 真机实测：同一个 exe，16:16 起的实例
+    /// 图标正常（注册表里有对应条目），16:26 起的实例 `Shell_NotifyIconGetRect` 直接返回
+    /// `E_FAIL`、注册表里连条目都没建，那一整轮托盘就是空的（而托盘正是唤回面板的唯一通道）。
+    /// 现在：前几次每 2 秒试一遍，之后每分钟补试一次，成功即恢复正常状态。
     fn tray_tick(&mut self, ctx: &egui::Context, frame: &eframe::Frame) {
-        if self.tray.is_none() && !self.tray_tried {
-            self.tray_tried = true;
+        if self.tray.is_none() && self.tray_due() {
+            self.tray_attempts += 1;
             match tray::Tray::create(ctx, panel_hwnd(frame)) {
                 Ok(t) => {
                     self.tray = Some(t);
-                    // 一次性确认：截图/用户都能看到"托盘建好了"（P3a 新功能，给个明确反馈）
-                    self.status =
-                        Some("托盘图标已就绪：关掉面板＝收进托盘（可在设置里改成直接退出）".into());
+                    // 建成功 ≠ 图标真的进了通知区（见 tray::Tray::verify 的说明：
+                    // 实测有「NIM_ADD 报成功、外壳没登记、注册表无条目」的情况）。
+                    // 所以先别报「已就绪」，隔一会儿回问外壳一次，以自检结果为准。
+                    self.tray_check_tries = 0;
+                    self.tray_check_at = Some(Instant::now() + Self::TRAY_CHECK_GAP);
                 }
                 Err(e) => {
+                    // 失败原因照实写出来（含 crate 给的细节）—— 用户看不到图标时，
+                    // 这一行就是唯一线索；面板底部状态栏一直在。
                     self.status = Some(format!(
-                        "托盘图标创建失败：{e}（关闭窗口按「直接退出」处理）"
+                        "托盘图标创建失败（第 {} 次）：{e}；关闭窗口按「直接退出」处理，稍后自动重试",
+                        self.tray_attempts
                     ));
+                }
+            }
+        }
+        // 自检分支：只在刚建好的那几次跑（见 TRAY_CHECK_GAP/MAX）。
+        if let Some(at) = self.tray_check_at {
+            if Instant::now() >= at {
+                self.tray_check_tries += 1;
+                let ok = self.tray.as_ref().is_some_and(|t| t.verify());
+                if ok {
+                    self.tray_check_at = None;
+                    // 到这一步才算真的「已就绪」——之前那句是建成功就报，会骗人。
+                    self.status = Some(
+                        "托盘图标已就绪：关掉面板＝收进托盘（图标在右下角 ^ 折叠区，可拖出来常驻）"
+                            .into(),
+                    );
+                } else if Self::tray_check_again(false, self.tray_check_tries) {
+                    self.tray_check_at = Some(Instant::now() + Self::TRAY_CHECK_GAP);
+                } else {
+                    // 查够次数还是没有：如实报「没进托盘」，并把图标丢掉交给重试重建。
+                    self.tray_check_at = None;
+                    self.tray = None;
+                    self.tray_next_try =
+                        Some(Instant::now() + Self::tray_retry_gap(self.tray_attempts));
+                    self.status = Some(
+                        "注意：托盘图标没能进入系统通知区（外壳静默拒绝了它）——\
+                         已按「没有托盘」处理并自动重试；已知一类原因是 exe 所在的文件夹，\
+                         把 exe 换到别的文件夹通常立刻恢复"
+                            .into(),
+                    );
                 }
             }
         }
@@ -941,7 +1035,10 @@ impl LexideckApp {
             tray::TrayAction::TogglePanel => {
                 if self.panel_visible {
                     self.hide_panel(ctx);
-                    self.status = Some("面板已收进托盘（托盘图标可以唤回来）".into());
+                    self.status = Some(
+                        "面板已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）"
+                            .into(),
+                    );
                 } else {
                     self.show_panel(ctx);
                     self.status = Some("面板已唤回".into());
@@ -1015,18 +1112,22 @@ impl LexideckApp {
     // ── 意图处理 ──
 
     fn handle_control(&mut self, ctx: &egui::Context, res: control::ControlResult) {
-        if res.top_changed {
-            let lvl = match self.cfg.layer {
-                config::Layer::Top => WindowLevel::AlwaysOnTop,
-                config::Layer::Bottom => WindowLevel::AlwaysOnBottom,
-            };
-            // 层级与穿透是两件事，两个都要发全
+        if res.style_changed {
+            let lvl = window::level_of(self.cfg.layer);
+            // 层级与穿透是两件事，两个都要发全（两者独立，四种组合都可能）
             let pt = self.cfg.passthrough;
             for f in &self.floats {
                 let vid = ViewportId::from_hash_of(("lexideck-float", f.id));
                 ctx.send_viewport_cmd_to(vid, ViewportCommand::WindowLevel(lvl));
                 ctx.send_viewport_cmd_to(vid, ViewportCommand::MousePassthrough(pt));
             }
+        }
+        if res.open_taskbar_settings {
+            open_taskbar_settings();
+            self.status = Some(
+                "已打开「任务栏」设置：把 Lexideck 从「其他系统托盘图标」里打开，图标就常驻了"
+                    .into(),
+            );
         }
         if res.reload {
             self.reload_library(); // 里面已经 prune_state
@@ -1126,7 +1227,8 @@ impl LexideckApp {
             if self.use_tray() {
                 // 托盘模式：面板的 ✕ 首击 = 收进托盘（不进入退出确认）
                 self.hide_panel(ctx);
-                self.status = Some("已收进托盘（托盘图标右键可以唤回来）".into());
+                self.status =
+                    Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
             } else {
                 self.confirm_exit = true;
             }
@@ -1149,7 +1251,7 @@ impl LexideckApp {
             config::save(&config::settings_path(), &self.cfg);
             self.status = Some(match a {
                 CloseAction::Tray => {
-                    "关闭窗口时：驻留托盘（点 ✕ 收进托盘，托盘图标可以唤回来）".into()
+                    "关闭窗口时：驻留托盘（点 ✕ 收进托盘；图标在右下角 ^ 折叠区）".into()
                 }
                 CloseAction::Exit => "关闭窗口时：直接退出（5 秒内点两次 ✕ 才会退）".into(),
             });
@@ -1314,6 +1416,8 @@ impl eframe::App for LexideckApp {
             return;
         }
         fps_tick(&ctx, "root");
+        // 面板句柄每帧记一次：收进托盘时要靠它摘任务栏按钮（见 hide_panel）
+        self.panel_hwnd = panel_hwnd(frame);
 
         // P3a：托盘懒创建 + 收事件；关闭拦截必须在 place_once 之前
         // （CancelClose 必须和 close_requested 同帧发出，eframe 只认那一帧）
@@ -1439,6 +1543,17 @@ impl eframe::App for LexideckApp {
 }
 
 // ── 帧率探针（诊断用） ──
+
+/// 打开 Windows 的「任务栏」设置页。
+///
+/// 用在哪：Windows 11 默认把新托盘图标收进右下角的 `^` 折叠区，**应用自己抢不到常驻位**
+/// （只能由用户在设置里打开）—— 面板里给一个直达入口，省得用户找不到唤回面板的图标。
+/// 目标页是「设置 → 个性化 → 任务栏」，里面就有「其他系统托盘图标」。
+fn open_taskbar_settings() {
+    let _ = std::process::Command::new("cmd")
+        .args(["/C", "start", "", "ms-settings:taskbar"])
+        .spawn();
+}
 
 /// 面板窗口句柄（托盘唤醒要用，见 tray.rs 文件头）。拿不到就回 0 ——
 /// 只是少一道唤醒保险，其它功能不受影响。
@@ -1599,6 +1714,31 @@ fn apply_panel_visuals(ctx: &egui::Context, kind: ThemeKind) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// 托盘自检判定：确认即停；没确认时给足 TRAY_CHECK_MAX 次机会才判失败
+    #[test]
+    fn tray_check_again_until_confirm_or_give_up() {
+        assert!(!LexideckApp::tray_check_again(true, 1), "确认了就别再查");
+        assert!(LexideckApp::tray_check_again(false, 1), "没确认但还有机会");
+        assert!(LexideckApp::tray_check_again(
+            false,
+            LexideckApp::TRAY_CHECK_MAX - 1
+        ));
+        assert!(
+            !LexideckApp::tray_check_again(false, LexideckApp::TRAY_CHECK_MAX),
+            "查够次数就判失败（不能无限查）"
+        );
+    }
+
+    /// 托盘创建失败后的重试节奏：前 5 次每 2 秒，之后每分钟补一次
+    #[test]
+    fn tray_retry_gap_escalates() {
+        use std::time::Duration;
+        assert_eq!(LexideckApp::tray_retry_gap(0), Duration::from_secs(2));
+        assert_eq!(LexideckApp::tray_retry_gap(4), Duration::from_secs(2));
+        assert_eq!(LexideckApp::tray_retry_gap(5), Duration::from_secs(60));
+        assert_eq!(LexideckApp::tray_retry_gap(99), Duration::from_secs(60));
+    }
 
     /// 单张比屏幕还高的卡：按顺序截断，绝不硬塞到屏幕上
     #[test]

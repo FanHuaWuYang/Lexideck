@@ -218,12 +218,14 @@ pub enum ConflictChoice {
 
 #[derive(Default)]
 pub struct ControlResult {
-    pub changed: bool,     // cfg 有改动 → 存盘
-    pub top_changed: bool, // 置顶开关变了
-    pub reload: bool,      // 重新读取主库
-    pub pick_import: bool, // 打开导入对话框
+    pub changed: bool,       // cfg 有改动 → 存盘
+    pub style_changed: bool, // 层级或穿透变了 → 给所有浮窗重发 WindowLevel / MousePassthrough
+    pub reload: bool,        // 重新读取主库
+    pub pick_import: bool,   // 打开导入对话框
     pub show_selected: bool,
     pub close_all: bool,
+    /// 打开 Windows 的「任务栏」设置页（让用户把托盘图标从 ^ 折叠区拖出来）
+    pub open_taskbar_settings: bool,
     /// 回到「按今日展示」（屏幕内容交回展示时间引擎）
     pub back_to_today: bool,
     /// 永久关闭 / 打开一条策略（词 + 日期段）
@@ -920,18 +922,46 @@ fn settings_body(
             !on_top,
         ) && on_top
         {
-            set_layer(cfg, false, r);
+            set_level(cfg, false, r);
         }
         ui.add_space(10.0);
         if layer_option(
             ui,
             w,
-            "置顶 ＋ 鼠标穿透",
-            "卡片始终在最上层，点击全部穿过去落到 PPT 上。代价：卡片会压在 PPT 右侧，视觉上占用版面。",
+            "置顶",
+            "卡片始终压在其它窗口最上层。代价：会占掉 PPT 右侧版面；若不配合穿透，点卡片会落在卡片上。",
             on_top,
         ) && !on_top
         {
-            set_layer(cfg, true, r);
+            set_level(cfg, true, r);
+        }
+    });
+
+    ui.add_space(14.0);
+    group_head(ui, "鼠标穿透", "", Some("和层级无关，四种组合都能选"));
+    let pt = cfg.passthrough;
+    ui.horizontal(|ui| {
+        let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
+        if layer_option(
+            ui,
+            w,
+            "不穿透（默认）",
+            "卡片照常接收鼠标：点卡片会落在卡片上，拖着卡片挪位置也要靠它。",
+            !pt,
+        ) && pt
+        {
+            set_passthrough(cfg, false, r);
+        }
+        ui.add_space(10.0);
+        if layer_option(
+            ui,
+            w,
+            "穿透",
+            "卡片收不到任何鼠标事件，点击全部穿过去落到 PPT 上（贴在 PPT 上层常显时用它）。",
+            pt,
+        ) && !pt
+        {
+            set_passthrough(cfg, true, r);
         }
     });
     ui.add_space(12.0);
@@ -1023,7 +1053,7 @@ fn settings_body(
             ui,
             w,
             "驻留托盘（默认）",
-            "关掉面板后程序继续跑，卡片不掉；点托盘图标、或用托盘右键菜单可随时唤回面板。",
+            "关掉面板后程序继续跑，卡片不掉；点托盘图标（在右下角 ^ 折叠区）、用托盘右键菜单、或再双击一次 exe 都能唤回面板。",
             cfg.close_action == CloseAction::Tray,
         ) && cfg.close_action != CloseAction::Tray
         {
@@ -1053,6 +1083,23 @@ fn settings_body(
                 .color(sk().txt3),
         );
     });
+
+    ui.add_space(10.0);
+    ui.horizontal(|ui| {
+        if sq_btn(ui, "打开任务栏设置", true) {
+            r.open_taskbar_settings = true;
+        }
+    });
+    ui.add_space(6.0);
+    ui.label(
+        RichText::new(
+            "托盘图标去哪了：Windows 11 默认把新图标收进任务栏右下角的 ^ 折叠区，不进常驻区（程序自己抢不进去）。\
+             点上面的按钮打开「设置 → 个性化 → 任务栏 → 其他系统托盘图标」，把 Lexideck 打开它就常驻了；\
+             实在找不到图标也不慌 —— 再双击一次 lexideck.exe 同样能把面板唤回来（同一个程序只会跑一份）。",
+        )
+        .size(12.0)
+        .color(sk().txt3),
+    );
 
     ui.add_space(18.0);
     sep_line(ui);
@@ -1124,22 +1171,19 @@ fn settings_body(
     }
 }
 
-/// 层级两档的取值：(层级, 鼠标穿透)。置顶必然配穿透（设计 §5.2）
-fn layer_pair(top: bool) -> (Layer, bool) {
-    if top {
-        (Layer::Top, true)
-    } else {
-        (Layer::Bottom, false)
-    }
+/// 切卡片层级：只动 layer，**不碰 passthrough**（两者已解耦，四种组合都能选）。
+/// 让 app 去重发 WindowLevel / MousePassthrough（style_changed）。
+fn set_level(cfg: &mut Config, top: bool, r: &mut ControlResult) {
+    cfg.layer = if top { Layer::Top } else { Layer::Bottom };
+    r.changed = true;
+    r.style_changed = true;
 }
 
-/// 切层级：写回 cfg 并让 app 去发 WindowLevel / MousePassthrough（top_changed）
-fn set_layer(cfg: &mut Config, top: bool, r: &mut ControlResult) {
-    let (layer, passthrough) = layer_pair(top);
-    cfg.layer = layer;
-    cfg.passthrough = passthrough;
+/// 切鼠标穿透：只动 passthrough，不碰层级。
+fn set_passthrough(cfg: &mut Config, on: bool, r: &mut ControlResult) {
+    cfg.passthrough = on;
     r.changed = true;
-    r.top_changed = true;
+    r.style_changed = true;
 }
 
 // ══ 右栏说明 ══
@@ -1250,7 +1294,13 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
             hd(ui, "为什么默认置底");
             pg(
                 ui,
-                "其他课上 PPT 不能被卡片遮挡，所以默认藏在最底层；需要常显就切「置顶 + 穿透」。",
+                "其他课上 PPT 不能被卡片遮挡，所以默认藏在最底层；需要常显就切「置顶」。",
+            );
+            hd(ui, "层级和穿透是两件事");
+            pg(
+                ui,
+                "层级决定卡片压在谁上面，穿透决定点击能不能穿过卡片，两边各自独立、四种组合都能选。\
+                 常见搭配是「置顶 + 穿透」：卡片常显，点击照常落到 PPT 上。",
             );
             hd(ui, "穿透的风险");
             pg(
@@ -3191,26 +3241,28 @@ mod tests {
         assert!((font_step(0.52, -1) - 0.50).abs() < 1e-6);
     }
 
-    /// 层级两档：置顶必然配鼠标穿透（设计 §5.2），置底一定不穿透
+    /// 层级与穿透解耦（2026-10-02 慕言要求）：切哪个都不许顺手改另一个，四种组合都能选
     #[test]
-    fn layer_pair_maps_top_to_passthrough() {
-        assert_eq!(layer_pair(true), (Layer::Top, true));
-        assert_eq!(layer_pair(false), (Layer::Bottom, false));
-    }
-
-    /// 切层级要写回 cfg 并让 app 去发 WindowLevel / MousePassthrough
-    #[test]
-    fn set_layer_writes_cfg_and_reports_top_changed() {
+    fn level_and_passthrough_are_independent() {
         let mut cfg = Config::default();
         let mut r = ControlResult::default();
-        set_layer(&mut cfg, true, &mut r);
+        // 置顶：穿透保持默认 false —— 旧实现里这档做不到（置顶必然配穿透）
+        set_level(&mut cfg, true, &mut r);
         assert_eq!(cfg.layer, Layer::Top);
+        assert!(!cfg.passthrough, "切层级不许顺手改穿透");
+        assert!(r.changed && r.style_changed);
+        // 只开穿透：层级不许被带回去
+        set_passthrough(&mut cfg, true, &mut r);
         assert!(cfg.passthrough);
-        assert!(r.changed && r.top_changed);
-        set_layer(&mut cfg, false, &mut r);
-        assert_eq!(cfg.layer, Layer::Bottom);
+        assert_eq!(cfg.layer, Layer::Top, "切穿透不许改层级");
+        // 只关穿透、再置底：两项各自独立
+        set_passthrough(&mut cfg, false, &mut r);
         assert!(!cfg.passthrough);
-        assert!(r.top_changed);
+        assert_eq!(cfg.layer, Layer::Top);
+        set_level(&mut cfg, false, &mut r);
+        assert_eq!(cfg.layer, Layer::Bottom);
+        assert!(!cfg.passthrough, "置底也不许顺手关穿透");
+        assert!(r.style_changed, "两次切换都要让 app 重发窗口样式");
     }
 
     /// 策略行右侧的开关真的会回传「永久关闭这一条」
@@ -3265,15 +3317,11 @@ mod tests {
     fn layer_option_click_reports_choice() {
         let size = egui::vec2(280.0, 200.0);
         let res = run_with_click(size, egui::pos2(140.0, 40.0), |ui, r| {
-            if layer_option(ui, 280.0, "置顶 ＋ 鼠标穿透", "卡片始终在最上层", false)
-            {
-                let (layer, passthrough) = layer_pair(true);
-                assert_eq!((layer, passthrough), (Layer::Top, true));
-                r.changed = true;
-                r.top_changed = true;
+            if layer_option(ui, 280.0, "置顶", "卡片始终在最上层", false) {
+                set_level(&mut Config::default(), true, r);
             }
         });
-        assert!(res.top_changed && res.changed, "点「置顶」要回传层级切换");
+        assert!(res.style_changed && res.changed, "点「置顶」要回传样式切换");
     }
 
     /// 设置页「关闭窗口时」两档（P3a）：画布开高一点让整页可见，
@@ -3286,7 +3334,7 @@ mod tests {
         let import = import_ctx(&errors, None, "");
         let cx = base_ctx(&import, &[], &[], &warns);
         let rows: Vec<WordRow> = Vec::new();
-        let size = egui::vec2(1004.0, 1400.0);
+        let size = egui::vec2(1004.0, 1800.0);
         let ctx = egui::Context::default();
         let raw = |ev: Vec<egui::Event>, t: f64| egui::RawInput {
             screen_rect: Some(egui::Rect::from_min_size(egui::pos2(0.0, 0.0), size)),
@@ -3307,7 +3355,7 @@ mod tests {
 
         let mut found = false;
         let mut t = 0.5;
-        for y in (300..1380).step_by(3) {
+        for y in (300..1780).step_by(3) {
             let pos = egui::pos2(460.0, y as f32);
             let ev = vec![
                 egui::Event::PointerMoved(pos),
