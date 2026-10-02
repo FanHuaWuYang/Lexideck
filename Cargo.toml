@@ -11,6 +11,18 @@ encoding_rs = "0.8"
 rfd = "0.17.2"
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
+tray-icon = "0.26.0"
+
+# 托盘唤醒要用面板窗口的 HWND：
+# raw-window-handle 从 eframe::Frame 取句柄，windows-sys 发 PostMessage（版本选 0.61
+# 是因为 tray-icon 已经带了同一版，不额外多编一份）。
+[target.'cfg(windows)'.dependencies]
+raw-window-handle = "0.6"
+windows-sys = { version = "0.61", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_UI_WindowsAndMessaging",
+] }
 
 [profile.release]
 opt-level = 3

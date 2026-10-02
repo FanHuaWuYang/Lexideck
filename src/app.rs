@@ -13,7 +13,7 @@ use eframe::egui::{
 
 use crate::anim::Anim;
 use crate::card::{self, CardPlan};
-use crate::config::{self, Config};
+use crate::config::{self, CloseAction, Config};
 use crate::control::{
     self, CardRow, ConflictChoice, ImportCtx, PanelState, PlanRow, WordFilter, WordRow,
 };
@@ -21,8 +21,10 @@ use crate::deck::{self, Deck, Entry};
 use crate::float;
 use crate::import;
 use crate::library;
+use crate::menu;
 use crate::schedule;
 use crate::theme::{self, Theme, ThemeKind};
+use crate::tray;
 use crate::window;
 
 /// 一个悬浮窗的运行时状态
@@ -133,9 +135,35 @@ pub struct LexideckApp {
     placed: bool,
     applied_theme: Option<ThemeKind>,
     confirm_exit: bool,
+    // ── 托盘（P3a）──
+    /// 托盘句柄（第一帧懒创建；创建失败为 None，程序照常跑）
+    tray: Option<tray::Tray>,
+    /// 托盘是否已经尝试创建过（失败不重试）
+    tray_tried: bool,
+    /// 面板窗口当前是否可见（自己维护：ViewportInfo 里拿不到 Visible(false) 的状态）
+    panel_visible: bool,
+    /// 收进托盘前的位置（窗口被挪到屏幕外；唤回时放回去）
+    panel_home: Option<egui::Pos2>,
+    /// 明确退出（面板退出按钮 / 托盘菜单「退出」）：绕过关闭拦截，不再 CancelClose
+    exiting: bool,
+    // ── 托盘右键菜单（P3a，自绘；见 menu.rs）──
+    /// 菜单是否开着（右键图标打开；点条目 / ESC / 点了别处关闭）
+    menu_open: bool,
+    /// 打开时图标点击处的光标位置（物理像素），定位菜单用
+    menu_pos: Option<(f32, f32)>,
+    /// 还没给菜单请求过焦点：打开后第一帧请求一次（失焦即关，不能每帧都请求）
+    menu_need_focus: bool,
+    /// 菜单这一辈子拿到过焦点没有（拿到后失焦才判定为「点了别处」）
+    menu_got_focus: bool,
 }
 
+/// 关闭拦截里「再点一次」提示的固定文案（和底栏确认文案同一件事，过期后要认得出来）
+const EXIT_CONFIRM_HINT: &str = "再点一次 ✕ 就退出（5 秒内有效）";
+
 impl LexideckApp {
+    /// 「收进托盘」时面板挪去的屏幕外位置（在常规多屏布局之外；见 hide_panel）
+    const PARK_POS: egui::Pos2 = egui::Pos2::new(-32000.0, -32000.0);
+
     pub fn new(cc: &eframe::CreationContext<'_>, cfg: Config) -> Self {
         setup_fonts(cc);
         let path = library::lib_path();
@@ -173,6 +201,15 @@ impl LexideckApp {
             placed: false,
             applied_theme: None,
             confirm_exit: false,
+            tray: None,
+            tray_tried: false,
+            panel_visible: true,
+            panel_home: None,
+            exiting: false,
+            menu_open: false,
+            menu_pos: None,
+            menu_need_focus: false,
+            menu_got_focus: false,
         };
         app.lib_mtime = library::mtime(&app.lib_path);
         app.prune_selection();
@@ -463,14 +500,29 @@ impl LexideckApp {
 
     // ── 卡片 ──
 
-    /// 屏幕系数：不同分辨率下卡片相对屏幕的比例保持一致（1080p = 1.0）
-    fn screen_scale(ctx: &egui::Context) -> f32 {
-        match ctx.input(|i| i.viewport().monitor_size) {
-            Some(ms) if ms.x > 0.0 && ms.y > 0.0 => {
-                (ms.y / 1080.0).min(ms.x / 1920.0).clamp(0.5, 4.0)
+    /// 当前该按哪块屏算卡片（缩放系数 + 平铺锚点都跟着它）。
+    ///
+    /// 面板收进托盘 = 挪到 (-32000,-32000)：系统把它算成「**最近的**显示器」，
+    /// 实时值会跳到另一块屏（P3a 实测：448 宽的卡隐藏后缩成 336、锚点也跑到左屏）。
+    /// 所以规则是：面板可见 → 用实时值并记下来；收进托盘 → 用记下来的值。
+    fn monitor_size(&self, ctx: &egui::Context) -> egui::Vec2 {
+        let id = egui::Id::new("lexideck-monitor-size");
+        if self.panel_visible {
+            if let Some(ms) = ctx.input(|i| i.viewport().monitor_size) {
+                if ms.x > 0.0 && ms.y > 0.0 {
+                    ctx.data_mut(|d| d.insert_temp(id, ms));
+                    return ms;
+                }
             }
-            _ => 1.0,
         }
+        ctx.data(|d| d.get_temp::<egui::Vec2>(id))
+            .unwrap_or(egui::vec2(1920.0, 1080.0))
+    }
+
+    /// 屏幕系数：不同分辨率下卡片相对屏幕的比例保持一致（1080p = 1.0）
+    fn screen_scale(&self, ctx: &egui::Context) -> f32 {
+        let ms = self.monitor_size(ctx);
+        (ms.y / 1080.0).min(ms.x / 1920.0).clamp(0.5, 4.0)
     }
 
     fn make_plan(
@@ -532,10 +584,8 @@ impl LexideckApp {
     /// 让悬浮窗数量 / 内容 / 位置与"当前屏幕来源"保持一致：
     /// Auto = 今日生效的词（带策略内隐藏），Manual = cfg.shown。截断/平铺算法不变。
     fn reconcile_floats(&mut self, ctx: &egui::Context, th: &Theme) {
-        let scale = self.cfg.font_scale * Self::screen_scale(ctx);
-        let monitor = ctx
-            .input(|i| i.viewport().monitor_size)
-            .unwrap_or(egui::vec2(1920.0, 1080.0));
+        let scale = self.cfg.font_scale * self.screen_scale(ctx);
+        let monitor = self.monitor_size(ctx);
 
         // 要显示的 (词条 key, 策略内额外隐藏)
         let want: Vec<(String, Vec<String>)> = match self.screen {
@@ -602,11 +652,16 @@ impl LexideckApp {
                 }
             }
         }
-        // 缺的窗补上
-        while self.floats.len() < want.len() {
-            let i = self.floats.len();
-            let (w, h) = want[i].clone();
-            self.spawn_float(ctx, th, w, h, pos.get(i).copied(), scale);
+        // 缺的窗补上。注意：窗口被**最小化**时 eframe 会走那条没有事件循环上下文的
+        // 直接补画旁路（同 hide_panel 注释里的坑），此刻新建窗口会被静默跳过 →
+        // egui 断言崩。所以最小化时先不建，等窗口恢复后下一帧再补。
+        let minimized = ctx.input(|i| i.viewport().minimized).unwrap_or(false);
+        if !minimized {
+            while self.floats.len() < want.len() {
+                let i = self.floats.len();
+                let (w, h) = want[i].clone();
+                self.spawn_float(ctx, th, w, h, pos.get(i).copied(), scale);
+            }
         }
     }
 
@@ -643,7 +698,7 @@ impl LexideckApp {
 
     /// 逐帧声明所有悬浮窗 viewport（含排版计划重建）
     fn draw_floats(&mut self, ctx: &egui::Context, th: &Theme) {
-        let scale = self.cfg.font_scale * Self::screen_scale(ctx);
+        let scale = self.cfg.font_scale * self.screen_scale(ctx);
         // 层级两档（设计 §5.2）：置底 = AlwaysOnBottom（默认），置顶 = AlwaysOnTop
         let level = match self.cfg.layer {
             config::Layer::Top => WindowLevel::AlwaysOnTop,
@@ -704,12 +759,13 @@ impl LexideckApp {
         if self.placed {
             return;
         }
-        let vp = ctx.input(|i| i.viewport().clone());
         let pos = match (self.cfg.window_x, self.cfg.window_y) {
-            (Some(x), Some(y)) => Some(egui::pos2(x, y)),
-            _ => vp
-                .monitor_size
-                .map(|ms| egui::pos2(60.0, (ms.y - self.cfg.window_h - 80.0).max(0.0))),
+            // x 明显在屏幕外 = 上一版「收进托盘」留下的脏位置，别用
+            (Some(x), Some(y)) if x > -10000.0 => Some(egui::pos2(x, y)),
+            _ => {
+                let ms = self.monitor_size(ctx);
+                Some(egui::pos2(60.0, (ms.y - self.cfg.window_h - 80.0).max(0.0)))
+            }
         };
         if let Some(p) = pos {
             ctx.send_viewport_cmd(ViewportCommand::OuterPosition(p));
@@ -736,20 +792,212 @@ impl LexideckApp {
             }
         }
         if let Some(r) = vp.outer_rect {
-            let (x, y) = (r.min.x.round(), r.min.y.round());
-            let changed = match (self.cfg.window_x, self.cfg.window_y) {
-                (Some(px), Some(py)) => (x - px).abs() > 1.0 || (y - py).abs() > 1.0,
-                _ => true,
-            };
-            if changed {
-                self.cfg.window_x = Some(x);
-                self.cfg.window_y = Some(y);
-                dirty = true;
+            // 收进托盘时窗口被挪到屏幕外 —— 那个位置不能存进设置（下次启动就找不回来了）
+            if self.panel_visible {
+                let (x, y) = (r.min.x.round(), r.min.y.round());
+                let changed = match (self.cfg.window_x, self.cfg.window_y) {
+                    (Some(px), Some(py)) => (x - px).abs() > 1.0 || (y - py).abs() > 1.0,
+                    _ => true,
+                };
+                if changed {
+                    self.cfg.window_x = Some(x);
+                    self.cfg.window_y = Some(y);
+                    dirty = true;
+                }
             }
         }
         if dirty {
             config::save(&config::settings_path(), &self.cfg);
             self.last_persist = Instant::now();
+        }
+    }
+
+    // ── 托盘 / 关闭拦截（P3a）──
+
+    /// 托盘可用吗：设置成驻留托盘 **并且** 图标真的建起来了。
+    /// 建不起来时不敢藏面板（没有唤回通道 = 把自己锁死），退化成「关闭 = 退出」。
+    fn use_tray(&self) -> bool {
+        self.cfg.close_action == CloseAction::Tray && self.tray.is_some()
+    }
+
+    /// 把面板收进托盘 = 挪到屏幕外（**不是** `Visible(false)`，原因见下）。
+    ///
+    /// eframe 0.36 对「不可见/最小化窗口」会走一条直接补画的旁路
+    /// （run.rs `check_redraw_requests`，为修 egui#5229 的 Windows 问题所加）。
+    /// 那条路**没有登记事件循环上下文**，于是「新建窗口」（= 新建浮窗/词卡）会被
+    /// 静默跳过，egui 随即断言崩（`egui backend is implemented incorrectly`）——
+    /// 实测：面板隐藏时从托盘点「显示全部卡片」必崩；课堂上新词到点上屏同样会崩。
+    /// 挪到屏幕外则窗口仍是「可见」态，所有帧都走正常路径，建新窗口安全。
+    fn hide_panel(&mut self, ctx: &egui::Context) {
+        if self.panel_visible {
+            // 记住露脸时的位置，唤回时放回去
+            self.panel_home = ctx.input(|i| i.viewport().outer_rect).map(|r| r.min);
+        }
+        ctx.send_viewport_cmd(ViewportCommand::OuterPosition(Self::PARK_POS));
+        self.panel_visible = false;
+    }
+
+    /// 明确退出：置上 `exiting`（关闭拦截放行）→ 存设置 → 请 eframe 关根窗口。
+    /// 面板退出按钮、托盘菜单「退出」都走这里。
+    fn quit_now(&mut self, ctx: &egui::Context) {
+        self.exiting = true;
+        config::save(&config::settings_path(), &self.cfg);
+        ctx.send_viewport_cmd(ViewportCommand::Close);
+    }
+
+    /// 关闭拦截。放置必须在 place_once 之前：CancelClose 要和 close_requested
+    /// 在**同一帧**发出去——eframe 只在这一帧的输出里找它。
+    ///
+    /// 覆盖的是系统级关闭（Alt+F4 / 任务栏「关闭窗口」）；面板自绘 ✕ 的两条路
+    /// （托盘模式首击隐藏、退出模式二次确认）分别走 handle_control 的
+    /// confirm_arm / exit 分支，不从这里过。
+    fn intercept_close(&mut self, ctx: &egui::Context) {
+        if !ctx.input(|i| i.viewport().close_requested()) {
+            return;
+        }
+        if self.exiting {
+            return; // 明确退出：放行（eframe 接着退进程）
+        }
+        if self.use_tray() {
+            ctx.send_viewport_cmd(ViewportCommand::CancelClose);
+            self.hide_panel(ctx);
+            self.status = Some("已收进托盘（托盘图标右键可以唤回来）".into());
+            return;
+        }
+        // 直接退出（或托盘不可用时的退化路径）：沿用已有的 5 秒二次确认
+        if self.confirm_exit {
+            // 5 秒内第二次：放行（不 CancelClose，eframe 会退出）
+            return;
+        }
+        ctx.send_viewport_cmd(ViewportCommand::CancelClose);
+        self.confirm_exit = true;
+        self.confirm_at = Some(Instant::now());
+        self.status = Some(EXIT_CONFIRM_HINT.into());
+    }
+
+    /// 托盘懒创建 + 每帧把事件收干。
+    /// 托盘必须在主线程、事件循环起来之后创建（win32 消息循环要求），
+    /// 所以放在 ui() 里；失败只写一句 status，不重试。
+    fn tray_tick(&mut self, ctx: &egui::Context, frame: &eframe::Frame) {
+        if self.tray.is_none() && !self.tray_tried {
+            self.tray_tried = true;
+            match tray::Tray::create(ctx, panel_hwnd(frame)) {
+                Ok(t) => {
+                    self.tray = Some(t);
+                    // 一次性确认：截图/用户都能看到"托盘建好了"（P3a 新功能，给个明确反馈）
+                    self.status =
+                        Some("托盘图标已就绪：关掉面板＝收进托盘（可在设置里改成直接退出）".into());
+                }
+                Err(e) => {
+                    self.status = Some(format!(
+                        "托盘图标创建失败：{e}（关闭窗口按「直接退出」处理）"
+                    ));
+                }
+            }
+        }
+        let actions: Vec<tray::TrayAction> = match &self.tray {
+            Some(t) => {
+                t.touch(); // 告诉心跳"这一帧来了"（冻住检测用，见 tray.rs 文件头）
+                t.poll()
+            }
+            None => return,
+        };
+        for a in actions {
+            self.do_tray_action(ctx, a);
+        }
+    }
+
+    /// 执行一条托盘意图。图标点击与自绘菜单共用这条路由，保证两边行为一致。
+    fn do_tray_action(&mut self, ctx: &egui::Context, a: tray::TrayAction) {
+        match a {
+            tray::TrayAction::OpenMenu { x, y } => {
+                // 记下图标点击处（物理像素）；菜单在同一帧的 draw_menu 里画出来。
+                // 菜单开着时再右键 = 换个位置重开，不叠窗。
+                self.menu_pos = Some((x, y));
+                self.menu_open = true;
+                self.menu_need_focus = true;
+            }
+            tray::TrayAction::TogglePanel => {
+                if self.panel_visible {
+                    self.hide_panel(ctx);
+                    self.status = Some("面板已收进托盘（托盘图标可以唤回来）".into());
+                } else {
+                    ctx.send_viewport_cmd(ViewportCommand::Visible(true));
+                    // 收进托盘时挪到了屏幕外：放回原位（记不到就按设置/主屏兜底）
+                    // 用记住的屏（此刻还没翻回可见，实时值会是屏外那个「最近的屏」）
+                    let ms = self.monitor_size(ctx);
+                    let fallback =
+                        Some(egui::pos2(60.0, (ms.y - self.cfg.window_h - 80.0).max(0.0)));
+                    if let Some(p) = self.panel_home.take().or(fallback) {
+                        ctx.send_viewport_cmd(ViewportCommand::OuterPosition(p));
+                    }
+                    ctx.send_viewport_cmd(ViewportCommand::Focus);
+                    self.panel_visible = true;
+                    self.status = Some("面板已唤回".into());
+                }
+            }
+            // 复用面板里的动作，保持两边行为一致
+            tray::TrayAction::ShowCards => {
+                let res = control::ControlResult {
+                    back_to_today: true,
+                    ..Default::default()
+                };
+                self.handle_control(ctx, res);
+            }
+            tray::TrayAction::HideCards => {
+                let res = control::ControlResult {
+                    close_all: true,
+                    ..Default::default()
+                };
+                self.handle_control(ctx, res);
+            }
+            tray::TrayAction::Quit => self.quit_now(ctx),
+        }
+    }
+
+    /// 画托盘右键菜单（自绘，即时视口；机制见 menu.rs）。
+    ///
+    /// 为什么不用系统原生菜单：原生菜单走模态 TrackPopupMenu，会把 winit 主循环
+    /// 冻住、并可能卡成「点不动的幽灵」（tray.rs 文件头有完整实测记录）。
+    /// 自绘菜单只是普通的一帧里画出的小窗口：不冻主循环、样式和面板同源。
+    /// 关闭条件：点了条目 / ESC / 失焦（点到别处——菜单都拿过一次焦点后才启用，
+    /// 免得新窗口还没拿到焦点就被误判关掉）。
+    fn draw_menu(&mut self, ctx: &egui::Context, th: &Theme) {
+        if !self.menu_open {
+            return;
+        }
+        let panel_visible = self.panel_visible;
+        let need_focus = self.menu_need_focus;
+        self.menu_need_focus = false;
+        let ppp = ctx.pixels_per_point();
+        let (x, y) = self.menu_pos.unwrap_or((0.0, 0.0));
+        // 光标位置是物理像素、egui 用点；菜单右下角贴住点击处（托盘菜单惯例：向上向左展开）
+        let pos = egui::pos2(x / ppp - menu::W, y / ppp - menu::H);
+        let vid = ViewportId::from_hash_of(("lexideck-menu", 0u8));
+        let mut act: Option<tray::TrayAction> = None;
+        let mut close = false;
+        let mut got_focus = self.menu_got_focus;
+        ctx.show_viewport_immediate(vid, window::menu_viewport(pos), |ui, _class| {
+            if need_focus {
+                ui.ctx().send_viewport_cmd(ViewportCommand::Focus);
+            }
+            match ui.input(|i| i.viewport().focused) {
+                Some(true) => got_focus = true,
+                Some(false) if got_focus => close = true,
+                _ => {}
+            }
+            if ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                close = true;
+            }
+            act = menu::draw(ui, th, panel_visible);
+        });
+        self.menu_got_focus = got_focus;
+        if act.is_some() || close {
+            self.menu_open = false;
+            self.menu_got_focus = false;
+        }
+        if let Some(a) = act {
+            self.do_tray_action(ctx, a);
         }
     }
 
@@ -864,7 +1112,13 @@ impl LexideckApp {
             }
         }
         if res.confirm_arm {
-            self.confirm_exit = true;
+            if self.use_tray() {
+                // 托盘模式：面板的 ✕ 首击 = 收进托盘（不进入退出确认）
+                self.hide_panel(ctx);
+                self.status = Some("已收进托盘（托盘图标右键可以唤回来）".into());
+            } else {
+                self.confirm_exit = true;
+            }
         }
         if res.minimize {
             ctx.send_viewport_cmd(ViewportCommand::Minimized(true));
@@ -873,8 +1127,21 @@ impl LexideckApp {
             config::save(&config::settings_path(), &self.cfg);
         }
         if res.exit {
+            self.quit_now(ctx);
+        }
+        if res.quit_now {
+            self.quit_now(ctx);
+        }
+        // 设置页「关闭窗口时」两档：更新 + 存盘 + 反馈
+        if let Some(a) = res.set_close_action {
+            self.cfg.close_action = a;
             config::save(&config::settings_path(), &self.cfg);
-            ctx.send_viewport_cmd(ViewportCommand::Close);
+            self.status = Some(match a {
+                CloseAction::Tray => {
+                    "关闭窗口时：驻留托盘（点 ✕ 收进托盘，托盘图标可以唤回来）".into()
+                }
+                CloseAction::Exit => "关闭窗口时：直接退出（5 秒内点两次 ✕ 才会退）".into(),
+            });
         }
     }
 
@@ -1003,7 +1270,7 @@ impl eframe::App for LexideckApp {
         [0.0, 0.0, 0.0, 0.0]
     }
 
-    fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
+    fn ui(&mut self, ui: &mut egui::Ui, frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
 
         // 只有根 viewport 是"控制面板"
@@ -1011,6 +1278,11 @@ impl eframe::App for LexideckApp {
             return;
         }
         fps_tick(&ctx, "root");
+
+        // P3a：托盘懒创建 + 收事件；关闭拦截必须在 place_once 之前
+        // （CancelClose 必须和 close_requested 同帧发出，eframe 只认那一帧）
+        self.tray_tick(&ctx, frame);
+        self.intercept_close(&ctx);
 
         self.place_once(&ctx);
         self.poll_library();
@@ -1030,6 +1302,10 @@ impl eframe::App for LexideckApp {
                 Some(t) if t.elapsed() >= Duration::from_secs(5) => {
                     self.confirm_exit = false;
                     self.confirm_at = None;
+                    // 确认过期就别在底栏留「再点一次…」的过期提示
+                    if self.status.as_deref() == Some(EXIT_CONFIRM_HINT) {
+                        self.status = None;
+                    }
                 }
                 None => self.confirm_at = Some(Instant::now()),
                 _ => {}
@@ -1051,6 +1327,7 @@ impl eframe::App for LexideckApp {
 
         self.reconcile_floats(&ctx, &th);
         self.draw_floats(&ctx, &th);
+        self.draw_menu(&ctx, &th);
 
         let rows = self.build_word_rows();
         let card_rows = self.build_card_rows();
@@ -1121,6 +1398,16 @@ impl eframe::App for LexideckApp {
 }
 
 // ── 帧率探针（诊断用） ──
+
+/// 面板窗口句柄（托盘唤醒要用，见 tray.rs 文件头）。拿不到就回 0 ——
+/// 只是少一道唤醒保险，其它功能不受影响。
+fn panel_hwnd(frame: &eframe::Frame) -> isize {
+    use raw_window_handle::{HasWindowHandle, RawWindowHandle};
+    match frame.window_handle().map(|h| h.as_raw()) {
+        Ok(RawWindowHandle::Win32(h)) => h.hwnd.get(),
+        _ => 0,
+    }
+}
 
 /// 设了 `LEXIDECK_FPS_LOG=<文件>` 时，把每帧间隔按来源追加进该文件，每行 `来源 毫秒`：
 ///   `root` = 控制面板那一趟；`card` = 某个悬浮窗的那一趟。

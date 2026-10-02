@@ -31,6 +31,31 @@ impl Layer {
     }
 }
 
+/// 关闭面板窗口时的行为（P3a，设计 §6.5）：默认**驻留托盘**（关掉面板 ≠ 退程序）；
+/// 教室管理策略挡掉托盘图标时，用户可切「直接退出」退回 P2 的用法，不会把自己锁死。
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum CloseAction {
+    #[default]
+    Tray,
+    Exit,
+}
+
+impl CloseAction {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            CloseAction::Tray => "tray",
+            CloseAction::Exit => "exit",
+        }
+    }
+    pub fn parse(s: &str) -> Option<CloseAction> {
+        match s.trim().to_lowercase().as_str() {
+            "tray" | "驻留托盘" => Some(CloseAction::Tray),
+            "exit" | "直接退出" => Some(CloseAction::Exit),
+            _ => None,
+        }
+    }
+}
+
 /// 老设置里 `always_on_top` 这类开关的宽松解析
 fn parse_bool(s: &str) -> bool {
     matches!(s.trim().to_lowercase().as_str(), "true" | "1" | "on" | "是")
@@ -52,6 +77,8 @@ pub struct Config {
     /// 垂直同步：开（默认）= 跟着显示器刷新率走，不撕裂、不白烧 CPU/GPU；
     /// 关 = 不限帧（高刷屏上想看满帧、或面板在 60Hz 屏而卡片在 165Hz 屏时用）
     pub vsync: bool,
+    /// 关闭面板窗口时的行为：驻留托盘（默认）/ 直接退出（P3a）
+    pub close_action: CloseAction,
     /// 主题："plain" | "wuling" | "yellow"
     pub theme: String,
     /// 当前在桌面上的卡片（词条 word，小写；顺序 = 平铺顺序）
@@ -69,6 +96,7 @@ impl Default for Config {
             layer: Layer::Bottom,
             passthrough: false,
             vsync: true,
+            close_action: CloseAction::Tray,
             theme: "plain".into(),
             shown: Vec::new(),
         }
@@ -151,6 +179,12 @@ pub fn load(path: &Path) -> Config {
             "vsync" => {
                 cfg.vsync = parse_bool(val);
             }
+            "close_action" => {
+                // 读不懂 = 保持默认（tray）：托盘驻留是默认行为
+                if let Some(a) = CloseAction::parse(val) {
+                    cfg.close_action = a;
+                }
+            }
             // 老键兼容：P1 的设置文件里是 always_on_top = true|false
             "always_on_top" => {
                 cfg.layer = if parse_bool(val) {
@@ -206,6 +240,7 @@ pub fn save(path: &Path, cfg: &Config) {
     s.push_str(&format!("layer = {}\n", cfg.layer.as_str()));
     s.push_str(&format!("passthrough = {}\n", cfg.passthrough));
     s.push_str(&format!("vsync = {}\n", cfg.vsync));
+    s.push_str(&format!("close_action = {}\n", cfg.close_action.as_str()));
     s.push_str(&format!("theme = {}\n", cfg.theme));
     s.push_str(&format!(
         "shown = {}\n",
@@ -291,5 +326,50 @@ mod tests {
         std::fs::write(&p, "always_on_top = false\n").unwrap();
         assert_eq!(load(&p).layer, Layer::Bottom);
         let _ = std::fs::remove_file(&p);
+    }
+
+    /// 关闭行为两档（P3a）：默认驻留托盘；save/load 往返；非法值兜底 tray
+    #[test]
+    fn close_action_round_trips_and_falls_back_to_tray() {
+        let dir =
+            std::env::temp_dir().join(format!("lexideck-test-cfg-close-{}", std::process::id()));
+        let _ = std::fs::create_dir_all(&dir);
+        let p = dir.join("设置.txt");
+        let _ = std::fs::remove_file(&p);
+
+        let mut c = Config::default();
+        assert_eq!(c.close_action, CloseAction::Tray, "默认驻留托盘");
+
+        c.close_action = CloseAction::Exit;
+        save(&p, &c);
+        let text = std::fs::read_to_string(&p).unwrap();
+        assert!(text.contains("close_action = exit"), "{text}");
+        assert_eq!(load(&p).close_action, CloseAction::Exit);
+
+        c.close_action = CloseAction::Tray;
+        save(&p, &c);
+        assert!(std::fs::read_to_string(&p)
+            .unwrap()
+            .contains("close_action = tray"));
+        assert_eq!(load(&p).close_action, CloseAction::Tray);
+
+        // 非法值 → tray 兜底（不是报错、也不是当成 exit）
+        std::fs::write(&p, "close_action = ???\n").unwrap();
+        assert_eq!(load(&p).close_action, CloseAction::Tray);
+        // 大小写 / 空白宽容
+        std::fs::write(&p, "close_action =  EXIT \n").unwrap();
+        assert_eq!(load(&p).close_action, CloseAction::Exit);
+        let _ = std::fs::remove_file(&p);
+    }
+
+    /// 两档的解析本身：只认 tray/exit（含对应中文），其余给 None
+    #[test]
+    fn close_action_parse_rejects_unknown() {
+        assert_eq!(CloseAction::parse("tray"), Some(CloseAction::Tray));
+        assert_eq!(CloseAction::parse(" Exit "), Some(CloseAction::Exit));
+        assert_eq!(CloseAction::parse("驻留托盘"), Some(CloseAction::Tray));
+        assert_eq!(CloseAction::parse("直接退出"), Some(CloseAction::Exit));
+        assert_eq!(CloseAction::parse("啥"), None);
+        assert_eq!(CloseAction::parse(""), None);
     }
 }

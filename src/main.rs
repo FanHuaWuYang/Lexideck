@@ -15,8 +15,10 @@ mod float;
 mod icons;
 mod import;
 mod library;
+mod menu;
 mod schedule;
 mod theme;
+mod tray;
 mod util;
 mod window;
 

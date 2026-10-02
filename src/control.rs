@@ -8,7 +8,7 @@ use eframe::egui::{self, Align2, Color32, CornerRadius, FontId, RichText, Stroke
 
 use std::collections::HashSet;
 
-use crate::config::{Config, Layer};
+use crate::config::{CloseAction, Config, Layer};
 use crate::deck::{self, Range};
 use crate::schedule::RangeState;
 use crate::theme::ThemeKind;
@@ -224,6 +224,10 @@ pub struct ControlResult {
     pub toggle_off: Option<(String, Range)>,
     /// 屏幕内容来源：Some(true) = 按今日展示，Some(false) = 手动展示
     pub set_screen_auto: Option<bool>,
+    /// 关闭窗口时：Some(档位) = 用户在设置页换了档（app 侧更新 cfg + 存盘 + 反馈）
+    pub set_close_action: Option<CloseAction>,
+    /// 设置页「退出 Lexideck」按钮：明确退出（不走二次确认，绕过托盘关闭拦截）
+    pub quit_now: bool,
     /// 面板产生的一句反馈，交给 app 显示在底栏
     pub status_msg: Option<String>,
     pub replay_anim: bool,
@@ -982,12 +986,51 @@ fn settings_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlR
 
     ui.add_space(18.0);
     sep_line(ui);
-    sett_line(
+    group_head(
         ui,
-        "关闭面板窗口",
-        "P2 阶段：关闭 = 退出程序",
-        Some("托盘在 P3"),
+        "关闭窗口时",
+        "",
+        Some("面板顶栏的 ✕（或系统关闭）：驻留托盘 = 收进托盘；直接退出 = 走 5 秒二次确认"),
     );
+    ui.horizontal(|ui| {
+        let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
+        if layer_option(
+            ui,
+            w,
+            "驻留托盘（默认）",
+            "关掉面板后程序继续跑，卡片不掉；点托盘图标、或用托盘右键菜单可随时唤回面板。",
+            cfg.close_action == CloseAction::Tray,
+        ) && cfg.close_action != CloseAction::Tray
+        {
+            r.set_close_action = Some(CloseAction::Tray);
+        }
+        ui.add_space(10.0);
+        if layer_option(
+            ui,
+            w,
+            "直接退出",
+            "关掉面板 = 退出程序（5 秒内点两次 ✕ 确认）。教室策略挡掉托盘图标时用这档。",
+            cfg.close_action == CloseAction::Exit,
+        ) && cfg.close_action != CloseAction::Exit
+        {
+            r.set_close_action = Some(CloseAction::Exit);
+        }
+    });
+    ui.add_space(10.0);
+    ui.horizontal(|ui| {
+        if sq_btn_danger_icon(ui, "exit", "退出 Lexideck", true) {
+            r.quit_now = true;
+        }
+        ui.add_space(10.0);
+        ui.label(
+            RichText::new("点了立即退出（驻留托盘时也能从这里退）")
+                .size(12.0)
+                .color(sk().txt3),
+        );
+    });
+
+    ui.add_space(18.0);
+    sep_line(ui);
     sett_line(ui, "开机自启动", "写当前用户的启动项，免管理员", Some("P3"));
     sett_line(
         ui,
@@ -1876,7 +1919,8 @@ fn expand_btn(ui: &mut egui::Ui, rect: egui::Rect, id: egui::Id, open: bool) -> 
         ui.painter().rect_filled(
             rect,
             CornerRadius::ZERO,
-            mix(Color32::TRANSPARENT, sk().btn_hover, hov),
+            // 淡入别用 mix(TRANSPARENT, ..)：alpha 被一起插值再预乘，中段会闪灰
+            sk().btn_hover.gamma_multiply(hov),
         );
     }
     let col = mix(sk().txt3, sk().txt, hov);
@@ -2070,7 +2114,9 @@ fn win_btn(ui: &mut egui::Ui, icon: &str) -> bool {
     ui.painter().rect_filled(
         r,
         CornerRadius::ZERO,
-        mix(Color32::TRANSPARENT, sk().card_hover, hov),
+        // 淡入别用 mix(TRANSPARENT, ..)：alpha 被一起插值再预乘，中段会闪灰
+        // （实测采样 BCBDBD→D1D2D2→F9FAFB = 闪两帧深灰；gamma_multiply 才是真淡入）
+        sk().card_hover.gamma_multiply(hov),
     );
     let color = mix(sk().txt2, sk().txt, hov);
     icon_paint(
@@ -2685,7 +2731,8 @@ fn quiet_btn(ui: &mut egui::Ui, icon: &str, label: &str, enabled: bool) -> bool 
         ui.painter().rect_filled(
             rect,
             CornerRadius::ZERO,
-            mix(Color32::TRANSPARENT, sk().btn_hover, hov),
+            // 淡入别用 mix(TRANSPARENT, ..)：alpha 被一起插值再预乘，中段会闪灰
+            sk().btn_hover.gamma_multiply(hov),
         );
     }
     let txt = if enabled {
@@ -3073,6 +3120,71 @@ mod tests {
             }
         });
         assert!(res.top_changed && res.changed, "点「置顶」要回传层级切换");
+    }
+
+    /// 设置页「关闭窗口时」两档（P3a）：画布开高一点让整页可见，
+    /// 在右半列逐行扫点击——点「直接退出」档位必须回传 set_close_action。
+    /// （扫描而不是写死坐标：控件高度由文案换行数决定，写死坐标一改文案就假红。）
+    #[test]
+    fn settings_close_action_reports_choice() {
+        let errors: Vec<String> = Vec::new();
+        let warns: Vec<String> = Vec::new();
+        let import = import_ctx(&errors, None, "");
+        let cx = base_ctx(&import, &[], &[], &warns);
+        let rows: Vec<WordRow> = Vec::new();
+        let size = egui::vec2(1004.0, 1400.0);
+        let ctx = egui::Context::default();
+        let raw = |ev: Vec<egui::Event>, t: f64| egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(egui::pos2(0.0, 0.0), size)),
+            time: Some(t),
+            events: ev,
+            ..Default::default()
+        };
+        let mut cfg = Config::default();
+        let mut panel = PanelState {
+            tab: PanelTab::Settings,
+            ..PanelState::default()
+        };
+        // 第一帧：登记控件矩形（交互命中靠上一帧）
+        let mut first = ctx.run_ui(raw(Vec::new(), 0.0), |ui| {
+            let _ = draw(ui, &mut cfg, &mut panel, &cx, &rows);
+        });
+        first.textures_delta.clear();
+
+        let mut found = false;
+        let mut t = 0.5;
+        for y in (300..1380).step_by(3) {
+            let pos = egui::pos2(460.0, y as f32);
+            let ev = vec![
+                egui::Event::PointerMoved(pos),
+                egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed: true,
+                    modifiers: egui::Modifiers::default(),
+                },
+                egui::Event::PointerButton {
+                    pos,
+                    button: egui::PointerButton::Primary,
+                    pressed: false,
+                    modifiers: egui::Modifiers::default(),
+                },
+            ];
+            t += 0.05;
+            let out = std::cell::RefCell::new(ControlResult::default());
+            let mut f = ctx.run_ui(raw(ev, t), |ui| {
+                *out.borrow_mut() = draw(ui, &mut cfg, &mut panel, &cx, &rows);
+            });
+            f.textures_delta.clear();
+            if out.into_inner().set_close_action == Some(CloseAction::Exit) {
+                found = true;
+                break;
+            }
+        }
+        assert!(
+            found,
+            "点设置页「直接退出」档位应回传 set_close_action = Some(Exit)"
+        );
     }
 
     /// 四个板块都能画出来，且都不是空白

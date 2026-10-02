@@ -6,6 +6,7 @@ use eframe::egui;
 use egui::viewport::{ViewportBuilder, WindowLevel};
 
 use crate::config::Config;
+use crate::menu;
 
 /// 主窗口（控制面板）—— 可缩放，触摸屏也能拉；最小尺寸保证四板块都排得下
 pub fn main_options(cfg: &Config) -> eframe::NativeOptions {
@@ -51,4 +52,20 @@ pub fn float_viewport(
         b = b.with_position(p);
     }
     b
+}
+
+/// 托盘右键菜单的 viewport（自绘，见 menu.rs）。
+///
+/// 和悬浮窗的差别：置顶、**要焦点**（失焦 = 点了别处 = 关闭；ESC 也要收得到），
+/// 不吃穿透（菜单必须能点）。标题只给自检脚本找窗口用，界面上看不到（无边框）。
+pub fn menu_viewport(pos: egui::Pos2) -> ViewportBuilder {
+    ViewportBuilder::default()
+        .with_title("Lexideck 托盘菜单")
+        .with_inner_size([menu::W, menu::H])
+        .with_decorations(false)
+        .with_window_level(WindowLevel::AlwaysOnTop) // 浮在词卡/PPT 之上
+        .with_active(true) // 打开时拿焦点（关闭判定用）
+        .with_resizable(false)
+        .with_taskbar(false)
+        .with_position(pos)
 }
