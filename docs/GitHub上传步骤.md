@@ -76,7 +76,7 @@ git config --global user.email "你注册GitHub用的邮箱"
 
 三处对一下：
 
-- RustRover 右下角状态栏显示当前分支 `main`，旁边的 ↑ 箭头**已经消失**（说明推完了）
+- RustRover 右下角状态栏显示当前分支 `master`，旁边的 ↑ 箭头**已经消失**（说明推完了）
 - 打开 `https://github.com/你的用户名/Lexideck` —— 能看见文件列表和一条提交记录
 - 仓库名旁边带 **Private** 标记
 
@@ -90,7 +90,7 @@ git config --global user.email "你注册GitHub用的邮箱"
 
 - **改之前先拉一下**：右上角 ↓ 是 `Pull`。现在只有你一台机器，基本用不上；等哪天在另一台电脑上改了，它就是救命的。
 - **推之前**：`cargo fmt` + `cargo test --release` + 界面改了要跑一眼 —— 详见 `CONTRIBUTING.md`。
-- **要开分支**：右下角点 `main` → `New Branch`，名字 `feat/xxx`。分支上做完、CI 绿了，再合并回 `main`。
+- **要开分支**：右下角点 `master` → `New Branch`，名字 `feat/xxx`。分支上做完、CI 绿了，再合并回 `master`。
 
 ## 6. 出一体机用的 exe：打 tag
 

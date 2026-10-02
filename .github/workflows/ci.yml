@@ -1,11 +1,11 @@
 name: CI
 
-# 什么时候跑：往 main 提交、给 main 提 PR、或者手动点一次
+# 什么时候跑：往 master 提交、给 master 提 PR、或者手动点一次
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
 
 env:
