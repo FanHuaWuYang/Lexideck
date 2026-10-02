@@ -22,12 +22,14 @@ pub fn ex_style_for_taskbar(ex: isize, visible: bool) -> isize {
     }
 }
 
-/// 让面板窗口从任务栏（以及 Alt+Tab 列表）里消失 / 回来。
+/// 让窗口从任务栏（以及 Alt+Tab 列表）里消失 / 回来。
 ///
-/// 为什么需要：egui 0.36 的 `with_taskbar` **只在建窗口时生效**，`ViewportCommand`
-/// 里没有对应变体（查过 0.36.2 的全部变体），而「收进托盘」是把面板挪到屏幕外 ——
-/// 窗口仍是「可见」态，任务栏按钮会一直留着（用户实测报的就是这个）。
-/// 这里直接改扩展样式：不显示 = 置 `WS_EX_TOOLWINDOW` 并清 `WS_EX_APPWINDOW`，
+/// 为什么需要：**eframe 0.36 没有实现 `ViewportBuilder::taskbar`** —— eframe 源码里
+/// 搜不到这个字段，`with_taskbar(false)` 是空操作，窗口建出来一律带 `WS_EX_APPWINDOW`
+/// （真机实测：面板与四张卡片全是 `APPWINDOW`）。`ViewportCommand` 里也没有对应变体
+/// （查过 0.36.2 全部变体），所以建完窗口只能自己改扩展样式。
+/// 「收进托盘」只是把面板挪到屏幕外 —— 窗口仍是「可见」态，任务栏按钮会一直留着
+/// （用户实测报的就是这个）。不显示 = 置 `WS_EX_TOOLWINDOW` 并清 `WS_EX_APPWINDOW`，
 /// 显示 = 反过来。改完必须发一次 `SWP_FRAMECHANGED`，否则按钮会赖着不走。
 /// hwnd = 0（拿不到句柄）时静默跳过：少一道效果，不影响别的功能。
 pub fn set_taskbar_visible(hwnd: isize, visible: bool) {
@@ -56,6 +58,50 @@ pub fn set_taskbar_visible(hwnd: isize, visible: bool) {
             SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE,
         );
     }
+}
+
+/// 卡片窗口标题（建窗口和事后按标题找句柄必须同一拼法）
+pub fn float_title(id: usize) -> String {
+    format!("词卡 #{id}")
+}
+
+/// 按标题找窗口句柄（找不到返回 0）。本进程的卡片标题「词卡 #n」在同桌面上唯一，
+/// 单实例设计保证不会跑到别的实例的窗口上去。
+pub fn find_window_by_title(title: &str) -> isize {
+    use windows_sys::Win32::UI::WindowsAndMessaging::FindWindowW;
+    let mut wide: Vec<u16> = title.encode_utf16().collect();
+    wide.push(0);
+    unsafe { FindWindowW(std::ptr::null(), wide.as_ptr()) as isize }
+}
+
+/// 窗口当前是否露在任务栏（看 `WS_EX_APPWINDOW` 位）
+pub fn taskbar_visible(hwnd: isize) -> bool {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{GetWindowLongPtrW, GWL_EXSTYLE};
+    if hwnd == 0 {
+        return false;
+    }
+    unsafe {
+        let h = hwnd as windows_sys::Win32::Foundation::HWND;
+        (GetWindowLongPtrW(h, GWL_EXSTYLE) & WS_EX_APPWINDOW_BIT) != 0
+    }
+}
+
+/// 「卡片不该出现在任务栏」的自查自纠（每帧一次，成本两次 Win32 调用）。
+///
+/// 为什么不能建窗口时一次搞定：eframe 0.36 压根没用 `ViewportBuilder::taskbar`
+/// （见 `set_taskbar_visible` 的说明），所以 `float_viewport` 里的 `with_taskbar(false)`
+/// 是空操作，卡片建出来一律带 `WS_EX_APPWINDOW` → 任务栏上多出卡片按钮（真机实测四种
+/// 层级/穿透组合全中）。卡片窗口在隐藏后重新显示时会被**重建**，所以这里不记「改过没有」，
+/// 而是每帧读一眼样式、不对就改 —— 重建之后也能自动纠回来。
+pub fn ensure_no_taskbar(id: usize) {
+    let h = find_window_by_title(&float_title(id));
+    if h == 0 {
+        return; // 窗口还没建出来（或已经销毁），下一帧再说
+    }
+    if !taskbar_visible(h) {
+        return; // 已经不在任务栏上了，省掉一次写样式
+    }
+    set_taskbar_visible(h, false);
 }
 
 /// 主窗口（控制面板）—— 可缩放，触摸屏也能拉；最小尺寸保证四板块都排得下
@@ -97,7 +143,7 @@ pub fn float_viewport(
     size: egui::Vec2,
 ) -> ViewportBuilder {
     let mut b = ViewportBuilder::default()
-        .with_title(format!("词卡 #{id}"))
+        .with_title(float_title(id))
         .with_inner_size([size.x, size.y])
         .with_min_inner_size([200.0, 80.0])
         .with_decorations(false) // 无边框
@@ -152,6 +198,13 @@ mod tests {
             );
             assert_eq!(b.taskbar, Some(false), "悬浮窗永远不进任务栏");
         }
+    }
+
+    /// 卡片窗口标题：建窗口与事后按标题找句柄必须同一拼法
+    #[test]
+    fn float_title_matches() {
+        assert_eq!(float_title(1), "词卡 #1");
+        assert_eq!(float_title(12), "词卡 #12");
     }
 
     /// 层级两档的映射（默认置底）

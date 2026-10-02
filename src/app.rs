@@ -739,6 +739,9 @@ impl LexideckApp {
 
             ctx.show_viewport_immediate(vid, builder, |ui, _class| {
                 fps_tick(ui.ctx(), "card");
+                // eframe 0.36 不认 with_taskbar（见 window::ensure_no_taskbar 的说明），
+                // 卡片会被塞进任务栏；每帧自查自纠一次，窗口重建也能纠回来
+                window::ensure_no_taskbar(f.id);
                 f.start_anim_if_due();
                 if f.anim_at.is_some() {
                     ui.ctx().request_repaint_of(ui.ctx().viewport_id());

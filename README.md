@@ -141,8 +141,10 @@ Rust + **eframe / egui 0.36**（glow / OpenGL 后端），绿色单 exe。理由
    `WS_EX_TOOLWINDOW`、清 `WS_EX_APPWINDOW`（唤回时反过来），改完必须发一次
    `SWP_FRAMECHANGED`，否则 Explorer 不重新评估、按钮赖着不走。**注意**：不能改成隐藏窗口
    （见 `docs/开发记录-P3.md` §2.1：eframe 对不可见窗口会走一条没登记事件循环上下文的旁路，
-   建新浮窗时直接崩）。egui 0.36 的 `ViewportCommand` 里**没有** Taskbar 变体 ——
-   `with_taskbar` 只在建窗口那一刻生效。
+   建新浮窗时直接崩）。注意 egui 0.36 的 `ViewportCommand` 里**没有** Taskbar 变体，而
+   **eframe 0.36 压根没有实现 `ViewportBuilder::taskbar`** —— eframe 源码里搜不到这个字段，
+   也就是说 `with_taskbar(false)` 在 eframe 里是**空操作**，窗口建出来一律带 `WS_EX_APPWINDOW`。
+   所以卡片同样一直挂在任务栏上（实测四种层级/穿透组合全中），修法见坑 11。
 
 10. **托盘图标「没出现」多半不是创建失败，是 Win11 把它收进了折叠区**：Windows 11 默认把新图标
     放进任务栏右下角的 `^` 里，不进常驻区 —— 而且**每个不同路径的 exe 在系统里算一个单独的图标**，
@@ -152,6 +154,14 @@ Rust + **eframe / egui 0.36**（glow / OpenGL 后端），绿色单 exe。理由
     其他系统托盘图标` 里打开它（注册表里对应 `HKCU\Control Panel\NotifyIconSettings\<hash>`
     的 `IsPromoted` 这一位；应用自己抢不到常驻位）。面板设置页给了「打开任务栏设置」按钮直达；
     实在找不到图标也不怕 —— 再双击一次 exe 就能把面板唤回来。
+
+11. **浮窗（卡片）也会挂在任务栏上**：与坑 9 同一根因 —— **eframe 0.36 没有实现
+    `ViewportBuilder::taskbar`**，`float_viewport` 里那句 `.with_taskbar(false)` 是空操作，
+    卡片建出来照样带 `WS_EX_APPWINDOW`。卡片是 eframe 动态建的、内部拿不到句柄，于是按标题
+    `词卡 #n` 用 `FindWindowW` 找回来再改样式（`window::ensure_no_taskbar`）。**别记
+    「改过没有」**：卡片隐藏后重新显示时窗口会被**重建**，记标记会漏掉新窗口；改成每帧一次
+    廉价自查（读样式，不对才写）。实测四种层级/穿透组合下卡片都是 `TOOLWINDOW`、不占任务栏，
+    而面板保持 `APPWINDOW`（它在任务栏上是对的）。
 
 ## 复现体积数字
 
