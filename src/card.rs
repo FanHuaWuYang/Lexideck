@@ -24,24 +24,27 @@ const PAD_R: f32 = 8.0;
 
 /// 版式尺寸表（参考尺寸；绘制时全部 × k）
 mod sz {
-    /// 主体字号候选（依次尝试，保证单行）
-    pub const WORD: [f32; 4] = [60.0, 48.0, 40.0, 34.0];
+    /// 主体字号候选（依次尝试，保证单行）——整体收紧字号跨距：主体略收、小字抬升
+    pub const WORD: [f32; 4] = [56.0, 46.0, 38.0, 32.0];
     /// 超长主体（句子卡）折行时用的字号
-    pub const WORD_WRAP: f32 = 38.0;
-    pub const FORMS: f32 = 30.0;
-    pub const SENSE: f32 = 28.0;
-    pub const DERIV: f32 = 26.0;
-    pub const DERIV_ZH: f32 = 23.0;
-    pub const PHRASE: f32 = 26.0;
-    pub const PHRASE_ZH: f32 = 23.0;
+    pub const WORD_WRAP: f32 = 36.0;
+    pub const FORMS: f32 = 28.0;
+    pub const SENSE: f32 = 27.0;
+    pub const DERIV: f32 = 27.0;
+    pub const DERIV_ZH: f32 = 24.0;
+    /// 短语整体调大（课堂反馈点名）：英文再大一档，中文跟着抬
+    pub const PHRASE: f32 = 30.0;
+    pub const PHRASE_ZH: f32 = 25.0;
+    /// 例句英文保持 26：再大一档会让长句折行（实测 'He abandoned his car in the snow...' 溢出）
     pub const SEN: f32 = 26.0;
-    pub const SEN_ZH: f32 = 22.0;
-    pub const NOTE: f32 = 20.0;
-    pub const B1_TOP: f32 = 12.0;
-    pub const B1_BOTTOM: f32 = 8.0;
-    pub const B23_TOP: f32 = 8.0;
-    pub const B2_BOTTOM: f32 = 10.0;
-    pub const B3_BOTTOM: f32 = 14.0;
+    pub const SEN_ZH: f32 = 24.0;
+    pub const NOTE: f32 = 22.0;
+    /// 区块间距整体收紧（原来偏松，课堂反馈"间距可以缩小一点"）
+    pub const B1_TOP: f32 = 10.0;
+    pub const B1_BOTTOM: f32 = 6.0;
+    pub const B23_TOP: f32 = 6.0;
+    pub const B2_BOTTOM: f32 = 8.0;
+    pub const B3_BOTTOM: f32 = 10.0;
 }
 
 /// 一张卡的排版计划
@@ -157,7 +160,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
 
     // ── ② 词义（词性 + 意思，紧贴主体下方） ──
     if !e.senses.is_empty() && !hid("senses") {
-        y += 6.0 * k;
+        y += 4.0 * k;
         for (i, s) in e.senses.iter().enumerate() {
             if i > 0 {
                 y += 2.0 * k;
