@@ -10,17 +10,61 @@ use egui::viewport::ViewportCommand;
 use crate::anim::{self, Anim};
 use crate::card::{self, CardPlan};
 use crate::theme::Theme;
+use crate::window;
+
+/// 悬浮窗的拖拽跨帧状态（egui 是即时模式，这种状态得由调用方持有）
+#[derive(Default, Clone, Copy)]
+pub struct DragState {
+    /// (拖拽开始时的窗口外沿, 拖拽开始时的指针屏幕位置)
+    start: Option<(egui::Pos2, egui::Pos2)>,
+    /// 本次拖拽是不是触摸发起的：是就走手动移动（见 window::drag_target 的说明）
+    by_touch: bool,
+}
 
 /// 在一个悬浮窗的根 Ui 上绘制一帧（egui 0.36 的 viewport 回调直接提供 Ui）
-pub fn draw(ui: &mut egui::Ui, anim: &mut Anim, plan: Option<&CardPlan>, th: &Theme, scale: f32) {
+pub fn draw(
+    ui: &mut egui::Ui,
+    anim: &mut Anim,
+    plan: Option<&CardPlan>,
+    th: &Theme,
+    scale: f32,
+    card_id: usize,
+    drag_state: &mut DragState,
+) {
     let ctx = ui.ctx().clone();
     let full = ui.max_rect();
     let painter = ui.painter().clone();
 
+    // 触摸钩子：读 WM_TOUCH 屏幕坐标（幂等，每帧确保；窗口重建也纠得回来）
+    let hwnd = window::find_window_by_title(&window::float_title(card_id));
+    window::ensure_touch_hook(hwnd);
+
     // 拖拽（整窗可拖，没有其它可点元素）
     let drag = ui.interact(full, ui.id().with("drag"), egui::Sense::drag());
+    if drag.drag_started() {
+        // 锚点 = 窗口位置（全程不变）；起点 = 最近一次触点的屏幕位置。
+        // 都是"只取一次"的常数，之后纯靠 WM_TOUCH 的屏幕坐标推进 ——
+        // 不掺窗口内坐标，就不会和窗口移动互相污染（见 window::last_touch_screen_px）。
+        drag_state.start = window::pos_now_px(hwnd).zip(window::last_touch_screen_px(hwnd));
+        drag_state.by_touch = ctx.input(|i| i.any_touches());
+    }
     if drag.dragged() {
-        ctx.send_viewport_cmd(ViewportCommand::StartDrag);
+        if drag_state.by_touch {
+            // 触摸：手动移动。系统 StartDrag 是「只认鼠标」的模态循环，触摸拖不动（真机实测）。
+            if let Some((w0, p0)) = drag_state.start {
+                if let Some(cur) = window::last_touch_screen_px(hwnd) {
+                    let ppp = ctx.pixels_per_point();
+                    let target = window::drag_target(w0, p0, cur) / ppp; // 命令收 logical points
+                    ctx.send_viewport_cmd(ViewportCommand::OuterPosition(target));
+                }
+            }
+        } else {
+            ctx.send_viewport_cmd(ViewportCommand::StartDrag);
+        }
+    }
+    if drag.drag_stopped() {
+        drag_state.start = None;
+        drag_state.by_touch = false;
     }
 
     // 动画状态（每帧读一次）

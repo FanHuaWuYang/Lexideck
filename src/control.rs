@@ -13,6 +13,7 @@ use crate::config::{CloseAction, Config, Layer};
 use crate::deck::{self, Range};
 use crate::schedule::RangeState;
 use crate::theme::ThemeKind;
+use crate::window;
 
 // ── 面板皮肤（与卡片主题联动：纯白 / 浅青 / 黄黑；切换即整体换装） ──
 
@@ -182,6 +183,10 @@ pub struct PanelState {
     /// 状态以**注册表**为准，所以：离开设置页就丢掉缓存（见 draw），
     /// 拨过开关也丢掉缓存 —— 下一帧现读一次。
     pub autostart: Option<autostart::State>,
+    /// 标题栏拖拽的跨帧起点：(窗口外沿, 指针屏幕位置)；None = 这一帧没在拖
+    pub drag_from: Option<(egui::Pos2, egui::Pos2)>,
+    /// 本次拖拽是否触摸发起（触摸走手动移动：系统 StartDrag 只认鼠标，见 window::drag_target）
+    pub drag_by_touch: bool,
 }
 
 impl Default for PanelState {
@@ -193,6 +198,8 @@ impl Default for PanelState {
             plans_open: HashSet::new(),
             past_open: false,
             autostart: None,
+            drag_from: None,
+            drag_by_touch: false,
         }
     }
 }
@@ -352,12 +359,40 @@ pub fn draw(
     let full = ui.max_rect();
     ui.painter().rect_filled(full, 0.0, sk().bg);
 
+    // 触摸钩子：读 WM_TOUCH 屏幕坐标（幂等，每帧确保；窗口重建也纠得回来）
+    let top_hwnd = window::find_window_by_title(window::MAIN_TITLE);
+    window::ensure_touch_hook(top_hwnd);
+
     // ── 顶栏 ──
     let top = egui::Rect::from_min_max(full.min, egui::pos2(full.right(), full.top() + TOP_H));
     let drag_rect = egui::Rect::from_min_max(top.min, egui::pos2(top.right() - 96.0, top.bottom()));
     let drag = ui.interact(drag_rect, ui.id().with("titlebar"), egui::Sense::drag());
+    if drag.drag_started() {
+        // 锚点 = 窗口位置（全程不变）；起点 = 最近一次触点的屏幕位置。
+        // 之后纯靠 WM_TOUCH 的屏幕坐标推进，不掺窗口内坐标、不与窗口移动互相污染
+        // （见 window::last_touch_screen_px 的说明）。
+        panel.drag_from = window::pos_now_px(top_hwnd).zip(window::last_touch_screen_px(top_hwnd));
+        panel.drag_by_touch = ui.input(|i| i.any_touches());
+    }
     if drag.dragged() {
-        ui.ctx().send_viewport_cmd(egui::ViewportCommand::StartDrag);
+        if panel.drag_by_touch {
+            // 触摸：手动移动（系统 StartDrag 是「只认鼠标」的模态循环，触摸拖不动 ——
+            // 教室一体机实测）。
+            if let Some((w0, p0)) = panel.drag_from {
+                if let Some(cur) = window::last_touch_screen_px(top_hwnd) {
+                    let ppp = ui.ctx().pixels_per_point();
+                    let target = window::drag_target(w0, p0, cur) / ppp; // 命令收 logical points
+                    ui.ctx()
+                        .send_viewport_cmd(egui::ViewportCommand::OuterPosition(target));
+                }
+            }
+        } else {
+            ui.ctx().send_viewport_cmd(egui::ViewportCommand::StartDrag);
+        }
+    }
+    if drag.drag_stopped() {
+        panel.drag_from = None;
+        panel.drag_by_touch = false;
     }
     ui.scope_builder(
         egui::UiBuilder::new().max_rect(top.shrink2(egui::vec2(22.0, 0.0))),

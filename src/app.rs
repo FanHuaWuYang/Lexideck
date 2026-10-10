@@ -35,6 +35,8 @@ pub struct FloatWin {
     /// 这个窗显示哪个词条（小写 word）
     pub word: String,
     pub anim: Anim,
+    /// 拖拽的跨帧状态（触摸拖拽走手动移动窗口，起点要存着）
+    drag: float::DragState,
     /// 入场动画的预定开播时刻（批量操作时错峰延时；到点后在窗口自己的帧里启动）。
     /// 窗口从创建到真正出现有几百毫秒的延迟，如果在创建那一刻就计时，
     /// 等画面出来时动画已经跑掉一大截（闪烁几乎看不到）。
@@ -704,6 +706,7 @@ impl LexideckApp {
             id,
             word: word.clone(),
             anim: Anim::new(),
+            drag: float::DragState::default(),
             anim_at: None,
             plan_dirty: true,
             pos,
@@ -751,6 +754,10 @@ impl LexideckApp {
                 // eframe 0.36 不认 with_taskbar（见 window::ensure_no_taskbar 的说明），
                 // 卡片会被塞进任务栏；每帧自查自纠一次，窗口重建也能纠回来
                 window::ensure_no_taskbar(f.id);
+                // 穿透时卡片要退出「触摸注册」：WM_TOUCH 不认透明（见
+                // window::ensure_touch_state 的说明），注册着就直达卡片、漏不到下面的 PPT。
+                // 与 ensure_no_taskbar 同理：每帧自查自纠，窗口重建也能纠回来。
+                window::ensure_touch_state(f.id, passthrough);
                 f.start_anim_if_due();
                 if f.anim_at.is_some() {
                     ui.ctx().request_repaint_of(ui.ctx().viewport_id());
@@ -768,7 +775,15 @@ impl LexideckApp {
                         }
                     }
                 }
-                float::draw(ui, &mut f.anim, f.plan.as_ref(), th, scale);
+                float::draw(
+                    ui,
+                    &mut f.anim,
+                    f.plan.as_ref(),
+                    th,
+                    scale,
+                    f.id,
+                    &mut f.drag,
+                );
             });
         }
     }

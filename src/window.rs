@@ -65,6 +65,96 @@ pub fn float_title(id: usize) -> String {
     format!("词卡 #{id}")
 }
 
+/// 主窗口（控制面板）标题 —— 建窗口 / 按标题找句柄 / 拖拽取位置都用它认人
+pub const MAIN_TITLE: &str = "Lexideck 词卡看板";
+
+// 最近一次 WM_TOUCH 触点数据：(hwnd, x, y)，x/y 是**屏幕**物理像素。
+// 触点的屏幕坐标是消息里自带的，与窗口位置无关 —— 这正是拖拽要的"原子"数据源。
+// （对比：窗口内坐标 = 屏幕坐标 − 窗口位置，窗口一动读数就反向变化，再混上更新
+// 滞后就会自激振荡：真机实测手指横拖 48px、窗口乱跳 ±100px。）
+thread_local! {
+    static LAST_TOUCH: std::cell::Cell<Option<(isize, f32, f32)>> =
+        const { std::cell::Cell::new(None) };
+}
+
+/// 触点数据要与窗口对得上才可用（别的窗口上的触摸不能拿来拖本窗口）
+fn pick_touch(hwnd: isize, stored: Option<(isize, f32, f32)>) -> Option<egui::Pos2> {
+    match stored {
+        Some((h, x, y)) if h == hwnd && hwnd != 0 => Some(egui::pos2(x, y)),
+        _ => None,
+    }
+}
+
+/// 本窗口最近一次触点的屏幕位置（物理像素）；最近一次触点不是本窗口的 = None
+pub fn last_touch_screen_px(hwnd: isize) -> Option<egui::Pos2> {
+    pick_touch(hwnd, LAST_TOUCH.with(|c| c.get()))
+}
+
+const WM_TOUCH: u32 = 0x0240;
+const TOUCH_HOOK_ID: usize = 0x1DE5; // 子类 ID，本进程内唯一即可
+
+/// 触摸钩子：只**读** WM_TOUCH 的屏幕坐标留档，不消费消息
+/// （DefSubclassProc 往下传，winit 照常收触摸、egui 照常出指针事件）。
+unsafe extern "system" fn touch_hook_proc(
+    hwnd: windows_sys::Win32::Foundation::HWND,
+    umsg: u32,
+    wparam: windows_sys::Win32::Foundation::WPARAM,
+    lparam: windows_sys::Win32::Foundation::LPARAM,
+    _uidsubclass: usize,
+    _dwrefdata: usize,
+) -> windows_sys::Win32::Foundation::LRESULT {
+    use windows_sys::Win32::UI::Input::Pointer::{GetPointerInfo, POINTER_INFO};
+    use windows_sys::Win32::UI::Input::Touch::{GetTouchInputInfo, TOUCHINPUT};
+    if umsg == WM_TOUCH {
+        let count = (wparam & 0xFFFF) as u32; // 低字 = 触点数量
+        if count > 0 {
+            let mut ti = TOUCHINPUT::default();
+            let cb = std::mem::size_of::<TOUCHINPUT>() as i32;
+            if GetTouchInputInfo(lparam as _, 1, &mut ti, cb) != 0 {
+                // 单位是百分之一像素；坐标系是屏幕（不掺窗口位置、天然免疫移动滞后）
+                let px = ti.x as f32 / 100.0;
+                let py = ti.y as f32 / 100.0;
+                LAST_TOUCH.with(|c| c.set(Some((hwnd as isize, px, py))));
+            }
+        }
+    }
+    // 触摸实际走的是 WM_POINTER（PT_TOUCH）线（本机实测；winit 开着 mouse-in-pointer）。
+    // WM_TOUCH 那路留着当双保险 —— 两台机制哪台先响都行，都是屏幕坐标。
+    if umsg == WM_POINTERDOWN || umsg == WM_POINTERUPDATE || umsg == WM_POINTERUP {
+        let id16 = (wparam & 0xFFFF) as u32;
+        let mut pi = unsafe { std::mem::zeroed::<POINTER_INFO>() };
+        if GetPointerInfo(id16, &mut pi) != 0 && pi.pointerType == PT_TOUCH {
+            let px = pi.ptPixelLocation.x as f32;
+            let py = pi.ptPixelLocation.y as f32;
+            LAST_TOUCH.with(|c| c.set(Some((hwnd as isize, px, py))));
+        }
+    }
+    windows_sys::Win32::UI::Shell::DefSubclassProc(hwnd, umsg, wparam, lparam)
+}
+
+const WM_POINTERDOWN: u32 = 0x0245;
+const WM_POINTERUPDATE: u32 = 0x0246;
+const WM_POINTERUP: u32 = 0x0247;
+const PT_TOUCH: i32 = 0x00000002; // POINTER_INFO.pointerType 是 i32
+
+/// 给窗口挂触摸钩子（幂等：重复调用 = 无操作，可以直接每帧调；窗口销毁钩子自动消失）
+pub fn ensure_touch_hook(hwnd: isize) {
+    if hwnd == 0 {
+        return;
+    }
+    unsafe {
+        let ok = windows_sys::Win32::UI::Shell::SetWindowSubclass(
+            hwnd as windows_sys::Win32::Foundation::HWND,
+            Some(touch_hook_proc),
+            TOUCH_HOOK_ID,
+            0,
+        );
+        if ok == 0 {
+            eprintln!("[touch] SetWindowSubclass FAILED hwnd={hwnd}");
+        }
+    }
+}
+
 /// 按标题找窗口句柄（找不到返回 0）。本进程的卡片标题「词卡 #n」在同桌面上唯一，
 /// 单实例设计保证不会跑到别的实例的窗口上去。
 pub fn find_window_by_title(title: &str) -> isize {
@@ -104,11 +194,95 @@ pub fn ensure_no_taskbar(id: usize) {
     set_taskbar_visible(h, false);
 }
 
+/// 窗口**此刻**的外沿位置（物理像素，现场问系统要；0 = 找不到）。
+///
+/// ⚠️ 拖拽锚点可以用这个（只取一次的常数）；但**拖拽推进不能**用它去换算，
+/// 「滞后的窗口位置 + 新鲜的窗口内指针」会自激振荡（真机实测过：手指横拖 +48px、
+/// 窗口乱跳 ±100px）。推进坐标一律用 `last_touch_screen_px` 的 WM_TOUCH 屏幕值。
+pub fn pos_now_px(hwnd: isize) -> Option<egui::Pos2> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::GetWindowRect;
+    if hwnd == 0 {
+        return None;
+    }
+    unsafe {
+        let mut r = windows_sys::Win32::Foundation::RECT {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+        };
+        if GetWindowRect(hwnd as windows_sys::Win32::Foundation::HWND, &mut r) == 0 {
+            return None;
+        }
+        Some(egui::pos2(r.left as f32, r.top as f32))
+    }
+}
+
+/// 手动拖窗的目标位置：窗口起点 + 指针自拖拽起点的**屏幕位移**。
+///
+/// 为什么不用 `ViewportCommand::StartDrag`：它落到系统那边是
+/// `SendMessage(WM_NCLBUTTONDOWN, HTCAPTION)` 的**模态拖拽循环**，只跟物理鼠标走 ——
+/// 触摸拖拽时循环收不到任何鼠标消息，窗口纹丝不动（教室一体机真机实测）。
+/// 自己算位移对鼠标 / 触摸 / 触控笔一视同仁（触摸只在触摸发起的拖拽里走这条路）。
+///
+/// 坐标必须用**屏幕位置**而不是窗口内位置：窗口跟着动，窗口内读数会反向变化，
+/// 用窗口内坐标算会自我抵消、变成拖不动（负反馈）。
+pub fn drag_target(
+    win0: egui::Pos2,
+    ptr0_screen: egui::Pos2,
+    ptr_screen: egui::Pos2,
+) -> egui::Pos2 {
+    egui::pos2(
+        win0.x + (ptr_screen.x - ptr0_screen.x),
+        win0.y + (ptr_screen.y - ptr0_screen.y),
+    )
+}
+
+/// 穿透中的卡片要不要留在「触摸注册表」里？纯函数（单测钉住这层关系）：
+/// 穿透开 → 不注册；穿透关 → 注册。
+///
+/// 为什么穿透必须连触摸一起处理：微软官方文档（WM_TOUCH 的备注）写得很直白 ——
+/// **WM_TOUCH 不认 HTTRANSPARENT**；实际行为是触摸只发给「注册过触摸」的窗口，
+/// 注册过就直达，`WS_EX_TRANSPARENT`（winit 实现鼠标穿透用的就是它）拦不住。
+/// 教室一体机实测：开了穿透，手指点卡片照样被卡片吃掉（还会把卡片顶到最前）。
+/// 把卡片从触摸注册里摘掉之后，触摸按「鼠标提升」路径走 —— 鼠标命中测试本来就会
+/// 跳过 `WS_EX_TRANSPARENT` 的窗口，触摸于是落到下面的 PPT 上。
+pub fn touch_should_be_registered(passthrough: bool) -> bool {
+    !passthrough
+}
+
+/// 让卡片的触摸注册状态与穿透开关保持一致（每帧自查自纠，成本一次 Win32 查询）。
+/// 卡片窗口在隐藏后重新显示时会被**重建**（重建 = winit 又把它注册进触摸），
+/// 所以和 `ensure_no_taskbar` 同理，每帧纠正一次而不是只在切开关时设一次。
+pub fn ensure_touch_state(id: usize, passthrough: bool) {
+    use windows_sys::Win32::UI::Input::Touch::{
+        IsTouchWindow, RegisterTouchWindow, UnregisterTouchWindow, TWF_WANTPALM,
+    };
+    let h = find_window_by_title(&float_title(id));
+    if h == 0 {
+        return; // 窗口还没建出来（或已销毁），下一帧再说
+    }
+    unsafe {
+        let hwnd = h as windows_sys::Win32::Foundation::HWND;
+        let mut flags: u32 = 0;
+        let registered = IsTouchWindow(hwnd, &mut flags) != 0;
+        let want = touch_should_be_registered(passthrough);
+        if registered == want {
+            return; // 已经是对的状态，省掉一次写
+        }
+        if want {
+            RegisterTouchWindow(hwnd, TWF_WANTPALM);
+        } else {
+            UnregisterTouchWindow(hwnd);
+        }
+    }
+}
+
 /// 主窗口（控制面板）—— 可缩放，触摸屏也能拉；最小尺寸保证四板块都排得下
 pub fn main_options(cfg: &Config) -> eframe::NativeOptions {
     let mut opts = eframe::NativeOptions {
         viewport: ViewportBuilder::default()
-            .with_title("Lexideck 词卡看板")
+            .with_title(MAIN_TITLE)
             .with_inner_size([cfg.window_w, cfg.window_h])
             .with_min_inner_size([720.0, 460.0]) // 比这个再小说明列就挤没了
             .with_resizable(true)
@@ -238,5 +412,52 @@ mod tests {
         // 幂等：状态已经对了就别再改（每帧都 SetWindowPos 会让任务栏闪）
         assert_eq!(ex_style_for_taskbar(hidden, false), hidden);
         assert_eq!(ex_style_for_taskbar(shown, true), shown);
+    }
+
+    /// 拖窗位移：跟着指针的屏幕位移走；指针没动窗口不动；负坐标（左屏）也要对
+    #[test]
+    fn drag_target_follows_pointer_screen_delta() {
+        let w0 = egui::pos2(100.0, 50.0);
+        let p0 = egui::pos2(300.0, 200.0);
+        assert_eq!(
+            drag_target(w0, p0, egui::pos2(280.0, 170.0)),
+            egui::pos2(80.0, 20.0),
+            "指针移动 (-20,-30) → 窗口跟着移动 (-20,-30)"
+        );
+        assert_eq!(drag_target(w0, p0, p0), w0, "指针没动窗口就不许动");
+        // 多显示器虚拟桌面的左屏是负坐标：从 -1440 屏拖一点点，位移要原样保留
+        let w1 = egui::pos2(-1440.0, 100.0);
+        let p1 = egui::pos2(-1000.0, 300.0);
+        assert_eq!(
+            drag_target(w1, p1, egui::pos2(-990.0, 290.0)),
+            egui::pos2(-1430.0, 90.0)
+        );
+    }
+
+    /// 触点数据要与窗口对得上才可用（别的窗口的触点不能拿来拖本窗口；
+    /// 没抓到触点、句柄对不上都按不可用处理）
+    #[test]
+    fn pick_touch_matches_window() {
+        assert_eq!(
+            pick_touch(7, Some((7, 100.0, 50.0))),
+            Some(egui::pos2(100.0, 50.0))
+        );
+        assert_eq!(pick_touch(7, Some((9, 100.0, 50.0))), None);
+        assert_eq!(pick_touch(0, Some((0, 1.0, 2.0))), None);
+        assert_eq!(pick_touch(7, None), None);
+    }
+
+    /// 穿透与触摸注册的关系：穿透开 = 卡片退出触摸注册（触摸才能漏下去）；
+    /// 穿透关 = 卡片保留触摸（卡片要能被触摸拖动）
+    #[test]
+    fn touch_registration_follows_passthrough() {
+        assert!(
+            !touch_should_be_registered(true),
+            "穿透开：卡片必须退出触摸注册（WM_TOUCH 不认透明）"
+        );
+        assert!(
+            touch_should_be_registered(false),
+            "穿透关：卡片保留触摸注册（触摸要能拖卡片）"
+        );
     }
 }
