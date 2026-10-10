@@ -68,10 +68,10 @@ pub fn float_title(id: usize) -> String {
 /// 主窗口（控制面板）标题 —— 建窗口 / 按标题找句柄 / 拖拽取位置都用它认人
 pub const MAIN_TITLE: &str = "Lexideck 词卡看板";
 
-/// 最近一次 WM_TOUCH 触点数据：(hwnd, x, y)，x/y 是**屏幕**物理像素。
-/// 触点的屏幕坐标是消息里自带的，与窗口位置无关 —— 这正是拖拽要的"原子"数据源。
-/// （对比：窗口内坐标 = 屏幕坐标 − 窗口位置，窗口一动读数就反向变化，再混上更新
-/// 滞后就会自激振荡：真机实测手指横拖 48px、窗口乱跳 ±100px。）
+// 最近一次 WM_TOUCH 触点数据：(hwnd, x, y)，x/y 是**屏幕**物理像素。
+// 触点的屏幕坐标是消息里自带的，与窗口位置无关 —— 这正是拖拽要的"原子"数据源。
+// （对比：窗口内坐标 = 屏幕坐标 − 窗口位置，窗口一动读数就反向变化，再混上更新
+// 滞后就会自激振荡：真机实测手指横拖 48px、窗口乱跳 ±100px。）
 thread_local! {
     static LAST_TOUCH: std::cell::Cell<Option<(isize, f32, f32)>> =
         const { std::cell::Cell::new(None) };
@@ -150,7 +150,7 @@ pub fn ensure_touch_hook(hwnd: isize) {
             0,
         );
         if ok == 0 {
-            eprintln!("[hookdbg] SetWindowSubclass FAILED hwnd={hwnd}");
+            eprintln!("[touch] SetWindowSubclass FAILED hwnd={hwnd}");
         }
     }
 }
@@ -216,11 +216,6 @@ pub fn pos_now_px(hwnd: isize) -> Option<egui::Pos2> {
         }
         Some(egui::pos2(r.left as f32, r.top as f32))
     }
-}
-
-/// 按标题找到窗口取「此刻」外沿位置（物理像素）；找不到 = None
-pub fn pos_now_px_by_title(title: &str) -> Option<egui::Pos2> {
-    pos_now_px(find_window_by_title(title))
 }
 
 /// 手动拖窗的目标位置：窗口起点 + 指针自拖拽起点的**屏幕位移**。
