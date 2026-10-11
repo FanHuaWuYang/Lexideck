@@ -39,6 +39,10 @@ mod sz {
     pub const SEN: f32 = 26.0;
     pub const SEN_ZH: f32 = 24.0;
     pub const NOTE: f32 = 22.0;
+    /// 行高倍率：默认按字体自身行距（≈1.32× 字号），这里收紧到 1.12×
+    /// —— 缩小的是"行与行、条与条之间"的垂直距，不动字号。留 1.12
+    /// 是为了不压字形（中英升部+降部叠起来 ≈0.95em，放得下）。
+    pub const LINE_H: f32 = 1.12;
     /// 区块间距整体收紧（原来偏松，课堂反馈"间距可以缩小一点"）
     pub const B1_TOP: f32 = 10.0;
     pub const B1_BOTTOM: f32 = 6.0;
@@ -76,12 +80,15 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
         egui::Id::new("lexideck-card-plan"),
     ));
     let lay = |text: &str, size: f32, color: Color32, wrap_w: f32| -> Arc<Galley> {
-        painter.layout(
+        // LayoutJob 替代 painter.layout：只为把 line_height 控制住（默认行距偏松）。
+        let mut job = egui::text::LayoutJob::simple(
             text.to_owned(),
             FontId::proportional(size * k),
             color,
             wrap_w,
-        )
+        );
+        job.sections[0].format.line_height = Some(size * k * sz::LINE_H);
+        painter.layout_job(job)
     };
     // 一行「英文 + 可选中文」：放得下就同行，放不下分两行
     let mut pair_row = |y: &mut f32,
@@ -163,7 +170,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
         y += 4.0 * k;
         for (i, s) in e.senses.iter().enumerate() {
             if i > 0 {
-                y += 2.0 * k;
+                y += 1.0 * k;
             }
             let pos = s.pos.trim();
             if !pos.is_empty() {
@@ -193,7 +200,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
         y += sz::B23_TOP * k;
         for (i, d) in e.derivations.iter().enumerate() {
             if i > 0 {
-                y += 2.0 * k;
+                y += 1.0 * k;
             }
             let dw = lay(d.word.trim(), sz::DERIV, th.accent, f32::INFINITY);
             let dw_w = dw.size().x;
@@ -234,7 +241,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
         y += sz::B23_TOP * k;
         for (i, p) in e.phrases.iter().enumerate() {
             if i > 0 {
-                y += 2.0 * k;
+                y += 1.0 * k;
             }
             pair_row(
                 &mut y,
@@ -255,7 +262,7 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
         y += sz::B23_TOP * k;
         for (i, s) in e.sentences.iter().enumerate() {
             if i > 0 {
-                y += 8.0 * k;
+                y += 5.0 * k;
             }
             let eg = lay(s.en.trim(), sz::SEN, th.fg, content_w);
             let ehh = eg.size().y;
