@@ -919,6 +919,9 @@ impl LexideckApp {
         // 摘掉 WS_EX_APPWINDOW、置成 WS_EX_TOOLWINDOW —— 任务栏和 Alt+Tab 里都不再出现，
         // 但窗口本身仍是「可见」的，所有帧走正常路径（新建浮窗不会踩 eframe 那条旁路）。
         window::set_taskbar_visible(self.panel_hwnd, false);
+        // 顺带把工作集还给系统（实测 132MB → 9MB）：收进托盘后绝大多数页都闲着，
+        // 留着白占内存；缺页时系统自己换回来，唤出无感。
+        trim_working_set();
         self.panel_visible = false;
     }
 
@@ -1615,10 +1618,10 @@ impl eframe::App for LexideckApp {
         // 会把每帧绘制很重的面板一起拉进全速渲染，反而把卡片入场动画的帧率拖下来
         // —— 表现就是「动画卡卡的」。
         //
-        // 空闲节奏由托盘心跳线程（250ms）统一保证：它每拍一次就唤醒一帧，
-        // 空闲帧率实测 4Hz 左右。这里曾经的 300ms 定时器与心跳**互相叠加**，
-        // 把空闲帧率推到 ~7.3Hz、常态 CPU 烧到 10%（实测）——纯浪费。
-        // 现在只留一个慢速兜底：万一托盘创建失败没有心跳线程，也保证 2s 内出帧
+        // 空闲节奏由托盘心跳线程（1s）统一保证：它每拍一次就唤醒一帧。
+        // 2026-10-11 起心跳 250ms→1000ms：它每次唤醒都是全量重绘（面板+每张卡），
+        // 250ms 时空闲 CPU 实测 ~10%（面板本身的 OR 叠加），1s 拍降到 ~2.5%。
+        // 这里只留一个慢速兜底：万一托盘创建失败没有心跳线程，也保证 2s 内出帧
         // （跨日切换、外部文件变化这类"非交互"的刷新不至于没人管）。
         ctx.request_repaint_after(Duration::from_millis(2000));
     }
@@ -1635,6 +1638,17 @@ fn open_taskbar_settings() {
     let _ = std::process::Command::new("cmd")
         .args(["/C", "start", "", "ms-settings:taskbar"])
         .spawn();
+}
+
+/// 把本进程的工作集还给系统（EmptyWorkingSet）。
+/// 用在「收进托盘」之后：页都闲着，留着白占内存；再唤出时缺页换回来，无感。
+/// 实测一个 132MB 工作集的实例调用后掉到 ~9MB，且之后照常出帧不反弹。
+fn trim_working_set() {
+    use windows_sys::Win32::System::ProcessStatus::EmptyWorkingSet;
+    use windows_sys::Win32::System::Threading::GetCurrentProcess;
+    unsafe {
+        EmptyWorkingSet(GetCurrentProcess());
+    }
 }
 
 /// 面板窗口句柄（托盘唤醒要用，见 tray.rs 文件头）。拿不到就回 0 ——
