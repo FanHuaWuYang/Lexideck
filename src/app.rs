@@ -110,6 +110,11 @@ pub struct LexideckApp {
     panel: PanelState,
     selected: HashSet<String>,
     expanded: HashSet<String>,
+    /// 词表行的缓存（2026-10-11）：几千条时每帧重建（排序+过滤）是纯浪费，
+    /// 指纹（词库版本/搜索/筛选/选择/展开）没变就直接复用。
+    word_rows_cache: Option<(WordRowsFp, Vec<WordRow>)>,
+    /// 词库内容的版本号：加载/重载/导入时 +1，用来给上面那个缓存做指纹
+    lib_rev: u64,
     // ── 卡片 ──
     floats: Vec<FloatWin>,
     next_id: usize,
@@ -177,6 +182,28 @@ pub struct LexideckApp {
 /// 关闭拦截里「再点一次」提示的固定文案（和底栏确认文案同一件事，过期后要认得出来）
 const EXIT_CONFIRM_HINT: &str = "再点一次 ✕ 就退出（5 秒内有效）";
 
+/// 集合的指纹（顺序无关的哈希和）：判断选择/展开集合有没有变化
+fn set_fingerprint(set: &std::collections::HashSet<String>) -> u64 {
+    use std::hash::{Hash, Hasher};
+    let mut acc: u64 = 0;
+    for k in set {
+        let mut h = std::collections::hash_map::DefaultHasher::new();
+        k.hash(&mut h);
+        acc = acc.wrapping_add(h.finish());
+    }
+    acc
+}
+
+/// 词表行缓存的指纹：任一输入变化才重建（几千条的排序/过滤不能每帧跑）
+#[derive(PartialEq)]
+struct WordRowsFp {
+    lib_rev: u64,
+    search: String,
+    filter: control::WordFilter,
+    sel: u64,
+    exp: u64,
+}
+
 impl LexideckApp {
     /// 「收进托盘」时面板挪去的屏幕外位置（在常规多屏布局之外；见 hide_panel）
     const PARK_POS: egui::Pos2 = egui::Pos2::new(-32000.0, -32000.0);
@@ -207,6 +234,8 @@ impl LexideckApp {
             panel: PanelState::default(),
             selected: HashSet::new(),
             expanded: HashSet::new(),
+            word_rows_cache: None,
+            lib_rev: 0,
             floats: Vec::new(),
             next_id: 1,
             shown_fit: 0,
@@ -244,6 +273,7 @@ impl LexideckApp {
     fn reload_library(&mut self) {
         let loaded = library::load(&self.lib_path);
         self.lib = loaded.deck;
+        self.lib_rev = self.lib_rev.wrapping_add(1);
         self.lib_corrupt = loaded.corrupt;
         self.warns = loaded.warns;
         self.lib_mtime = library::mtime(&self.lib_path);
@@ -318,6 +348,17 @@ impl LexideckApp {
             x.key().cmp(&y.key())
         });
         idx
+    }
+
+    /// 词表行缓存的指纹：任一输入变化才重建（几千条的排序/过滤不能每帧跑）
+    fn word_rows_fp(&self) -> WordRowsFp {
+        WordRowsFp {
+            lib_rev: self.lib_rev,
+            search: self.panel.search.clone(),
+            filter: self.panel.filter,
+            sel: set_fingerprint(&self.selected),
+            exp: set_fingerprint(&self.expanded),
+        }
     }
 
     fn build_word_rows(&self) -> Vec<WordRow> {
@@ -1400,6 +1441,7 @@ impl LexideckApp {
         match library::save(&self.lib_path, &next) {
             Ok(()) => {
                 self.lib = next;
+                self.lib_rev = self.lib_rev.wrapping_add(1);
                 self.lib_mtime = library::mtime(&self.lib_path);
                 self.prune_selection();
                 self.prune_state();
@@ -1494,7 +1536,21 @@ impl eframe::App for LexideckApp {
         self.draw_floats(&ctx, &th);
         self.draw_menu(&ctx, &th);
 
-        let rows = self.build_word_rows();
+        // 词表行：只在指纹变化（词库版本/搜索/筛选/选择/展开）时重建
+        let fp = self.word_rows_fp();
+        if self
+            .word_rows_cache
+            .as_ref()
+            .map(|(f, _)| f != &fp)
+            .unwrap_or(true)
+        {
+            let rows = self.build_word_rows();
+            self.word_rows_cache = Some((fp, rows));
+        }
+        let rows: &[WordRow] = match &self.word_rows_cache {
+            Some((_, rows)) => rows,
+            None => &[],
+        };
         let card_rows = self.build_card_rows();
         let plan_rows = self.build_plan_rows();
         let today_label = format!(
