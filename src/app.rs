@@ -328,6 +328,7 @@ impl LexideckApp {
                 let e = &self.lib.words[i];
                 let key = e.key();
                 let sel = self.selected.contains(&key);
+                let expanded = self.expanded.contains(&key);
                 match self.panel.filter {
                     WordFilter::Selected if !sel => return None,
                     WordFilter::Unselected if sel => return None,
@@ -340,92 +341,96 @@ impl LexideckApp {
                     }
                 }
                 let mut details: Vec<(String, String)> = Vec::new();
-                if !e.senses.is_empty() {
-                    details.push((
-                        "词义".into(),
-                        e.senses
-                            .iter()
-                            .map(|s| {
-                                let p = s.pos.trim();
-                                let m = s.meaning.trim();
-                                if p.is_empty() {
-                                    m.to_string()
-                                } else {
-                                    format!("{p} {m}")
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if let Some(f) = e.forms_line() {
-                    details.push(("变形".into(), f));
-                }
-                if !e.derivations.is_empty() {
-                    details.push((
-                        "同根词".into(),
-                        e.derivations
-                            .iter()
-                            .map(|d| {
-                                let m = d
-                                    .senses
-                                    .iter()
-                                    .map(|s| {
-                                        let p = s.pos.trim();
-                                        if p.is_empty() {
-                                            s.meaning.trim().to_string()
-                                        } else {
-                                            format!("{p} {}", s.meaning.trim())
-                                        }
-                                    })
-                                    .collect::<Vec<_>>()
-                                    .join("；");
-                                if m.is_empty() {
-                                    d.word.clone()
-                                } else {
-                                    format!("{} {}", d.word, m)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.phrases.is_empty() {
-                    details.push((
-                        "短语".into(),
-                        e.phrases
-                            .iter()
-                            .map(|p| {
-                                let m = p.meaning.trim();
-                                if m.is_empty() {
-                                    p.text.clone()
-                                } else {
-                                    format!("{} {}", p.text, m)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.sentences.is_empty() {
-                    details.push((
-                        "例句".into(),
-                        e.sentences
-                            .iter()
-                            .map(|s| {
-                                let z = s.zh.trim();
-                                if z.is_empty() {
-                                    s.en.clone()
-                                } else {
-                                    format!("{}（{z}）", s.en)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.note.trim().is_empty() {
-                    details.push(("备注".into(), e.note.clone()));
+                // 明细字符串只在展开行构建：6510 条的词库下，每帧给全部词条
+                // join 这些字符串+建行结构是纯浪费（实测常态 CPU 42% 的大头）。
+                if expanded {
+                    if !e.senses.is_empty() {
+                        details.push((
+                            "词义".into(),
+                            e.senses
+                                .iter()
+                                .map(|s| {
+                                    let p = s.pos.trim();
+                                    let m = s.meaning.trim();
+                                    if p.is_empty() {
+                                        m.to_string()
+                                    } else {
+                                        format!("{p} {m}")
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if let Some(f) = e.forms_line() {
+                        details.push(("变形".into(), f));
+                    }
+                    if !e.derivations.is_empty() {
+                        details.push((
+                            "同根词".into(),
+                            e.derivations
+                                .iter()
+                                .map(|d| {
+                                    let m = d
+                                        .senses
+                                        .iter()
+                                        .map(|s| {
+                                            let p = s.pos.trim();
+                                            if p.is_empty() {
+                                                s.meaning.trim().to_string()
+                                            } else {
+                                                format!("{p} {}", s.meaning.trim())
+                                            }
+                                        })
+                                        .collect::<Vec<_>>()
+                                        .join("；");
+                                    if m.is_empty() {
+                                        d.word.clone()
+                                    } else {
+                                        format!("{} {}", d.word, m)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.phrases.is_empty() {
+                        details.push((
+                            "短语".into(),
+                            e.phrases
+                                .iter()
+                                .map(|p| {
+                                    let m = p.meaning.trim();
+                                    if m.is_empty() {
+                                        p.text.clone()
+                                    } else {
+                                        format!("{} {}", p.text, m)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.sentences.is_empty() {
+                        details.push((
+                            "例句".into(),
+                            e.sentences
+                                .iter()
+                                .map(|s| {
+                                    let z = s.zh.trim();
+                                    if z.is_empty() {
+                                        s.en.clone()
+                                    } else {
+                                        format!("{}（{z}）", s.en)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.note.trim().is_empty() {
+                        details.push(("备注".into(), e.note.clone()));
+                    }
                 }
                 Some(WordRow {
                     key: key.clone(),
@@ -1552,8 +1557,14 @@ impl eframe::App for LexideckApp {
         // 面板自己不必全速重绘：卡片动画是由各自的浮窗视口用 request_repaint_of
         // 驱动的（见 draw_floats）。这里如果写成「有卡片在动画就 ctx.request_repaint()」，
         // 会把每帧绘制很重的面板一起拉进全速渲染，反而把卡片入场动画的帧率拖下来
-        // —— 表现就是「动画卡卡的」。面板 5fps 足够（点一下会立刻触发重绘）。
-        ctx.request_repaint_after(Duration::from_millis(300));
+        // —— 表现就是「动画卡卡的」。
+        //
+        // 空闲节奏由托盘心跳线程（250ms）统一保证：它每拍一次就唤醒一帧，
+        // 空闲帧率实测 4Hz 左右。这里曾经的 300ms 定时器与心跳**互相叠加**，
+        // 把空闲帧率推到 ~7.3Hz、常态 CPU 烧到 10%（实测）——纯浪费。
+        // 现在只留一个慢速兜底：万一托盘创建失败没有心跳线程，也保证 2s 内出帧
+        // （跨日切换、外部文件变化这类"非交互"的刷新不至于没人管）。
+        ctx.request_repaint_after(Duration::from_millis(2000));
     }
 }
 
