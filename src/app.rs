@@ -473,7 +473,7 @@ impl LexideckApp {
                     source: a
                         .map(|a| a.source.clone())
                         .filter(|s| !s.is_empty())
-                        .unwrap_or_else(|| "手动展示".to_string()),
+                        .unwrap_or_else(|| crate::lang::l("手动展示").to_string()),
                     hide,
                 }
             })
@@ -488,19 +488,19 @@ impl LexideckApp {
             for r in &it.ranges {
                 let state = schedule::range_state(r, today);
                 let why = match state {
-                    schedule::RangeState::Active => "今天生效".to_string(),
+                    schedule::RangeState::Active => crate::lang::l("今天生效").to_string(),
                     schedule::RangeState::Future => {
                         let d = schedule::days_between(
                             today,
                             deck::parse_date(&r.from).unwrap_or(today),
                         );
                         if d <= 1 {
-                            "明天开始".to_string()
+                            crate::lang::l("明天开始").to_string()
                         } else {
-                            format!("还有 {d} 天开始")
+                            crate::lang::tf("还有 {d} 天开始", &[("d", &d)])
                         }
                     }
-                    schedule::RangeState::Past => "已结束".to_string(),
+                    schedule::RangeState::Past => crate::lang::l("已结束").to_string(),
                 };
                 out.push(PlanRow {
                     word: it.word.clone(),
@@ -928,7 +928,7 @@ impl LexideckApp {
         ctx.send_viewport_cmd(ViewportCommand::CancelClose);
         self.confirm_exit = true;
         self.confirm_at = Some(Instant::now());
-        self.status = Some(EXIT_CONFIRM_HINT.into());
+        self.status = Some(crate::lang::l(EXIT_CONFIRM_HINT).into());
     }
 
     /// 托盘自检节奏：建好之后隔这么久查第一次，之后每次再隔这么久重查。
@@ -989,10 +989,7 @@ impl LexideckApp {
                 Err(e) => {
                     // 失败原因照实写出来（含 crate 给的细节）—— 用户看不到图标时，
                     // 这一行就是唯一线索；面板底部状态栏一直在。
-                    self.status = Some(format!(
-                        "托盘图标创建失败（第 {} 次）：{e}；关闭窗口按「直接退出」处理，稍后自动重试",
-                        self.tray_attempts
-                    ));
+                    self.status = Some(crate::lang::tf("托盘图标创建失败（第 {n} 次）：{e}；关闭窗口按「直接退出」处理，稍后自动重试", &[("n", &self.tray_attempts), ("e", &e)]));
                 }
             }
         }
@@ -1192,7 +1189,10 @@ impl LexideckApp {
                 self.cfg.shown = keys;
                 config::save(&config::settings_path(), &self.cfg);
                 self.screen = Screen::Manual; // 「立即展示」= 手动模式
-                self.status = Some(format!("已让 {n} 个词上屏（手动展示）"));
+                self.status = Some(crate::lang::tf(
+                    "已让 {n} 个词上屏（手动展示）",
+                    &[("n", &n)],
+                ));
                 // 重建窗（内容变了）
                 self.floats.clear();
             }
@@ -1208,7 +1208,10 @@ impl LexideckApp {
             self.screen = Screen::Auto;
             self.floats.clear();
             let (_, words, _) = schedule::today_counts(&self.lib, self.today, &self.sc);
-            self.status = Some(format!("已回到今日展示：今日生效 {words} 个"));
+            self.status = Some(crate::lang::tf(
+                "已回到今日展示：今日生效 {n} 个",
+                &[("n", &words)],
+            ));
         }
         // 卡片页的两档内容来源（面板切「按今日展示 / 手动展示」）
         if let Some(auto) = res.set_screen_auto {
@@ -1216,13 +1219,20 @@ impl LexideckApp {
             if auto {
                 self.screen = Screen::Auto;
                 let (_, words, _) = schedule::today_counts(&self.lib, self.today, &self.sc);
-                self.status = Some(format!("已切回按今日展示：今日生效 {words} 个词"));
+                self.status = Some(crate::lang::tf(
+                    "已切回按今日展示：今日生效 {n} 个词",
+                    &[("n", &words)],
+                ));
             } else {
                 self.screen = Screen::Manual;
                 self.status = Some(if self.cfg.shown.is_empty() {
-                    "已切到手动展示（还没勾词 —— 去「词表」勾几个词点「立即展示」）".into()
+                    crate::lang::l("已切到手动展示（还没勾词 —— 去「词表」勾几个词点「立即展示」）")
+                        .into()
                 } else {
-                    format!("已切到手动展示：显示勾选的 {} 个词", self.cfg.shown.len())
+                    crate::lang::tf(
+                        "已切到手动展示：显示勾选的 {n} 个词",
+                        &[("n", &self.cfg.shown.len())],
+                    )
                 });
             }
         }
@@ -1284,14 +1294,15 @@ impl LexideckApp {
                     self.cfg.autostart = on;
                     config::save(&config::settings_path(), &self.cfg);
                     self.status = Some(if on {
-                        format!("开机自启动已开启：{}", exe.display())
+                        crate::lang::tf("开机自启动已开启：{p}", &[("p", &exe.display())])
                     } else {
-                        "开机自启动已关闭（启动项已删掉）".into()
+                        crate::lang::l("开机自启动已关闭（启动项已删掉）").into()
                     });
                 }
                 Err(e) => {
-                    self.status = Some(format!(
-                        "开机自启动没改成：{e}（开关位置显示的是注册表里的实际状态）"
+                    self.status = Some(crate::lang::tf(
+                        "开机自启动没改成：{e}（开关位置显示的是注册表里的实际状态）",
+                        &[("e", &e)],
                     ));
                 }
             }
@@ -1303,7 +1314,10 @@ impl LexideckApp {
     fn toggle_strategy(&mut self, word: &str, rng: &deck::Range) {
         if !self.sc_ok {
             self.status = Some(
-                "状态文件读不懂，已拒绝写入（避免覆盖坏文件）；请先修好或删掉 状态.json".into(),
+                crate::lang::l(
+                    "状态文件读不懂，已拒绝写入（避免覆盖坏文件）；请先修好或删掉 状态.json",
+                )
+                .into(),
             );
             return;
         }
@@ -1312,9 +1326,9 @@ impl LexideckApp {
         match schedule::save_state(&self.sc_path, &self.sc) {
             Ok(()) => {
                 self.status = Some(if now_off {
-                    format!("已关闭「{word}」这条策略")
+                    crate::lang::tf("已关闭「{word}」这条策略", &[("word", &word)])
                 } else {
-                    format!("已打开「{word}」这条策略")
+                    crate::lang::tf("已打开「{word}」这条策略", &[("word", &word)])
                 });
                 // 如果是 Auto，重建卡片（下一帧按新集合上屏）
                 if self.screen == Screen::Auto {
@@ -1324,7 +1338,7 @@ impl LexideckApp {
             Err(e) => {
                 // 写盘失败就把内存里的改动退回去，别让两边不一致
                 self.sc.set_off(word, rng, !now_off);
-                self.status = Some(format!("保存状态失败：{e}"));
+                self.status = Some(crate::lang::tf("保存状态失败：{e}", &[("e", &e)]));
             }
         }
     }
@@ -1333,8 +1347,8 @@ impl LexideckApp {
 
     fn pick_import(&mut self) {
         let picked = rfd::FileDialog::new()
-            .set_title("选择要导入的词表（.json）")
-            .add_filter("词表文件", &["json"])
+            .set_title(crate::lang::l("选择要导入的词表（.json）"))
+            .add_filter(crate::lang::l("词表文件"), &["json"])
             .pick_file();
         let Some(path) = picked else {
             return;
@@ -1342,11 +1356,11 @@ impl LexideckApp {
         let name = path
             .file_name()
             .map(|s| s.to_string_lossy().into_owned())
-            .unwrap_or_else(|| "词表".into());
+            .unwrap_or_else(|| crate::lang::l("词表").into());
         match deck::load_file(&path) {
             Err(errs) => {
                 self.import_error = Some((name, errs));
-                self.status = Some("导入失败：文件格式不对，主库未改动".into());
+                self.status = Some(crate::lang::l("导入失败：文件格式不对，主库未改动").into());
             }
             Ok((incoming, _warns)) => {
                 let sess = import::Session::new(name, incoming, &self.lib.words);
@@ -1405,7 +1419,10 @@ impl LexideckApp {
                 self.status = Some(import::Session::summary_line(&file, &summary));
             }
             Err(e) => {
-                self.status = Some(format!("导入失败：写入主库出错（{e}），主库未改动"));
+                self.status = Some(crate::lang::tf(
+                    "导入失败：写入主库出错（{e}），主库未改动",
+                    &[("e", &e)],
+                ));
             }
         }
     }
@@ -1433,6 +1450,8 @@ impl eframe::App for LexideckApp {
         fps_tick(&ctx, "root");
         // 面板句柄每帧记一次：收进托盘时要靠它摘任务栏按钮（见 hide_panel）
         self.panel_hwnd = panel_hwnd(frame);
+        // 界面语言跟着设置走（每帧同步一次；设置页切换后下一帧生效）
+        crate::lang::set(crate::lang::Lang::parse(&self.cfg.lang));
 
         // P3a：托盘懒创建 + 收事件；关闭拦截必须在 place_once 之前
         // （CancelClose 必须和 close_requested 同帧发出，eframe 只认那一帧）
@@ -1454,7 +1473,10 @@ impl eframe::App for LexideckApp {
                 self.floats.clear();
             }
             let (_, words, _) = schedule::today_counts(&self.lib, self.today, &self.sc);
-            self.status = Some(format!("日期变了：今日生效 {words} 个"));
+            self.status = Some(crate::lang::tf(
+                "日期变了：今日生效 {n} 个",
+                &[("n", &words)],
+            ));
         }
         // 退出确认只在 5 秒内有效
         if self.confirm_exit {
@@ -1463,7 +1485,7 @@ impl eframe::App for LexideckApp {
                     self.confirm_exit = false;
                     self.confirm_at = None;
                     // 确认过期就别在底栏留「再点一次…」的过期提示
-                    if self.status.as_deref() == Some(EXIT_CONFIRM_HINT) {
+                    if self.status.as_deref() == Some(crate::lang::l(EXIT_CONFIRM_HINT)) {
                         self.status = None;
                     }
                 }

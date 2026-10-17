@@ -84,6 +84,8 @@ pub struct Config {
     pub autostart: bool,
     /// 主题："plain" | "wuling" | "yellow"
     pub theme: String,
+    /// 界面语言："zh"（默认）| "en"；见 src/lang.rs
+    pub lang: String,
     /// 当前在桌面上的卡片（词条 word，小写；顺序 = 平铺顺序）
     pub shown: Vec<String>,
 }
@@ -102,6 +104,7 @@ impl Default for Config {
             close_action: CloseAction::Tray,
             autostart: false,
             theme: "plain".into(),
+            lang: "zh".into(),
             shown: Vec::new(),
         }
     }
@@ -204,6 +207,13 @@ pub fn load(path: &Path) -> Config {
             "theme" => {
                 cfg.theme = val.to_string();
             }
+            "lang" => {
+                cfg.lang = match val.trim().to_ascii_lowercase().as_str() {
+                    "en" | "english" | "英文" => "en".into(),
+                    "zh" | "chinese" | "中文" => "zh".into(),
+                    _ => cfg.lang.clone(), // 读不懂就保持默认（zh）
+                };
+            }
             "shown" => {
                 // 新格式是 JSON 数组：词条本身可能带逗号（"Well, done."），逗号分隔存不住
                 let t = val.trim();
@@ -251,6 +261,7 @@ pub fn save(path: &Path, cfg: &Config) {
     s.push_str(&format!("close_action = {}\n", cfg.close_action.as_str()));
     s.push_str(&format!("autostart = {}\n", cfg.autostart));
     s.push_str(&format!("theme = {}\n", cfg.theme));
+    s.push_str(&format!("lang = {}\n", cfg.lang));
     s.push_str(&format!(
         "shown = {}\n",
         serde_json::to_string(&cfg.shown).unwrap_or_else(|_| "[]".into())
