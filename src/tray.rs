@@ -107,7 +107,8 @@ const FROZEN_MS: u64 = 800;
 /// 自检要按「进程 + 类名」找到它，才能拿它的 (hWnd, uID) 回问外壳。
 const MSG_WINDOW_CLASS: &str = "tray_icon_app";
 
-/// 自检时扫的 uID 上限：crate 的 uID 是**进程内递增计数器**（从 0 起，实测命中的是 2）。
+/// 自检时扫的 uID 上限：crate 的 uID 是**进程内递增计数器**（从 1 起 ——
+/// 上游 `counter.rs` 的 `AtomicU32::new(1)`；实测命中的是 2）。
 /// 一个进程里正常只会有 1~2 个托盘图标，扫到 32 足够；成本是几十次壳调用，只在自检时跑。
 const UID_SWEEP_MAX: u32 = 32;
 
@@ -199,6 +200,13 @@ impl Tray {
             "自检未通过：外壳认不出本进程的托盘图标（uID 0~{UID_SWEEP_MAX} 全问不到）"
         ));
         false
+    }
+
+    /// 复检：忽略「已通过」缓存重新回问外壳一次（低频用，见 app::tray_tick 的复检说明）。
+    /// 失联（Explorer 重启后重挂失败等）返回 false，调用方按「丢图标 + 重试」处理。
+    pub fn re_verify(&self) -> bool {
+        self.verified.set(false);
+        self.verify()
     }
 
     /// crate 内部隐藏消息窗口的句柄（懒查找 + 缓存；找不到返回 0）。
@@ -321,8 +329,13 @@ fn poke(hwnd: isize) {
         if GetCursorPos(&mut pt) != 0 && ScreenToClient(hwnd as HWND, &mut pt) != 0 {
             lp = ((pt.y as isize) << 16) | ((pt.x as isize) & 0xFFFF);
         }
-        PostMessageW(hwnd as HWND, WM_MOUSEMOVE, 0, lp);
-        Tray::trace(&format!("已发唤醒消息 → hwnd={hwnd:#x} lparam={lp}"));
+        // 检查返回值再打日志：以前无条件打「已发唤醒消息」，发送失败时日志会谎报成功
+        let ok = PostMessageW(hwnd as HWND, WM_MOUSEMOVE, 0, lp);
+        if ok == 0 {
+            Tray::trace(&format!("唤醒消息发送失败 → hwnd={hwnd:#x} lparam={lp}"));
+        } else {
+            Tray::trace(&format!("已发唤醒消息 → hwnd={hwnd:#x} lparam={lp}"));
+        }
     }
 }
 

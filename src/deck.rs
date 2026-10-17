@@ -677,7 +677,7 @@ pub fn find<'a>(deck: &'a Deck, word: &str) -> Option<&'a Entry> {
 
 pub fn save(path: &Path, deck: &Deck) -> Result<(), String> {
     let s = serde_json::to_string_pretty(deck).map_err(|e| e.to_string())?;
-    std::fs::write(path, s).map_err(|e| e.to_string())
+    crate::util::write_atomic(path, &s).map_err(|e| e.to_string())
 }
 
 /// 解析一个文件（含读取与编码回退）

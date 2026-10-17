@@ -804,7 +804,7 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
     ui.add_space(14.0);
     mini(
         ui,
-        "为什么卡片不能拖：位置完全由平铺规则决定，教室机器上被拖乱就没人能还原。",
+        "卡片可以拖开临时让位；下次重排（卡片增删、字号变化）会回到平铺位置。",
     );
 }
 
@@ -1301,8 +1301,11 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
                 ui,
                 "放不下就按顺序截断：先排的先上屏，后面的不显示，面板会把「生效 N 个 / 已显示 M 个」写清楚。",
             );
-            hd(ui, "为什么卡片不能拖");
-            pg(ui, "位置完全由排列规则决定，教室机器上被拖乱就没人能还原。");
+            hd(ui, "卡片可以拖开临时让位");
+            pg(
+                ui,
+                "位置平时由排列规则决定；拖走后，下次重排（卡片增删、字号变化）会拉回平铺位置。",
+            );
             sp(ui);
             st(ui, "本次生效", &cx.effective.to_string());
             st(ui, "屏幕上显示", &cx.shown.to_string());
@@ -2462,10 +2465,17 @@ const FONT_DEF: f32 = 0.7;
 const FONT_STEP: f32 = 0.05;
 const STAT_H: f32 = 72.0;
 
-/// 字号步进：dir = +1 / -1，结果按两位小数取整再钳到 [0.50, 1.40]
+/// 字号步进：dir = +1 / -1，结果按两位小数取整再钳到 [0.50, 1.40]。
+/// 手改 设置.txt 写进超出范围的值（如 font_scale = 2.0）时不「跳回边界」，
+/// 只按 0.05 的邻近步进往回收 —— 以前点一下 A− 会从 3.00 直掉到 1.40，
+/// 看起来像按钮坏了（评审修正）。
 fn font_step(cur: f32, dir: i32) -> f32 {
-    let v = ((cur + dir as f32 * FONT_STEP) * 100.0).round() / 100.0;
-    v.clamp(FONT_MIN, FONT_MAX)
+    let raw = ((cur + dir as f32 * FONT_STEP) * 100.0).round() / 100.0;
+    if cur > FONT_MAX || cur < FONT_MIN {
+        raw
+    } else {
+        raw.clamp(FONT_MIN, FONT_MAX)
+    }
 }
 
 /// 策略分组与计数：(今天生效且没关的条数, 被永久关闭的条数, 未来排期的条数)
@@ -3603,6 +3613,18 @@ mod tests {
             filled > empty + 20,
             "词条行没画出来：空表 {empty} vs 两行 {filled}"
         );
+    }
+
+    /// 字号步进：正常范围内钳位；手改超范围的值只做邻近步进，
+    /// 不再一次跳回 1.40（评审修正：A− 从 3.00 直掉 1.40 看起来像按钮坏了）
+    #[test]
+    fn font_step_clamps_in_range_but_nudges_out_of_range() {
+        assert_eq!(font_step(0.70, 1), 0.75);
+        assert_eq!(font_step(0.70, -1), 0.65);
+        assert_eq!(font_step(1.40, 1), 1.40);
+        assert_eq!(font_step(0.50, -1), 0.50);
+        assert_eq!(font_step(3.00, -1), 2.95);
+        assert_eq!(font_step(0.45, 1), 0.50);
     }
 
     /// 空词表 / 空策略都不能崩（首次运行、导入前）

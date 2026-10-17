@@ -25,6 +25,11 @@ pub struct Loaded {
     pub warns: Vec<String>,
     /// 文件在、但读不懂。此时调用方**绝不允许**写盘，否则会把坏文件覆盖成空库
     pub corrupt: bool,
+    /// 文件不在（被删 / 改名 / 编辑器「原子保存」的短暂间隙 / 被安全软件隔离）。
+    /// 与 `corrupt` 分开：这不是坏文件，是「暂时没有文件」。同样绝不能写盘 ——
+    /// 以前这里返回空库且不标记，调用方会拿空库把 状态.json 里所有「已永久关闭」
+    /// 清掉（2026-10-17 评审修复），而且状态栏还谎称「用的还是内存里那份」。
+    pub missing: bool,
 }
 
 /// 读主库；没有就返回空库（不报错——第一次运行本来就没有）
@@ -38,6 +43,7 @@ pub fn load(path: &Path) -> Loaded {
                     deck: d,
                     warns,
                     corrupt: false,
+                    missing: false,
                 };
             }
             Err(errs) => {
@@ -48,6 +54,7 @@ pub fn load(path: &Path) -> Loaded {
                     deck: Deck::default(),
                     warns,
                     corrupt: true,
+                    missing: false,
                 };
             }
         }
@@ -66,6 +73,7 @@ pub fn load(path: &Path) -> Loaded {
                     deck: d,
                     warns,
                     corrupt: false,
+                    missing: false,
                 };
             }
         }
@@ -74,6 +82,7 @@ pub fn load(path: &Path) -> Loaded {
         deck: Deck::default(),
         warns,
         corrupt: false,
+        missing: true,
     }
 }
 

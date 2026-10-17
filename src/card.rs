@@ -88,7 +88,12 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
                         size_en: f32,
                         size_zh: f32,
                         color_en: Color32| {
-        let eg = lay(left, size_en, color_en, f32::INFINITY);
+        let mut eg = lay(left, size_en, color_en, f32::INFINITY);
+        if eg.size().x > content_w {
+            // 超长短语（如 throw the baby out with the bathwater）：按可用宽度折行，
+            // 否则会画到窗口外被裁掉（旧行为丢内容且毫无提示）。折行后高度自然变大。
+            eg = lay(left, size_en, color_en, content_w);
+        }
         let ew = eg.size().x;
         let eh = eg.size().y;
         let zh = right_txt.trim();
@@ -97,7 +102,10 @@ pub fn plan(ctx: &egui::Context, e: &Entry, th: &Theme, k: f32, extra_hide: &[St
             *y += eh;
             return;
         }
-        let zg = lay(zh, size_zh, th.fg3, f32::INFINITY);
+        let mut zg = lay(zh, size_zh, th.fg3, f32::INFINITY);
+        if zg.size().x > content_w {
+            zg = lay(zh, size_zh, th.fg3, content_w);
+        }
         let zw = zg.size().x;
         let zh_h = zg.size().y;
         if ew + 10.0 * k + zw <= content_w {
