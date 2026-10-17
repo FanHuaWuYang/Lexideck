@@ -57,7 +57,7 @@
 
 ```bash
 cargo run --release     # 控制面板 + 已启用的悬浮窗
-cargo test              # 72 个测试（含面板的离屏渲染测试、词表生成文档的示例校验）
+cargo test              # 83 个测试（含面板的离屏渲染测试、词表生成文档的示例校验）
 ```
 
 数据都写在 exe 同目录：主库 `lexideck.json` + 设置 `设置.txt`。`设置.txt` 首次运行就会生成；
@@ -140,10 +140,12 @@ Rust + **eframe / egui 0.36**（glow / OpenGL 后端），绿色单 exe。理由
    `WS_EX_APPWINDOW`，等于强制进任务栏（实测面板样式 `0x00040110`）。修法：收进托盘时置
    `WS_EX_TOOLWINDOW`、清 `WS_EX_APPWINDOW`（唤回时反过来），改完必须发一次
    `SWP_FRAMECHANGED`，否则 Explorer 不重新评估、按钮赖着不走。**注意**：不能改成隐藏窗口
-   （见 `docs/开发记录-P3.md` §2.1：eframe 对不可见窗口会走一条没登记事件循环上下文的旁路，
-   建新浮窗时直接崩）。注意 egui 0.36 的 `ViewportCommand` 里**没有** Taskbar 变体，而
-   **eframe 0.36 压根没有实现 `ViewportBuilder::taskbar`** —— eframe 源码里搜不到这个字段，
-   也就是说 `with_taskbar(false)` 在 eframe 里是**空操作**，窗口建出来一律带 `WS_EX_APPWINDOW`。
+   （见 `docs/开发记录.md` §3.1：eframe 对不可见窗口会走一条没登记事件循环上下文的旁路，
+   建新浮窗时直接崩）。egui 0.36 的 `ViewportCommand` 里没有 Taskbar 变体；`with_taskbar(false)`
+   虽然有实现（egui-winit 会接住、映射到 winit 的 `with_skip_taskbar`），但 winit 在 Windows 上
+   走 `ITaskbarList::DeleteTab`、且时机在窗口置可见之前，**实测不生效** —— 窗口建出来一律带
+   `WS_EX_APPWINDOW`（2026-10-17 评审更正：早先写的「eframe 压根没实现」不成立，
+   **别把 `with_taskbar(false)` 当死代码删掉**，它至少在建窗那一刻还摘过一次）。
    所以卡片同样一直挂在任务栏上（实测四种层级/穿透组合全中），修法见坑 11。
 
 10. **托盘图标「没出现」要分两种**（2026-10-02 更正）：① 图标加成功了、只是 Win11 把它放进右下角
@@ -166,15 +168,17 @@ Rust + **eframe / egui 0.36**（glow / OpenGL 后端），绿色单 exe。理由
       Explorer 内存状态、`状态.json` 都逐一排除）。**Windows 哪一层拒绝的还没查明**，
       所以应用不再自己猜原因：建完图标后**回问外壳**（`Shell_NotifyIconGetRect`），
       确认到了才报「已就绪」，没确认就如实报「图标没进通知区」+ 自动重试
-      （细节与实测数据见 `docs/开发记录-P3.md` §9.3）。
+      （细节与实测数据见 `docs/开发记录.md` §3.6）。
 
-11. **浮窗（卡片）也会挂在任务栏上**：与坑 9 同一根因 —— **eframe 0.36 没有实现
-    `ViewportBuilder::taskbar`**，`float_viewport` 里那句 `.with_taskbar(false)` 是空操作，
-    卡片建出来照样带 `WS_EX_APPWINDOW`。卡片是 eframe 动态建的、内部拿不到句柄，于是按标题
-    `词卡 #n` 用 `FindWindowW` 找回来再改样式（`window::ensure_no_taskbar`）。**别记
-    「改过没有」**：卡片隐藏后重新显示时窗口会被**重建**，记标记会漏掉新窗口；改成每帧一次
-    廉价自查（读样式，不对才写）。实测四种层级/穿透组合下卡片都是 `TOOLWINDOW`、不占任务栏，
-    而面板保持 `APPWINDOW`（它在任务栏上是对的）。
+11. **浮窗（卡片）也会挂在任务栏上**：与坑 9 同一根因 —— `with_taskbar(false)` 实测不生效
+    （映射到 winit 的 `with_skip_taskbar`，走 `ITaskbarList::DeleteTab` 且时机在置可见之前；
+    2026-10-17 评审更正，不是「eframe 没实现」），`float_viewport` 里那句是摆设，卡片建出来
+    照样带 `WS_EX_APPWINDOW`。卡片是 eframe 动态建的、内部拿不到句柄，于是每帧按标题
+    `词卡 #n` 用 `FindWindowW` 找回来再改样式（`window::ensure_no_taskbar_hwnd`；托盘菜单同理，
+    走 `ensure_no_taskbar_by_title`）。**别记「改过没有」**：卡片隐藏后重新显示时窗口会被
+    **重建**，记标记会漏掉新窗口；改成每帧一次廉价自查（读样式，不对才写），且**一张卡每帧
+    只查一次句柄、任务栏/触摸/拖拽三处共用**。实测四种层级/穿透组合下卡片都是 `TOOLWINDOW`、
+    不占任务栏，而面板保持 `APPWINDOW`（它在任务栏上是对的）。
 
 ## 复现体积数字
 
@@ -183,4 +187,4 @@ cargo build --release
 ls -l target/release/lexideck.exe
 ```
 
-当前 exe **5830656 字节**，二进制里 `VCRUNTIME140` 出现 **0 次**（已复验）。用 dumpbin（VS BuildTools）可看完整依赖清单：只应出现系统 DLL。
+当前 exe 约 **6 MB 量级**（每次构建的实际字节数由 CI 打印在日志里）；二进制里 `VCRUNTIME140` 出现 **0 次**（这一条由 CI 自动卡住）。用 dumpbin（VS BuildTools）可看完整依赖清单：只应出现系统 DLL。
