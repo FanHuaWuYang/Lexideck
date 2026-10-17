@@ -515,7 +515,17 @@ pub fn draw(
     let main = main.translate(egui::vec2(0.0, rise));
     let side = side.translate(egui::vec2(0.0, rise));
 
-    ui.scope_builder(egui::UiBuilder::new().max_rect(main), |ui| {
+    // 卡片/策略/设置：整页（含右栏说明）一起滚动，滚动条落在内容区最右缘
+    let whole_page = matches!(
+        panel.tab,
+        PanelTab::Cards | PanelTab::Plans | PanelTab::Settings
+    );
+    let tab_rect = if whole_page {
+        content.translate(egui::vec2(0.0, rise))
+    } else {
+        main
+    };
+    ui.scope_builder(egui::UiBuilder::new().max_rect(tab_rect), |ui| {
         ui.multiply_opacity(fade);
         match panel.tab {
             PanelTab::Words => words_tab(ui, panel, cx, rows, &mut r),
@@ -524,7 +534,7 @@ pub fn draw(
             PanelTab::Settings => settings_tab(ui, cfg, panel, cx, &mut r),
         }
     });
-    if wide {
+    if wide && !whole_page {
         ui.scope_builder(egui::UiBuilder::new().max_rect(side), |ui| {
             ui.multiply_opacity(fade);
             help_pane(ui, panel.tab, cx);
@@ -630,13 +640,49 @@ fn page_scroll(ui: &mut egui::Ui, id: &str, body: impl FnOnce(&mut egui::Ui)) {
     let sp = &mut ui.style_mut().spacing.scroll;
     sp.floating = false;
     sp.bar_width = 6.0;
-    sp.bar_inner_margin = 4.0;
-    sp.bar_outer_margin = 2.0;
-    sp.handle_min_length = 24.0;
+    sp.bar_inner_margin = 8.0;
+    sp.bar_outer_margin = 4.0;
+    sp.handle_min_length = 28.0;
+    // 内容右侧额外留 10px：卡片/框体先收进来，滚动条待在空槽里，不压字也不压边框
+    sp.content_margin = egui::Margin {
+        right: 10,
+        ..egui::Margin::ZERO
+    };
     egui::ScrollArea::vertical()
         .id_salt(id)
         .auto_shrink([false, false])
         .show(ui, body);
+}
+
+/// 双栏页面：左内容 + 右说明放进同一个滚动区，滚动条贴内容区右缘（不再夹在两栏之间）。
+fn page_with_help(
+    ui: &mut egui::Ui,
+    id: &str,
+    tab: PanelTab,
+    cx: &Ctx,
+    body: impl FnOnce(&mut egui::Ui),
+) {
+    let wide = ui.available_width() >= SIDE_MIN_W;
+    if wide {
+        page_scroll(ui, id, |ui| {
+            let main_w = (ui.available_width() - GAP) * 0.62;
+            ui.horizontal_top(|ui| {
+                ui.allocate_ui_with_layout(
+                    egui::vec2(main_w, 0.0),
+                    egui::Layout::top_down(egui::Align::Min),
+                    body,
+                );
+                ui.add_space(GAP);
+                ui.allocate_ui_with_layout(
+                    egui::vec2(ui.available_width(), 0.0),
+                    egui::Layout::top_down(egui::Align::Min),
+                    |ui| help_pane(ui, tab, cx),
+                );
+            });
+        });
+    } else {
+        page_scroll(ui, id, body);
+    }
 }
 
 fn words_tab(
@@ -740,7 +786,9 @@ fn words_tab(
 }
 
 fn cards_tab(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
-    page_scroll(ui, "cards-page", |ui| cards_body(ui, cfg, cx, r));
+    page_with_help(ui, "cards-page", PanelTab::Cards, cx, |ui| {
+        cards_body(ui, cfg, cx, r)
+    });
 }
 
 fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
@@ -832,7 +880,9 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
 }
 
 fn plans_tab(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
-    page_scroll(ui, "plans-page", |ui| plans_body(ui, panel, cx, r));
+    page_with_help(ui, "plans-page", PanelTab::Plans, cx, |ui| {
+        plans_body(ui, panel, cx, r)
+    });
 }
 
 fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
@@ -948,7 +998,7 @@ fn settings_tab(
     cx: &Ctx,
     r: &mut ControlResult,
 ) {
-    page_scroll(ui, "settings-page", |ui| {
+    page_with_help(ui, "settings-page", PanelTab::Settings, cx, |ui| {
         settings_body(ui, cfg, panel, cx, r)
     });
 }
