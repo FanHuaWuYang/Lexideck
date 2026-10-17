@@ -28,15 +28,15 @@ pub fn draw(
     plan: Option<&CardPlan>,
     th: &Theme,
     scale: f32,
-    card_id: usize,
+    hwnd: isize,
     drag_state: &mut DragState,
 ) {
     let ctx = ui.ctx().clone();
     let full = ui.max_rect();
     let painter = ui.painter().clone();
 
-    // 触摸钩子：读 WM_TOUCH 屏幕坐标（幂等，每帧确保；窗口重建也纠得回来）
-    let hwnd = window::find_window_by_title(&window::float_title(card_id));
+    // 触摸钩子：读 WM_TOUCH 屏幕坐标（幂等，每帧确保；窗口重建也纠得回来）。
+    // 句柄由调用方查一次传进来（见 app::draw_floats），这里不再重复 FindWindowW。
     window::ensure_touch_hook(hwnd);
 
     // 拖拽（整窗可拖，没有其它可点元素）

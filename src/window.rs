@@ -24,10 +24,13 @@ pub fn ex_style_for_taskbar(ex: isize, visible: bool) -> isize {
 
 /// 让窗口从任务栏（以及 Alt+Tab 列表）里消失 / 回来。
 ///
-/// 为什么需要：**eframe 0.36 没有实现 `ViewportBuilder::taskbar`** —— eframe 源码里
-/// 搜不到这个字段，`with_taskbar(false)` 是空操作，窗口建出来一律带 `WS_EX_APPWINDOW`
-/// （真机实测：面板与四张卡片全是 `APPWINDOW`）。`ViewportCommand` 里也没有对应变体
-/// （查过 0.36.2 全部变体），所以建完窗口只能自己改扩展样式。
+/// 为什么需要：`with_taskbar(false)` 确实有实现（egui-winit 的
+/// `create_winit_window_attributes` 接住它、映射到 winit 的 `with_skip_taskbar`），
+/// 但 winit 在 Windows 上走的是 `ITaskbarList::DeleteTab`，且调用时机在窗口
+/// 「置可见」之前 —— 实测不生效：窗口建出来一律带 `WS_EX_APPWINDOW`
+/// （真机实测：面板与卡片全是 `APPWINDOW`）。`ViewportCommand` 里也没有对应变体，
+/// 所以建完窗口只能自己改扩展样式（**别把 `with_taskbar(false)` 当死代码删**，
+/// 它至少在建窗那一刻还摘过一次 tab）。
 /// 「收进托盘」只是把面板挪到屏幕外 —— 窗口仍是「可见」态，任务栏按钮会一直留着
 /// （用户实测报的就是这个）。不显示 = 置 `WS_EX_TOOLWINDOW` 并清 `WS_EX_APPWINDOW`，
 /// 显示 = 反过来。改完必须发一次 `SWP_FRAMECHANGED`，否则按钮会赖着不走。
@@ -67,6 +70,8 @@ pub fn float_title(id: usize) -> String {
 
 /// 主窗口（控制面板）标题 —— 建窗口 / 按标题找句柄 / 拖拽取位置都用它认人
 pub const MAIN_TITLE: &str = "Lexideck 词卡看板";
+/// 托盘右键菜单窗口的标题（自检脚本按它找窗口；每帧的「别进任务栏」自查也用它）
+pub const MENU_TITLE: &str = "Lexideck 托盘菜单";
 
 // 最近一次 WM_TOUCH 触点数据：(hwnd, x, y)，x/y 是**屏幕**物理像素。
 // 触点的屏幕坐标是消息里自带的，与窗口位置无关 —— 这正是拖拽要的"原子"数据源。
@@ -176,22 +181,29 @@ pub fn taskbar_visible(hwnd: isize) -> bool {
     }
 }
 
-/// 「卡片不该出现在任务栏」的自查自纠（每帧一次，成本两次 Win32 调用）。
+/// 「不在任务栏」的自查自纠（传句柄版）。
 ///
-/// 为什么不能建窗口时一次搞定：eframe 0.36 压根没用 `ViewportBuilder::taskbar`
-/// （见 `set_taskbar_visible` 的说明），所以 `float_viewport` 里的 `with_taskbar(false)`
-/// 是空操作，卡片建出来一律带 `WS_EX_APPWINDOW` → 任务栏上多出卡片按钮（真机实测四种
-/// 层级/穿透组合全中）。卡片窗口在隐藏后重新显示时会被**重建**，所以这里不记「改过没有」，
-/// 而是每帧读一眼样式、不对就改 —— 重建之后也能自动纠回来。
-pub fn ensure_no_taskbar(id: usize) {
-    let h = find_window_by_title(&float_title(id));
-    if h == 0 {
+/// 为什么不能建窗口时一次搞定：`with_taskbar(false)` 实测不生效（见
+/// `set_taskbar_visible` 的说明），卡片建出来一律带 `WS_EX_APPWINDOW` → 任务栏上
+/// 多出卡片按钮（真机实测四种层级/穿透组合全中）。卡片窗口在隐藏后重新显示时会被
+/// **重建**，所以这里不记「改过没有」，而是每帧读一眼样式、不对就改 ——
+/// 重建之后也能自动纠回来。
+///
+/// 调用方（app::draw_floats）每帧只查一次句柄，三个用途（本函数 / 触摸注册 /
+/// `float::draw`）共用，避免每卡每帧三次全桌面 `FindWindowW`。
+pub fn ensure_no_taskbar_hwnd(hwnd: isize) {
+    if hwnd == 0 {
         return; // 窗口还没建出来（或已经销毁），下一帧再说
     }
-    if !taskbar_visible(h) {
+    if !taskbar_visible(hwnd) {
         return; // 已经不在任务栏上了，省掉一次写样式
     }
-    set_taskbar_visible(h, false);
+    set_taskbar_visible(hwnd, false);
+}
+
+/// 按标题版：给没有缓存句柄的窗口用（托盘菜单）。
+pub fn ensure_no_taskbar_by_title(title: &str) {
+    ensure_no_taskbar_hwnd(find_window_by_title(title));
 }
 
 /// 窗口**此刻**的外沿位置（物理像素，现场问系统要；0 = 找不到）。
@@ -253,27 +265,27 @@ pub fn touch_should_be_registered(passthrough: bool) -> bool {
 
 /// 让卡片的触摸注册状态与穿透开关保持一致（每帧自查自纠，成本一次 Win32 查询）。
 /// 卡片窗口在隐藏后重新显示时会被**重建**（重建 = winit 又把它注册进触摸），
-/// 所以和 `ensure_no_taskbar` 同理，每帧纠正一次而不是只在切开关时设一次。
-pub fn ensure_touch_state(id: usize, passthrough: bool) {
+/// 所以和 `ensure_no_taskbar_hwnd` 同理，每帧纠正一次而不是只在切开关时设一次。
+/// 句柄由调用方查一次传进来（见 app::draw_floats）。
+pub fn ensure_touch_state_hwnd(hwnd: isize, passthrough: bool) {
     use windows_sys::Win32::UI::Input::Touch::{
         IsTouchWindow, RegisterTouchWindow, UnregisterTouchWindow, TWF_WANTPALM,
     };
-    let h = find_window_by_title(&float_title(id));
-    if h == 0 {
+    if hwnd == 0 {
         return; // 窗口还没建出来（或已销毁），下一帧再说
     }
     unsafe {
-        let hwnd = h as windows_sys::Win32::Foundation::HWND;
+        let h = hwnd as windows_sys::Win32::Foundation::HWND;
         let mut flags: u32 = 0;
-        let registered = IsTouchWindow(hwnd, &mut flags) != 0;
+        let registered = IsTouchWindow(h, &mut flags) != 0;
         let want = touch_should_be_registered(passthrough);
         if registered == want {
             return; // 已经是对的状态，省掉一次写
         }
         if want {
-            RegisterTouchWindow(hwnd, TWF_WANTPALM);
+            RegisterTouchWindow(h, TWF_WANTPALM);
         } else {
-            UnregisterTouchWindow(hwnd);
+            UnregisterTouchWindow(h);
         }
     }
 }
@@ -339,7 +351,7 @@ pub fn float_viewport(
 /// 不吃穿透（菜单必须能点）。标题只给自检脚本找窗口用，界面上看不到（无边框）。
 pub fn menu_viewport(pos: egui::Pos2) -> ViewportBuilder {
     ViewportBuilder::default()
-        .with_title("Lexideck 托盘菜单")
+        .with_title(MENU_TITLE)
         .with_inner_size([menu::W, menu::H])
         .with_decorations(false)
         .with_window_level(WindowLevel::AlwaysOnTop) // 浮在词卡/PPT 之上
