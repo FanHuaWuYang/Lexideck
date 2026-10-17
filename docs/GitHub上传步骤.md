@@ -44,8 +44,9 @@ git config --global user.email "你注册GitHub用的邮箱"
 在 RustRover 里按 `Alt+0` 打开 **Commit** 面板，看列出来的文件：
 
 ✅ **应该有**：`src/`、`Cargo.toml`、`Cargo.lock`、`README.md`、`AGENT.md`、`CONTRIBUTING.md`、`CHANGELOG.md`、
-`docs/`、`design/`、`assets/`、`default_words.txt`、`skill-词表生成.md`、`.cargo/config.toml`、
-`.gitignore`、`.gitattributes`、`.editorconfig`、`.github/`
+`docs/`、`design/`、`skill-词表生成.md`、`.cargo/config.toml`、`.gitignore`、`.gitattributes`、`.editorconfig`、`.github/`
+
+（拿不准哪些文件真实存在？在终端里敲 `git ls-files`，它列的才是在册文件。早先清单里的 `assets/`、`default_words.txt` 已在 2026-10-01 清理删除。）
 
 ❌ **绝对不该出现**：`target/`、`lexideck.exe`、`build_check.log`、`.bak/`、`.idea/`
 
