@@ -917,7 +917,7 @@ impl LexideckApp {
             ctx.send_viewport_cmd(ViewportCommand::CancelClose);
             self.hide_panel(ctx);
             self.status =
-                Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
+                Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再次启动 Lexideck）".into());
             return;
         }
         // 直接退出（或托盘不可用时的退化路径）：沿用已有的 5 秒二次确认
@@ -1048,7 +1048,7 @@ impl LexideckApp {
                 if self.panel_visible {
                     self.hide_panel(ctx);
                     self.status = Some(
-                        "面板已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）"
+                        "面板已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再次启动 Lexideck）"
                             .into(),
                     );
                 } else {
@@ -1252,8 +1252,9 @@ impl LexideckApp {
             if self.use_tray() {
                 // 托盘模式：面板的 ✕ 首击 = 收进托盘（不进入退出确认）
                 self.hide_panel(ctx);
-                self.status =
-                    Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
+                self.status = Some(
+                    "已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再次启动 Lexideck）".into(),
+                );
             } else {
                 self.confirm_exit = true;
             }

@@ -588,7 +588,7 @@ pub fn draw(
                             if gold_button(ui, None, "保存设置") {
                                 r.changed = true;
                                 r.status_msg = Some(
-                                    crate::lang::l("设置已保存到 exe 旁的「设置.txt」（改完即时生效）")
+                                    crate::lang::l("设置已保存到程序文件夹的「设置.txt」（改动即时生效）")
                                         .into(),
                                 );
                             }
@@ -624,6 +624,20 @@ pub fn draw(
 }
 
 // ══ 各标签页 ══
+
+/// 标签页 / 列表统一滚动：滚动条占位显示（不压内容），每页独立记住滚动位置。
+fn page_scroll(ui: &mut egui::Ui, id: &str, body: impl FnOnce(&mut egui::Ui)) {
+    let sp = &mut ui.style_mut().spacing.scroll;
+    sp.floating = false;
+    sp.bar_width = 6.0;
+    sp.bar_inner_margin = 4.0;
+    sp.bar_outer_margin = 2.0;
+    sp.handle_min_length = 24.0;
+    egui::ScrollArea::vertical()
+        .id_salt(id)
+        .auto_shrink([false, false])
+        .show(ui, body);
+}
 
 fn words_tab(
     ui: &mut egui::Ui,
@@ -715,22 +729,18 @@ fn words_tab(
             ui.label(RichText::new(msg).size(13.0).color(sk().txt3));
         });
     }
-    egui::ScrollArea::vertical()
-        .auto_shrink([false, false])
-        .show(&mut child, |ui| {
-            // 行与行之间不留 item_spacing：否则那 3px 看着是行、点下去没反应
-            ui.spacing_mut().item_spacing.y = 0.0;
-            for row in rows {
-                word_row(ui, row, r);
-            }
-        });
+    page_scroll(&mut child, "words-list", |ui| {
+        // 行与行之间不留 item_spacing：否则那 3px 看着是行、点下去没反应
+        ui.spacing_mut().item_spacing.y = 0.0;
+        for row in rows {
+            word_row(ui, row, r);
+        }
+    });
     ui.allocate_rect(list_rect, egui::Sense::hover());
 }
 
 fn cards_tab(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
-    egui::ScrollArea::vertical()
-        .auto_shrink([false, false])
-        .show(ui, |ui| cards_body(ui, cfg, cx, r));
+    page_scroll(ui, "cards-page", |ui| cards_body(ui, cfg, cx, r));
 }
 
 fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
@@ -763,7 +773,7 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
         if cx.card_rows.is_empty() {
             empty_line(
                 ui,
-                "桌面没有卡片 —— 今天没有排期，或在「词表」里勾几个词点「立即展示」",
+                "桌面上没有卡片——今天没有排期，或尚未在「词表」中勾选词条",
             );
         }
         for (i, row) in cx.card_rows.iter().enumerate() {
@@ -822,9 +832,7 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
 }
 
 fn plans_tab(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
-    egui::ScrollArea::vertical()
-        .auto_shrink([false, false])
-        .show(ui, |ui| plans_body(ui, panel, cx, r));
+    page_scroll(ui, "plans-page", |ui| plans_body(ui, panel, cx, r));
 }
 
 fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
@@ -940,9 +948,9 @@ fn settings_tab(
     cx: &Ctx,
     r: &mut ControlResult,
 ) {
-    egui::ScrollArea::vertical()
-        .auto_shrink([false, false])
-        .show(ui, |ui| settings_body(ui, cfg, panel, cx, r));
+    page_scroll(ui, "settings-page", |ui| {
+        settings_body(ui, cfg, panel, cx, r)
+    });
 }
 
 fn settings_body(
@@ -955,7 +963,7 @@ fn settings_body(
     h4(ui, "geo", "设置");
     lead(
         ui,
-        "面板与卡片共用主题；设置自动存到 exe 旁的「设置.txt」，策略的开关存在「状态.json」。",
+        "面板与卡片共用主题。设置会自动保存到程序文件夹的「设置.txt」，策略开关保存在「状态.json」。",
     );
 
     ui.add_space(18.0);
@@ -979,7 +987,7 @@ fn settings_body(
         ui,
         "卡片层级",
         "",
-        Some("其他课的 PPT 不能被挡住，所以默认置底"),
+        Some("其他课程的 PPT 不能被遮挡，所以默认置底"),
     );
     let on_top = cfg.layer == Layer::Top;
     ui.horizontal(|ui| {
@@ -1083,7 +1091,7 @@ fn settings_body(
             ui,
             w,
             "跟随显示器（默认）",
-            "帧率跟着屏幕刷新率走：60Hz 屏就是 60 帧，165Hz 屏最高 165 帧（这台实测 118 帧）。不撕裂，也不白烧 CPU。",
+            "帧率跟随显示器刷新率：60Hz 屏幕为 60 帧，165Hz 屏幕最高 165 帧。画面不撕裂，也不浪费 CPU。",
             cfg.vsync,
         ) && !cfg.vsync
         {
@@ -1095,7 +1103,7 @@ fn settings_body(
             ui,
             w,
             "不限帧（最快）",
-            "关掉垂直同步，能跑多快跑多快（这台实测 177 帧）。代价：更吃 CPU/GPU，60Hz 屏上可能撕裂。",
+            "关闭垂直同步，以尽可能高的帧率绘制。代价：CPU/GPU 占用更高，60Hz 屏幕上可能出现撕裂。",
             !cfg.vsync,
         ) && cfg.vsync
         {
@@ -1123,7 +1131,7 @@ fn settings_body(
             ui,
             w,
             "驻留托盘（默认）",
-            "关掉面板后程序继续跑，卡片不掉；点托盘图标（在右下角 ^ 折叠区）、用托盘右键菜单、或再双击一次 exe 都能唤回面板。",
+            "关闭面板后程序继续运行，卡片不会消失；可通过托盘图标（在右下角 ^ 折叠区）、托盘右键菜单，或再次启动 Lexideck 唤回面板。",
             cfg.close_action == CloseAction::Tray,
         ) && cfg.close_action != CloseAction::Tray
         {
@@ -1188,7 +1196,7 @@ fn settings_body(
     let on = !matches!(st, autostart::State::Off | autostart::State::Unknown(_));
     let desc = match &st {
         autostart::State::On => {
-            crate::lang::l("已开启：登录这台机器后自动启动（登记的就是当前这个 exe）").to_string()
+            crate::lang::l("已开启：登录这台机器后自动启动（登记的是当前程序位置）").to_string()
         }
         autostart::State::Off if cfg.autostart => {
             crate::lang::l("未开启 —— 设置文件里记的是「开启」，但注册表里没有这一项（多半被安全软件清过）。拨一下开关重新登记。").to_string()
@@ -1214,7 +1222,7 @@ fn settings_body(
             ui.add_space(10.0);
             ui.label(
                 RichText::new(crate::lang::l(
-                    "把启动项改成当前这个 exe（整个文件夹搬过位置以后点这里）",
+                    "把启动项改为当前程序位置（移动过程序文件夹后点这里）",
                 ))
                 .size(12.0)
                 .color(sk().txt3),
@@ -1328,7 +1336,10 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
                 ui,
                 "词条只从 JSON 文件来。导入 = 并进主库：同名词条更新、其余追加。",
             );
-            gd(ui, "勾几个词 → 右下角「立即展示」，卡片就出现在桌面上。");
+            gd(
+                ui,
+                "勾选几个词，点右下角「立即展示」，卡片就会出现在桌面上。",
+            );
             sp(ui);
             st(ui, "词条总数", &cx.total_entries.to_string());
             st(ui, "已选", &cx.selected.to_string());
@@ -1363,7 +1374,7 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
             hd(ui, "关掉会怎样");
             pg(
                 ui,
-                "关掉就是永久的：屏幕上不再出现这个词这段时间的卡片，第二天也不会自己恢复，必须在这里手动打开。",
+                "关闭后永久生效：这个词在这段时间内不再上屏，第二天也不会自动恢复，必须在这里手动打开。",
             );
             hd(ui, "关掉是不是删了内容");
             pg(ui, "不是。词条和日期段都还在主库里，只是这段时间不上屏。");
@@ -1392,7 +1403,7 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
             hd(ui, "设置都写在哪");
             pg(
                 ui,
-                "主库 lexideck.json、设置 设置.txt、策略开关 状态.json —— 全在 exe 同目录，整个文件夹拷走就带走全部状态。",
+                "主库 lexideck.json、设置 设置.txt、策略开关 状态.json 都保存在程序文件夹中；复制整个文件夹即可带走全部数据。",
             );
             if !cx.warns.is_empty() {
                 sp(ui);
@@ -2895,7 +2906,7 @@ fn about_block(ui: &mut egui::Ui) {
         egui::pos2(x, rect.top() + 68.0),
         Align2::LEFT_CENTER,
         crate::lang::l(
-            "免安装绿色版：设置、主库、状态都放在 exe 同目录，整个文件夹拷走就带走全部状态",
+            "免安装绿色版：设置、主库、状态都保存在程序文件夹中，复制整个文件夹即可迁移。",
         ),
         FontId::proportional(12.0),
         sk().txt3,
