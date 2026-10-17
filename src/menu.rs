@@ -122,6 +122,7 @@ fn item(
     picked: &mut Option<TrayAction>,
     action: TrayAction,
 ) {
+    let label = crate::lang::l(label);
     let r = egui::Rect::from_min_size(
         egui::pos2(full.left() + PAD_X, *y),
         egui::vec2(W - PAD_X * 2.0, ITEM_H),
