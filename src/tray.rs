@@ -120,7 +120,7 @@ impl Tray {
     pub fn create(ctx: &egui::Context, hwnd: isize) -> Result<Tray, String> {
         let icon = make_icon()?;
         let icon = TrayIconBuilder::new()
-            .with_tooltip("Lexideck — 词卡看板控制面板")
+            .with_tooltip(crate::lang::l("Lexideck — 词卡看板控制面板"))
             .with_icon(icon)
             // 不挂任何原生菜单：右键由我们自己弹自绘菜单（menu.rs）。
             // 挂原生菜单 = 系统模态 TrackPopupMenu = 冻主循环（见文件头）。
