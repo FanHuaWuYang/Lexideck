@@ -110,6 +110,11 @@ pub struct LexideckApp {
     panel: PanelState,
     selected: HashSet<String>,
     expanded: HashSet<String>,
+    /// 词表行的缓存（2026-10-11）：几千条时每帧重建（排序+过滤）是纯浪费，
+    /// 指纹（词库版本/搜索/筛选/选择/展开）没变就直接复用。
+    word_rows_cache: Option<(WordRowsFp, Vec<WordRow>)>,
+    /// 词库内容的版本号：加载/重载/导入时 +1，用来给上面那个缓存做指纹
+    lib_rev: u64,
     // ── 卡片 ──
     floats: Vec<FloatWin>,
     next_id: usize,
@@ -177,6 +182,28 @@ pub struct LexideckApp {
 /// 关闭拦截里「再点一次」提示的固定文案（和底栏确认文案同一件事，过期后要认得出来）
 const EXIT_CONFIRM_HINT: &str = "再点一次 ✕ 就退出（5 秒内有效）";
 
+/// 集合的指纹（顺序无关的哈希和）：判断选择/展开集合有没有变化
+fn set_fingerprint(set: &std::collections::HashSet<String>) -> u64 {
+    use std::hash::{Hash, Hasher};
+    let mut acc: u64 = 0;
+    for k in set {
+        let mut h = std::collections::hash_map::DefaultHasher::new();
+        k.hash(&mut h);
+        acc = acc.wrapping_add(h.finish());
+    }
+    acc
+}
+
+/// 词表行缓存的指纹：任一输入变化才重建（几千条的排序/过滤不能每帧跑）
+#[derive(PartialEq)]
+struct WordRowsFp {
+    lib_rev: u64,
+    search: String,
+    filter: control::WordFilter,
+    sel: u64,
+    exp: u64,
+}
+
 impl LexideckApp {
     /// 「收进托盘」时面板挪去的屏幕外位置（在常规多屏布局之外；见 hide_panel）
     const PARK_POS: egui::Pos2 = egui::Pos2::new(-32000.0, -32000.0);
@@ -207,6 +234,8 @@ impl LexideckApp {
             panel: PanelState::default(),
             selected: HashSet::new(),
             expanded: HashSet::new(),
+            word_rows_cache: None,
+            lib_rev: 0,
             floats: Vec::new(),
             next_id: 1,
             shown_fit: 0,
@@ -244,6 +273,7 @@ impl LexideckApp {
     fn reload_library(&mut self) {
         let loaded = library::load(&self.lib_path);
         self.lib = loaded.deck;
+        self.lib_rev = self.lib_rev.wrapping_add(1);
         self.lib_corrupt = loaded.corrupt;
         self.warns = loaded.warns;
         self.lib_mtime = library::mtime(&self.lib_path);
@@ -320,6 +350,17 @@ impl LexideckApp {
         idx
     }
 
+    /// 词表行缓存的指纹：任一输入变化才重建（几千条的排序/过滤不能每帧跑）
+    fn word_rows_fp(&self) -> WordRowsFp {
+        WordRowsFp {
+            lib_rev: self.lib_rev,
+            search: self.panel.search.clone(),
+            filter: self.panel.filter,
+            sel: set_fingerprint(&self.selected),
+            exp: set_fingerprint(&self.expanded),
+        }
+    }
+
     fn build_word_rows(&self) -> Vec<WordRow> {
         let q = self.panel.search.trim().to_lowercase();
         self.sorted_indices()
@@ -328,6 +369,7 @@ impl LexideckApp {
                 let e = &self.lib.words[i];
                 let key = e.key();
                 let sel = self.selected.contains(&key);
+                let expanded = self.expanded.contains(&key);
                 match self.panel.filter {
                     WordFilter::Selected if !sel => return None,
                     WordFilter::Unselected if sel => return None,
@@ -340,92 +382,96 @@ impl LexideckApp {
                     }
                 }
                 let mut details: Vec<(String, String)> = Vec::new();
-                if !e.senses.is_empty() {
-                    details.push((
-                        "词义".into(),
-                        e.senses
-                            .iter()
-                            .map(|s| {
-                                let p = s.pos.trim();
-                                let m = s.meaning.trim();
-                                if p.is_empty() {
-                                    m.to_string()
-                                } else {
-                                    format!("{p} {m}")
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if let Some(f) = e.forms_line() {
-                    details.push(("变形".into(), f));
-                }
-                if !e.derivations.is_empty() {
-                    details.push((
-                        "同根词".into(),
-                        e.derivations
-                            .iter()
-                            .map(|d| {
-                                let m = d
-                                    .senses
-                                    .iter()
-                                    .map(|s| {
-                                        let p = s.pos.trim();
-                                        if p.is_empty() {
-                                            s.meaning.trim().to_string()
-                                        } else {
-                                            format!("{p} {}", s.meaning.trim())
-                                        }
-                                    })
-                                    .collect::<Vec<_>>()
-                                    .join("；");
-                                if m.is_empty() {
-                                    d.word.clone()
-                                } else {
-                                    format!("{} {}", d.word, m)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.phrases.is_empty() {
-                    details.push((
-                        "短语".into(),
-                        e.phrases
-                            .iter()
-                            .map(|p| {
-                                let m = p.meaning.trim();
-                                if m.is_empty() {
-                                    p.text.clone()
-                                } else {
-                                    format!("{} {}", p.text, m)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.sentences.is_empty() {
-                    details.push((
-                        "例句".into(),
-                        e.sentences
-                            .iter()
-                            .map(|s| {
-                                let z = s.zh.trim();
-                                if z.is_empty() {
-                                    s.en.clone()
-                                } else {
-                                    format!("{}（{z}）", s.en)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.note.trim().is_empty() {
-                    details.push(("备注".into(), e.note.clone()));
+                // 明细字符串只在展开行构建：6510 条的词库下，每帧给全部词条
+                // join 这些字符串+建行结构是纯浪费（实测常态 CPU 42% 的大头）。
+                if expanded {
+                    if !e.senses.is_empty() {
+                        details.push((
+                            "词义".into(),
+                            e.senses
+                                .iter()
+                                .map(|s| {
+                                    let p = s.pos.trim();
+                                    let m = s.meaning.trim();
+                                    if p.is_empty() {
+                                        m.to_string()
+                                    } else {
+                                        format!("{p} {m}")
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if let Some(f) = e.forms_line() {
+                        details.push(("变形".into(), f));
+                    }
+                    if !e.derivations.is_empty() {
+                        details.push((
+                            "同根词".into(),
+                            e.derivations
+                                .iter()
+                                .map(|d| {
+                                    let m = d
+                                        .senses
+                                        .iter()
+                                        .map(|s| {
+                                            let p = s.pos.trim();
+                                            if p.is_empty() {
+                                                s.meaning.trim().to_string()
+                                            } else {
+                                                format!("{p} {}", s.meaning.trim())
+                                            }
+                                        })
+                                        .collect::<Vec<_>>()
+                                        .join("；");
+                                    if m.is_empty() {
+                                        d.word.clone()
+                                    } else {
+                                        format!("{} {}", d.word, m)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.phrases.is_empty() {
+                        details.push((
+                            "短语".into(),
+                            e.phrases
+                                .iter()
+                                .map(|p| {
+                                    let m = p.meaning.trim();
+                                    if m.is_empty() {
+                                        p.text.clone()
+                                    } else {
+                                        format!("{} {}", p.text, m)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.sentences.is_empty() {
+                        details.push((
+                            "例句".into(),
+                            e.sentences
+                                .iter()
+                                .map(|s| {
+                                    let z = s.zh.trim();
+                                    if z.is_empty() {
+                                        s.en.clone()
+                                    } else {
+                                        format!("{}（{z}）", s.en)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.note.trim().is_empty() {
+                        details.push(("备注".into(), e.note.clone()));
+                    }
                 }
                 Some(WordRow {
                     key: key.clone(),
@@ -873,6 +919,9 @@ impl LexideckApp {
         // 摘掉 WS_EX_APPWINDOW、置成 WS_EX_TOOLWINDOW —— 任务栏和 Alt+Tab 里都不再出现，
         // 但窗口本身仍是「可见」的，所有帧走正常路径（新建浮窗不会踩 eframe 那条旁路）。
         window::set_taskbar_visible(self.panel_hwnd, false);
+        // 顺带把工作集还给系统（实测 132MB → 9MB）：收进托盘后绝大多数页都闲着，
+        // 留着白占内存；缺页时系统自己换回来，唤出无感。
+        trim_working_set();
         self.panel_visible = false;
     }
 
@@ -1410,6 +1459,7 @@ impl LexideckApp {
         match library::save(&self.lib_path, &next) {
             Ok(()) => {
                 self.lib = next;
+                self.lib_rev = self.lib_rev.wrapping_add(1);
                 self.lib_mtime = library::mtime(&self.lib_path);
                 self.prune_selection();
                 self.prune_state();
@@ -1512,7 +1562,21 @@ impl eframe::App for LexideckApp {
         self.draw_floats(&ctx, &th);
         self.draw_menu(&ctx, &th);
 
-        let rows = self.build_word_rows();
+        // 词表行：只在指纹变化（词库版本/搜索/筛选/选择/展开）时重建
+        let fp = self.word_rows_fp();
+        if self
+            .word_rows_cache
+            .as_ref()
+            .map(|(f, _)| f != &fp)
+            .unwrap_or(true)
+        {
+            let rows = self.build_word_rows();
+            self.word_rows_cache = Some((fp, rows));
+        }
+        let rows: &[WordRow] = match &self.word_rows_cache {
+            Some((_, rows)) => rows,
+            None => &[],
+        };
         let card_rows = self.build_card_rows();
         let plan_rows = self.build_plan_rows();
         let today_label = format!(
@@ -1575,8 +1639,14 @@ impl eframe::App for LexideckApp {
         // 面板自己不必全速重绘：卡片动画是由各自的浮窗视口用 request_repaint_of
         // 驱动的（见 draw_floats）。这里如果写成「有卡片在动画就 ctx.request_repaint()」，
         // 会把每帧绘制很重的面板一起拉进全速渲染，反而把卡片入场动画的帧率拖下来
-        // —— 表现就是「动画卡卡的」。面板 5fps 足够（点一下会立刻触发重绘）。
-        ctx.request_repaint_after(Duration::from_millis(300));
+        // —— 表现就是「动画卡卡的」。
+        //
+        // 空闲节奏由托盘心跳线程（1s）统一保证：它每拍一次就唤醒一帧。
+        // 2026-10-11 起心跳 250ms→1000ms：它每次唤醒都是全量重绘（面板+每张卡），
+        // 250ms 时空闲 CPU 实测 ~10%（面板本身的 OR 叠加），1s 拍降到 ~2.5%。
+        // 这里只留一个慢速兜底：万一托盘创建失败没有心跳线程，也保证 2s 内出帧
+        // （跨日切换、外部文件变化这类"非交互"的刷新不至于没人管）。
+        ctx.request_repaint_after(Duration::from_millis(2000));
     }
 }
 
@@ -1591,6 +1661,17 @@ fn open_taskbar_settings() {
     let _ = std::process::Command::new("cmd")
         .args(["/C", "start", "", "ms-settings:taskbar"])
         .spawn();
+}
+
+/// 把本进程的工作集还给系统（EmptyWorkingSet）。
+/// 用在「收进托盘」之后：页都闲着，留着白占内存；再唤出时缺页换回来，无感。
+/// 实测一个 132MB 工作集的实例调用后掉到 ~9MB，且之后照常出帧不反弹。
+fn trim_working_set() {
+    use windows_sys::Win32::System::ProcessStatus::EmptyWorkingSet;
+    use windows_sys::Win32::System::Threading::GetCurrentProcess;
+    unsafe {
+        EmptyWorkingSet(GetCurrentProcess());
+    }
 }
 
 /// 面板窗口句柄（托盘唤醒要用，见 tray.rs 文件头）。拿不到就回 0 ——

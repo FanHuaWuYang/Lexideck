@@ -775,6 +775,40 @@ fn words_tab(
             ui.label(RichText::new(msg).size(13.0).color(sk().txt3));
         });
     }
+    egui::ScrollArea::vertical()
+        .auto_shrink([false, false])
+        .show_viewport(&mut child, |ui, viewport| {
+            // 行与行之间不留 item_spacing：否则那 3px 看着是行、点下去没反应
+            ui.spacing_mut().item_spacing.y = 0.0;
+            // ── 虚拟化（2026-10-11）──
+            // 词库可能几千条：只给"视野里"的行建控件、画内容。
+            // 行高是纯算术（row_height），所以总高、起画行、垫高都能精确算。
+            let total: f32 = rows.iter().map(row_height).sum();
+            let mut y = 0.0f32; // 当前行顶（内容坐标）
+            for row in rows {
+                let h = row_height(row);
+                let (top, bottom) = (y, y + h);
+                y = bottom;
+                if bottom <= viewport.min.y {
+                    continue; // 视野上方：跳过
+                }
+                if top >= viewport.max.y {
+                    break; // 视野下方：停
+                }
+                // 跳过若干行后，把布局光标垫到本行顶部
+                let cur = ui.next_widget_position().y;
+                if top > cur {
+                    ui.add_space(top - cur);
+                }
+                word_row(ui, row, r);
+            }
+            // 收尾：补上"没画的剩余部分"的总高，滚动条范围才是全量的
+            let cur = ui.next_widget_position().y;
+            if total > cur {
+                ui.add_space(total - cur);
+            }
+        });
+=======
     page_scroll(&mut child, "words-list", |ui| {
         // 行与行之间不留 item_spacing：否则那 3px 看着是行、点下去没反应
         ui.spacing_mut().item_spacing.y = 0.0;
@@ -1626,13 +1660,17 @@ fn cmp_line(ui: &mut egui::Ui, who: &str, text: &str) {
 
 // ══ 列表行 ══
 
-fn word_row(ui: &mut egui::Ui, row: &WordRow, r: &mut ControlResult) {
-    let detail_lines = row.details.len();
-    let h = if row.expanded {
-        42.0 + detail_lines as f32 * 20.0 + 14.0
+/// 行高（word_row 渲染与词表虚拟化共用同一份公式，保证"算的"和"画的"一致）
+fn row_height(row: &WordRow) -> f32 {
+    if row.expanded {
+        42.0 + row.details.len() as f32 * 20.0 + 14.0
     } else {
         42.0
-    };
+    }
+}
+
+fn word_row(ui: &mut egui::Ui, row: &WordRow, r: &mut ControlResult) {
+    let h = row_height(row);
     let (rect, resp) =
         ui.allocate_exact_size(egui::vec2(ui.available_width(), h), egui::Sense::click());
     if row.expanded && resp.clicked() {
@@ -3772,6 +3810,25 @@ mod tests {
         assert!(
             filled > empty + 20,
             "词条行没画出来：空表 {empty} vs 两行 {filled}"
+        );
+    }
+
+    /// 词表虚拟化（几千条只画视野内的行）的前提：行高必须能纯算术算出来，
+    /// 且展开/收起两个档位与 word_row 的渲染公式一致。
+    #[test]
+    fn row_height_formula_is_stable() {
+        let mut r0 = row("seek", false);
+        assert_eq!(row_height(&r0), 42.0, "收起行应固定 42");
+        r0.expanded = true;
+        r0.details = vec![
+            ("词义".into(), "寻找".into()),
+            ("短语".into(), "seek out 找出".into()),
+            ("例句".into(), "She sought advice.".into()),
+        ];
+        assert_eq!(
+            row_height(&r0),
+            42.0 + 3.0 * 20.0 + 14.0,
+            "展开行 = 42 + 明细×20 + 14"
         );
     }
 
