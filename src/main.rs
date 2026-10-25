@@ -15,6 +15,7 @@ mod deck;
 mod float;
 mod icons;
 mod import;
+mod lang;
 mod library;
 mod menu;
 mod schedule;

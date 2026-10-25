@@ -154,10 +154,10 @@ impl Default for PanelTab {
 impl PanelTab {
     fn label(self) -> &'static str {
         match self {
-            PanelTab::Words => "词表",
-            PanelTab::Cards => "卡片",
-            PanelTab::Plans => "策略",
-            PanelTab::Settings => "设置",
+            PanelTab::Words => crate::lang::l("词表"),
+            PanelTab::Cards => crate::lang::l("卡片"),
+            PanelTab::Plans => crate::lang::l("策略"),
+            PanelTab::Settings => crate::lang::l("设置"),
         }
     }
 }
@@ -415,7 +415,11 @@ pub fn draw(
                         .color(sk().txt),
                 );
                 ui.add_space(4.0);
-                ui.label(RichText::new("词卡看板").size(11.0).color(sk().txt3));
+                ui.label(
+                    RichText::new(crate::lang::l("词卡看板"))
+                        .size(11.0)
+                        .color(sk().txt3),
+                );
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     if win_btn(ui, "close") {
                         r.exit = true;
@@ -511,7 +515,17 @@ pub fn draw(
     let main = main.translate(egui::vec2(0.0, rise));
     let side = side.translate(egui::vec2(0.0, rise));
 
-    ui.scope_builder(egui::UiBuilder::new().max_rect(main), |ui| {
+    // 卡片/策略/设置：整页（含右栏说明）一起滚动，滚动条落在内容区最右缘
+    let whole_page = matches!(
+        panel.tab,
+        PanelTab::Cards | PanelTab::Plans | PanelTab::Settings
+    );
+    let tab_rect = if whole_page {
+        content.translate(egui::vec2(0.0, rise))
+    } else {
+        main
+    };
+    ui.scope_builder(egui::UiBuilder::new().max_rect(tab_rect), |ui| {
         ui.multiply_opacity(fade);
         match panel.tab {
             PanelTab::Words => words_tab(ui, panel, cx, rows, &mut r),
@@ -520,7 +534,7 @@ pub fn draw(
             PanelTab::Settings => settings_tab(ui, cfg, panel, cx, &mut r),
         }
     });
-    if wide {
+    if wide && !whole_page {
         ui.scope_builder(egui::UiBuilder::new().max_rect(side), |ui| {
             ui.multiply_opacity(fade);
             help_pane(ui, panel.tab, cx);
@@ -550,16 +564,21 @@ pub fn draw(
                 ui.add_space(8.0);
                 let (status, color) = if cx.confirm_exit {
                     (
-                        "再点一次「×」退出程序（5 秒内有效）".to_string(),
+                        crate::lang::l("再点一次「×」退出程序（5 秒内有效）").to_string(),
                         sk().danger,
                     )
                 } else if !cx.status.is_empty() {
-                    (cx.status.to_string(), sk().txt2)
+                    (crate::lang::l(cx.status).to_string(), sk().txt2)
                 } else {
                     (
-                        format!(
-                            "运行中 · 今日 {} · 生效 {} 条 / 上屏 {} 张 · 主库 {}",
-                            cx.today, n_now, cx.shown, cx.lib_label
+                        crate::lang::tf(
+                            "运行中 · 今日 {today} · 生效 {active} 条 / 上屏 {shown} 张 · 主库 {lib}",
+                            &[
+                                ("today", &cx.today),
+                                ("active", &n_now),
+                                ("shown", &cx.shown),
+                                ("lib", &cx.lib_label),
+                            ],
                         ),
                         sk().txt3,
                     )
@@ -579,7 +598,8 @@ pub fn draw(
                             if gold_button(ui, None, "保存设置") {
                                 r.changed = true;
                                 r.status_msg = Some(
-                                    "设置已保存到 exe 旁的「设置.txt」（改完即时生效）".into(),
+                                    crate::lang::l("设置已保存到程序文件夹的「设置.txt」（改动即时生效）")
+                                        .into(),
                                 );
                             }
                         }
@@ -589,8 +609,11 @@ pub fn draw(
                             }
                         }
                         PanelTab::Words => {
-                            if gold_button(ui, None, &format!("立即展示（{}）", cx.selected))
-                            {
+                            if gold_button(
+                                ui,
+                                None,
+                                &crate::lang::tf("立即展示（{n}）", &[("n", &cx.selected)]),
+                            ) {
                                 r.show_selected = true;
                             }
                         }
@@ -612,6 +635,56 @@ pub fn draw(
 
 // ══ 各标签页 ══
 
+/// 标签页 / 列表统一滚动：滚动条占位显示（不压内容），每页独立记住滚动位置。
+fn page_scroll(ui: &mut egui::Ui, id: &str, body: impl FnOnce(&mut egui::Ui)) {
+    let sp = &mut ui.style_mut().spacing.scroll;
+    sp.floating = false;
+    sp.bar_width = 6.0;
+    sp.bar_inner_margin = 8.0;
+    sp.bar_outer_margin = 4.0;
+    sp.handle_min_length = 28.0;
+    // 内容右侧额外留 10px：卡片/框体先收进来，滚动条待在空槽里，不压字也不压边框
+    sp.content_margin = egui::Margin {
+        right: 10,
+        ..egui::Margin::ZERO
+    };
+    egui::ScrollArea::vertical()
+        .id_salt(id)
+        .auto_shrink([false, false])
+        .show(ui, body);
+}
+
+/// 双栏页面：左内容 + 右说明放进同一个滚动区，滚动条贴内容区右缘（不再夹在两栏之间）。
+fn page_with_help(
+    ui: &mut egui::Ui,
+    id: &str,
+    tab: PanelTab,
+    cx: &Ctx,
+    body: impl FnOnce(&mut egui::Ui),
+) {
+    let wide = ui.available_width() >= SIDE_MIN_W;
+    if wide {
+        page_scroll(ui, id, |ui| {
+            let main_w = (ui.available_width() - GAP) * 0.62;
+            ui.horizontal_top(|ui| {
+                ui.allocate_ui_with_layout(
+                    egui::vec2(main_w, 0.0),
+                    egui::Layout::top_down(egui::Align::Min),
+                    body,
+                );
+                ui.add_space(GAP);
+                ui.allocate_ui_with_layout(
+                    egui::vec2(ui.available_width(), 0.0),
+                    egui::Layout::top_down(egui::Align::Min),
+                    |ui| help_pane(ui, tab, cx),
+                );
+            });
+        });
+    } else {
+        page_scroll(ui, id, body);
+    }
+}
+
 fn words_tab(
     ui: &mut egui::Ui,
     panel: &mut PanelState,
@@ -626,12 +699,12 @@ fn words_tab(
             ui.add_space(14.0);
             title_sub_with_buttons(
                 ui,
-                &format!("词库：{}", cx.lib_label),
-                &format!(
-                    "{} 条词条 · {} 条展示时间 · 导入后自动存盘",
-                    cx.total_entries, cx.display_items
+                &crate::lang::tf("词库：{name}", &[("name", &cx.lib_label)]),
+                &crate::lang::tf(
+                    "{n} 条词条 · {m} 条展示时间 · 导入后自动存盘",
+                    &[("n", &cx.total_entries), ("m", &cx.display_items)],
                 ),
-                230.0,
+                280.0,
             );
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                 if sq_btn_icon(ui, "import", "导入词表…", true) {
@@ -660,7 +733,7 @@ fn words_tab(
         );
         let inner = rect.shrink2(egui::vec2(10.0, 6.0));
         let te = egui::TextEdit::singleline(&mut panel.search)
-            .hint_text("搜索单词或释义…")
+            .hint_text(crate::lang::l("搜索单词或释义…"))
             .desired_width(inner.width())
             .frame(egui::Frame::NONE)
             .font(FontId::proportional(13.0))
@@ -735,13 +808,21 @@ fn words_tab(
                 ui.add_space(total - cur);
             }
         });
+=======
+    page_scroll(&mut child, "words-list", |ui| {
+        // 行与行之间不留 item_spacing：否则那 3px 看着是行、点下去没反应
+        ui.spacing_mut().item_spacing.y = 0.0;
+        for row in rows {
+            word_row(ui, row, r);
+        }
+    });
     ui.allocate_rect(list_rect, egui::Sense::hover());
 }
 
 fn cards_tab(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
-    egui::ScrollArea::vertical()
-        .auto_shrink([false, false])
-        .show(ui, |ui| cards_body(ui, cfg, cx, r));
+    page_with_help(ui, "cards-page", PanelTab::Cards, cx, |ui| {
+        cards_body(ui, cfg, cx, r)
+    });
 }
 
 fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
@@ -774,7 +855,7 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
         if cx.card_rows.is_empty() {
             empty_line(
                 ui,
-                "桌面没有卡片 —— 今天没有排期，或在「词表」里勾几个词点「立即展示」",
+                "桌面上没有卡片——今天没有排期，或尚未在「词表」中勾选词条",
             );
         }
         for (i, row) in cx.card_rows.iter().enumerate() {
@@ -833,9 +914,9 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
 }
 
 fn plans_tab(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
-    egui::ScrollArea::vertical()
-        .auto_shrink([false, false])
-        .show(ui, |ui| plans_body(ui, panel, cx, r));
+    page_with_help(ui, "plans-page", PanelTab::Plans, cx, |ui| {
+        plans_body(ui, panel, cx, r)
+    });
 }
 
 fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
@@ -883,7 +964,7 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
     group_head(
         ui,
         "正在生效",
-        &format!("{} 条", now.len()),
+        &crate::lang::tf("{n} 条", &[("n", &now.len())]),
         Some("今天就在屏幕上"),
     );
     if now.is_empty() {
@@ -899,7 +980,7 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
     group_head(
         ui,
         "还没开始",
-        &format!("{} 条", future.len()),
+        &crate::lang::tf("{n} 条", &[("n", &future.len())]),
         Some("按日期自动接上"),
     );
     if future.is_empty() {
@@ -915,11 +996,16 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
         });
     }
 
-    group_head(ui, "已经结束", &format!("{} 条", past.len()), None);
+    group_head(
+        ui,
+        "已经结束",
+        &crate::lang::tf("{n} 条", &[("n", &past.len())]),
+        None,
+    );
     if past.is_empty() {
         empty_line(ui, "还没有结束的展示策略");
     } else {
-        let label = format!("展示已经结束的展示策略（{} 条）", past.len());
+        let label = crate::lang::tf("展示已经结束的展示策略（{n} 条）", &[("n", &past.len())]);
         if sq_btn_icon(
             ui,
             if panel.past_open { "chev_up" } else { "chev" },
@@ -946,9 +1032,9 @@ fn settings_tab(
     cx: &Ctx,
     r: &mut ControlResult,
 ) {
-    egui::ScrollArea::vertical()
-        .auto_shrink([false, false])
-        .show(ui, |ui| settings_body(ui, cfg, panel, cx, r));
+    page_with_help(ui, "settings-page", PanelTab::Settings, cx, |ui| {
+        settings_body(ui, cfg, panel, cx, r)
+    });
 }
 
 fn settings_body(
@@ -961,14 +1047,31 @@ fn settings_body(
     h4(ui, "geo", "设置");
     lead(
         ui,
-        "面板与卡片共用主题；设置自动存到 exe 旁的「设置.txt」，策略的开关存在「状态.json」。",
+        "面板与卡片共用主题。设置会自动保存到程序文件夹的「设置.txt」，策略开关保存在「状态.json」。",
     );
+
+    ui.add_space(18.0);
+    sep_line(ui);
+    group_head(ui, "界面语言", "", Some("切换界面语言（立即生效）"));
+    ui.horizontal(|ui| {
+        let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
+        let en = cfg.lang == "en";
+        if layer_option(ui, w, "中文", "中文界面", !en) {
+            cfg.lang = "zh".into();
+            r.changed = true;
+        }
+        ui.add_space(10.0);
+        if layer_option(ui, w, "English", "English interface", en) {
+            cfg.lang = "en".into();
+            r.changed = true;
+        }
+    });
 
     group_head(
         ui,
         "卡片层级",
         "",
-        Some("其他课的 PPT 不能被挡住，所以默认置底"),
+        Some("其他课程的 PPT 不能被遮挡，所以默认置底"),
     );
     let on_top = cfg.layer == Layer::Top;
     ui.horizontal(|ui| {
@@ -1053,7 +1156,7 @@ fn settings_body(
         }
         ui.add_space(6.0);
         ui.label(
-            RichText::new(ThemeKind::parse(&cfg.theme).label())
+            RichText::new(crate::lang::l(ThemeKind::parse(&cfg.theme).label()))
                 .size(12.5)
                 .color(sk().txt3),
         );
@@ -1072,7 +1175,7 @@ fn settings_body(
             ui,
             w,
             "跟随显示器（默认）",
-            "帧率跟着屏幕刷新率走：60Hz 屏就是 60 帧，165Hz 屏最高 165 帧（这台实测 118 帧）。不撕裂，也不白烧 CPU。",
+            "帧率跟随显示器刷新率：60Hz 屏幕为 60 帧，165Hz 屏幕最高 165 帧。画面不撕裂，也不浪费 CPU。",
             cfg.vsync,
         ) && !cfg.vsync
         {
@@ -1084,7 +1187,7 @@ fn settings_body(
             ui,
             w,
             "不限帧（最快）",
-            "关掉垂直同步，能跑多快跑多快（这台实测 177 帧）。代价：更吃 CPU/GPU，60Hz 屏上可能撕裂。",
+            "关闭垂直同步，以尽可能高的帧率绘制。代价：CPU/GPU 占用更高，60Hz 屏幕上可能出现撕裂。",
             !cfg.vsync,
         ) && cfg.vsync
         {
@@ -1112,7 +1215,7 @@ fn settings_body(
             ui,
             w,
             "驻留托盘（默认）",
-            "关掉面板后程序继续跑，卡片不掉；点托盘图标（在右下角 ^ 折叠区）、用托盘右键菜单、或再双击一次 exe 都能唤回面板。",
+            "关闭面板后程序继续运行，卡片不会消失；可通过托盘图标（在右下角 ^ 折叠区）、托盘右键菜单，或再次启动 Lexideck 唤回面板。",
             cfg.close_action == CloseAction::Tray,
         ) && cfg.close_action != CloseAction::Tray
         {
@@ -1137,7 +1240,7 @@ fn settings_body(
         }
         ui.add_space(10.0);
         ui.label(
-            RichText::new("点了立即退出（驻留托盘时也能从这里退）")
+            RichText::new(crate::lang::l("点了立即退出（驻留托盘时也能从这里退）"))
                 .size(12.0)
                 .color(sk().txt3),
         );
@@ -1176,13 +1279,18 @@ fn settings_body(
     let st = panel.autostart.clone().unwrap_or(autostart::State::Off);
     let on = !matches!(st, autostart::State::Off | autostart::State::Unknown(_));
     let desc = match &st {
-        autostart::State::On => "已开启：登录这台机器后自动启动（登记的就是当前这个 exe）".to_string(),
-        autostart::State::Off if cfg.autostart => {
-            "未开启 —— 设置文件里记的是「开启」，但注册表里没有这一项（多半被安全软件清过）。拨一下开关重新登记。".to_string()
+        autostart::State::On => {
+            crate::lang::l("已开启：登录这台机器后自动启动（登记的是当前程序位置）").to_string()
         }
-        autostart::State::Off => "未开启：开机后要手动打开 Lexideck".to_string(),
-        autostart::State::Stale(p) => format!("已开启，但指向的是旧位置：{p}"),
-        autostart::State::Unknown(e) => format!("读不到启动项：{e}"),
+        autostart::State::Off if cfg.autostart => {
+            crate::lang::l("未开启 —— 设置文件里记的是「开启」，但注册表里没有这一项（多半被安全软件清过）。拨一下开关重新登记。").to_string()
+        }
+        autostart::State::Off => crate::lang::l("未开启：开机后要手动打开 Lexideck").to_string(),
+        autostart::State::Stale(p) => crate::lang::tf(
+            "已开启，但指向的是旧位置：{p}",
+            &[("p", p)],
+        ),
+        autostart::State::Unknown(e) => crate::lang::tf("读不到启动项：{e}", &[("e", e)]),
     };
     if let Some(next) = sett_switch(ui, "开机自启动", &desc, on) {
         r.set_autostart = Some(next);
@@ -1197,9 +1305,11 @@ fn settings_body(
             }
             ui.add_space(10.0);
             ui.label(
-                RichText::new("把启动项改成当前这个 exe（整个文件夹搬过位置以后点这里）")
-                    .size(12.0)
-                    .color(sk().txt3),
+                RichText::new(crate::lang::l(
+                    "把启动项改为当前程序位置（移动过程序文件夹后点这里）",
+                ))
+                .size(12.0)
+                .color(sk().txt3),
             );
         });
         ui.add_space(6.0);
@@ -1249,19 +1359,24 @@ fn set_passthrough(cfg: &mut Config, on: bool, r: &mut ControlResult) {
 
 fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
     let hd = |ui: &mut egui::Ui, s: &str| {
-        ui.label(RichText::new(s).size(13.5).strong().color(sk().txt));
+        ui.label(
+            RichText::new(crate::lang::l(s))
+                .size(13.5)
+                .strong()
+                .color(sk().txt),
+        );
         ui.add_space(8.0);
     };
     let pg = |ui: &mut egui::Ui, s: &str| {
-        ui.label(RichText::new(s).size(13.0).color(sk().txt2));
+        ui.label(RichText::new(crate::lang::l(s)).size(13.0).color(sk().txt2));
         ui.add_space(10.0);
     };
     let gd = |ui: &mut egui::Ui, s: &str| {
-        ui.label(RichText::new(s).size(12.5).color(sk().acc));
+        ui.label(RichText::new(crate::lang::l(s)).size(12.5).color(sk().acc));
         ui.add_space(8.0);
     };
     let mn = |ui: &mut egui::Ui, s: &str| {
-        ui.label(RichText::new(s).size(12.0).color(sk().txt3));
+        ui.label(RichText::new(crate::lang::l(s)).size(12.0).color(sk().txt3));
         ui.add_space(6.0);
     };
     let sp = |ui: &mut egui::Ui| {
@@ -1277,7 +1392,7 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
         p.text(
             egui::pos2(rect.left() + 2.0, rect.center().y),
             Align2::LEFT_CENTER,
-            k,
+            crate::lang::l(k),
             FontId::proportional(12.5),
             sk().txt2,
         );
@@ -1305,7 +1420,10 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
                 ui,
                 "词条只从 JSON 文件来。导入 = 并进主库：同名词条更新、其余追加。",
             );
-            gd(ui, "勾几个词 → 右下角「立即展示」，卡片就出现在桌面上。");
+            gd(
+                ui,
+                "勾选几个词，点右下角「立即展示」，卡片就会出现在桌面上。",
+            );
             sp(ui);
             st(ui, "词条总数", &cx.total_entries.to_string());
             st(ui, "已选", &cx.selected.to_string());
@@ -1340,7 +1458,7 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
             hd(ui, "关掉会怎样");
             pg(
                 ui,
-                "关掉就是永久的：屏幕上不再出现这个词这段时间的卡片，第二天也不会自己恢复，必须在这里手动打开。",
+                "关闭后永久生效：这个词在这段时间内不再上屏，第二天也不会自动恢复，必须在这里手动打开。",
             );
             hd(ui, "关掉是不是删了内容");
             pg(ui, "不是。词条和日期段都还在主库里，只是这段时间不上屏。");
@@ -1369,7 +1487,7 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
             hd(ui, "设置都写在哪");
             pg(
                 ui,
-                "主库 lexideck.json、设置 设置.txt、策略开关 状态.json —— 全在 exe 同目录，整个文件夹拷走就带走全部状态。",
+                "主库 lexideck.json、设置 设置.txt、策略开关 状态.json 都保存在程序文件夹中；复制整个文件夹即可带走全部数据。",
             );
             if !cx.warns.is_empty() {
                 sp(ui);
@@ -1419,14 +1537,17 @@ fn dialogs(ui: &mut egui::Ui, cx: &Ctx, r: &mut ControlResult) {
                     ui.set_width(w - 44.0);
                     if has_error {
                         ui.label(
-                            RichText::new(format!("导入失败 · {}", cx.import.file))
-                                .size(15.0)
-                                .strong()
-                                .color(sk().txt),
+                            RichText::new(crate::lang::tf(
+                                "导入失败 · {f}",
+                                &[("f", &cx.import.file)],
+                            ))
+                            .size(15.0)
+                            .strong()
+                            .color(sk().txt),
                         );
                         ui.add_space(10.0);
                         ui.label(
-                            RichText::new("这份文件没有被导入，主库保持原样：")
+                            RichText::new(crate::lang::l("这份文件没有被导入，主库保持原样："))
                                 .size(13.0)
                                 .color(sk().txt2),
                         );
@@ -1441,9 +1562,12 @@ fn dialogs(ui: &mut egui::Ui, cx: &Ctx, r: &mut ControlResult) {
                         }
                         if cx.import.errors.len() > 10 {
                             ui.label(
-                                RichText::new(format!("…还有 {} 条", cx.import.errors.len() - 10))
-                                    .size(12.0)
-                                    .color(sk().txt3),
+                                RichText::new(crate::lang::tf(
+                                    "…还有 {n} 条",
+                                    &[("n", &(cx.import.errors.len() - 10))],
+                                ))
+                                .size(12.0)
+                                .color(sk().txt3),
                             );
                         }
                         ui.add_space(16.0);
@@ -1454,15 +1578,19 @@ fn dialogs(ui: &mut egui::Ui, cx: &Ctx, r: &mut ControlResult) {
                         });
                     } else if let Some((i, n, word, old, new)) = cx.import.conflict {
                         ui.label(
-                            RichText::new(format!("导入冲突 · {i} / {n}"))
-                                .size(15.0)
-                                .strong()
-                                .color(sk().txt),
+                            RichText::new(crate::lang::tf(
+                                "导入冲突 · {i} / {n}",
+                                &[("i", &i), ("n", &n)],
+                            ))
+                            .size(15.0)
+                            .strong()
+                            .color(sk().txt),
                         );
                         ui.add_space(10.0);
                         ui.label(
-                            RichText::new(format!(
-                                "「{word}」在主库里已经存在，内容和这份文件里的不一样："
+                            RichText::new(crate::lang::tf(
+                                "「{word}」在主库里已经存在，内容和这份文件里的不一样：",
+                                &[("word", &word)],
                             ))
                             .size(13.0)
                             .color(sk().txt2),
@@ -1491,9 +1619,9 @@ fn dialogs(ui: &mut egui::Ui, cx: &Ctx, r: &mut ControlResult) {
                         });
                         ui.add_space(10.0);
                         ui.label(
-                            RichText::new(format!(
-                                "「全部」= 本次导入剩下的 {} 条不再逐条询问",
-                                n - i
+                            RichText::new(crate::lang::tf(
+                                "「全部」= 本次导入剩下的 {n} 条不再逐条询问",
+                                &[("n", &(n - i))],
                             ))
                             .size(12.0)
                             .color(sk().txt3),
@@ -1626,7 +1754,7 @@ fn word_row(ui: &mut egui::Ui, row: &WordRow, r: &mut ControlResult) {
             p.text(
                 egui::pos2(rect.left() + 42.0, y),
                 Align2::LEFT_CENTER,
-                label,
+                crate::lang::l(label),
                 FontId::proportional(12.0),
                 sk().txt3,
             );
@@ -1644,7 +1772,8 @@ fn word_row(ui: &mut egui::Ui, row: &WordRow, r: &mut ControlResult) {
         if !row.hidden.is_empty() {
             let mut x = rect.left() + 42.0;
             for key in &row.hidden {
-                let label = format!("{} 已关闭展示", crate::deck::hide_label(key));
+                let label =
+                    crate::lang::tf("{n} 已关闭展示", &[("n", &crate::deck::hide_label(key))]);
                 let g = ui.painter().layout_no_wrap(
                     label.clone(),
                     FontId::proportional(11.5),
@@ -1691,15 +1820,18 @@ fn card_row(ui: &mut egui::Ui, row: &CardRow, pos: usize) {
 
     // 右侧：这张卡隐藏了哪些区块（没隐藏就是「完整」）
     let tail = if row.hide.is_empty() {
-        "完整".to_string()
+        crate::lang::l("完整").to_string()
     } else {
-        format!(
-            "隐藏 {}",
-            row.hide
-                .iter()
-                .map(|h| deck::hide_label(h))
-                .collect::<Vec<_>>()
-                .join("/")
+        crate::lang::tf(
+            "隐藏 {n}",
+            &[(
+                "n",
+                &row.hide
+                    .iter()
+                    .map(|h| deck::hide_label(h))
+                    .collect::<Vec<_>>()
+                    .join("/"),
+            )],
         )
     };
     let tg = p.layout_no_wrap(tail, FontId::proportional(11.5), sk().txt3);
@@ -1858,7 +1990,12 @@ fn plan_row(ui: &mut egui::Ui, row: &PlanRow, panel: &mut PanelState, r: &mut Co
     let chip_g = p.layout_no_wrap(row.range.label(), FontId::proportional(12.5), chip_col);
     let chip_w = chip_g.size().x + 14.0;
     let swlab_g = p.layout_no_wrap(
-        if row.off { "已关闭" } else { "出卡片" }.to_string(),
+        if row.off {
+            crate::lang::l("已关闭")
+        } else {
+            crate::lang::l("出卡片")
+        }
+        .to_string(),
         FontId::proportional(12.0),
         sk().txt3,
     );
@@ -1950,7 +2087,7 @@ fn plan_row(ui: &mut egui::Ui, row: &PlanRow, panel: &mut PanelState, r: &mut Co
                 .join(" / ");
             let g = ellipsize(
                 &p,
-                &format!("这段隐藏 {names}"),
+                &crate::lang::tf("这段隐藏 {names}", &[("names", &names)]),
                 FontId::proportional(12.0),
                 sk().acc,
                 (rect.width() * 0.45).max(60.0),
@@ -1985,32 +2122,36 @@ fn plan_row(ui: &mut egui::Ui, row: &PlanRow, panel: &mut PanelState, r: &mut Co
             sk().line,
         );
         let src = if row.source.is_empty() {
-            "（没记来源）".to_string()
+            crate::lang::l("（没记来源）").to_string()
         } else {
             row.source.clone()
         };
         let hide_txt = if row.hide.is_empty() {
-            "无，按词条自己的显隐来".to_string()
+            crate::lang::l("无，按词条自己的显隐来").to_string()
         } else {
             format!(
-                "{}（只在这段时间里生效，不改词条本身）",
+                "{}{}",
                 row.hide
                     .iter()
                     .map(|h| deck::hide_label(h))
                     .collect::<Vec<_>>()
-                    .join("、")
+                    .join("、"),
+                crate::lang::l("（只在这段时间里生效，不改词条本身）")
             )
         };
         let lines = [
-            ("来源文件", format!("{src}（导入时记下，只作展示）")),
+            (
+                "来源文件",
+                format!("{src}{}", crate::lang::l("（导入时记下，只作展示）")),
+            ),
             ("日期段", format!("{}　·　{}", row.range.label(), row.why)),
             ("这段隐藏", hide_txt),
             (
                 "操作",
                 if row.off {
-                    "这条已永久关闭，卡片不会出现在屏幕上".to_string()
+                    crate::lang::l("这条已永久关闭，卡片不会出现在屏幕上").to_string()
                 } else {
-                    "点右侧开关可永久关闭这条策略的卡片".to_string()
+                    crate::lang::l("点右侧开关可永久关闭这条策略的卡片").to_string()
                 },
             ),
         ];
@@ -2019,7 +2160,7 @@ fn plan_row(ui: &mut egui::Ui, row: &PlanRow, panel: &mut PanelState, r: &mut Co
             p.text(
                 egui::pos2(r2.left() + PLAN_PAD_L, y),
                 Align2::LEFT_CENTER,
-                k,
+                crate::lang::l(k),
                 FontId::proportional(12.5),
                 sk().txt3,
             );
@@ -2351,6 +2492,7 @@ fn sq_btn_impl(
     enabled: bool,
     danger: bool,
 ) -> bool {
+    let label = crate::lang::l(label);
     let font = FontId::proportional(12.5);
     let galley = ui
         .painter()
@@ -2442,6 +2584,7 @@ fn num_box(ui: &mut egui::Ui, text: &str) {
 }
 
 fn seg_btn(ui: &mut egui::Ui, label: &str, on: bool) -> bool {
+    let label = crate::lang::l(label);
     let font = FontId::proportional(12.5);
     let galley = ui
         .painter()
@@ -2520,7 +2663,12 @@ fn h4(ui: &mut egui::Ui, icon: &str, title: &str) {
         let (ir, _) = ui.allocate_exact_size(egui::vec2(22.0, 22.0), egui::Sense::hover());
         icon_paint(ui, ir, icon, sk().icon);
         ui.add_space(7.0);
-        ui.label(RichText::new(title).size(15.0).strong().color(sk().txt));
+        ui.label(
+            RichText::new(crate::lang::l(title))
+                .size(15.0)
+                .strong()
+                .color(sk().txt),
+        );
     });
     ui.add_space(6.0);
 }
@@ -2528,14 +2676,18 @@ fn h4(ui: &mut egui::Ui, icon: &str, title: &str) {
 /// 板块导语（会按可用宽度折行）
 fn lead(ui: &mut egui::Ui, text: &str) {
     ui.add(egui::Label::new(
-        RichText::new(text).size(13.0).color(sk().txt2),
+        RichText::new(crate::lang::l(text))
+            .size(13.0)
+            .color(sk().txt2),
     ));
     ui.add_space(14.0);
 }
 
 fn mini(ui: &mut egui::Ui, text: &str) {
     ui.add(egui::Label::new(
-        RichText::new(text).size(12.5).color(sk().txt3),
+        RichText::new(crate::lang::l(text))
+            .size(12.5)
+            .color(sk().txt3),
     ));
     ui.add_space(6.0);
 }
@@ -2543,14 +2695,23 @@ fn mini(ui: &mut egui::Ui, text: &str) {
 fn group_head(ui: &mut egui::Ui, title: &str, count: &str, note: Option<&str>) {
     ui.add_space(6.0);
     ui.horizontal(|ui| {
-        ui.label(RichText::new(title).size(13.5).strong().color(sk().txt));
+        ui.label(
+            RichText::new(crate::lang::l(title))
+                .size(13.5)
+                .strong()
+                .color(sk().txt),
+        );
         if !count.is_empty() {
             ui.add_space(4.0);
-            ui.label(RichText::new(count).size(12.0).color(sk().txt3));
+            ui.label(
+                RichText::new(crate::lang::l(count))
+                    .size(12.0)
+                    .color(sk().txt3),
+            );
         }
         if let Some(n) = note {
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                ui.label(RichText::new(n).size(12.0).color(sk().txt3));
+                ui.label(RichText::new(crate::lang::l(n)).size(12.0).color(sk().txt3));
             });
         }
     });
@@ -2586,7 +2747,7 @@ fn empty_line(ui: &mut egui::Ui, msg: &str) {
     p.text(
         egui::pos2(rect.left() + 14.0, rect.center().y),
         Align2::LEFT_CENTER,
-        msg,
+        crate::lang::l(msg),
         FontId::proportional(13.0),
         sk().txt3,
     );
@@ -2624,7 +2785,7 @@ fn stats(ui: &mut egui::Ui, items: &[(&str, String, StatKind)]) {
         p.text(
             egui::pos2(r.left() + 14.0, r.top() + 20.0),
             Align2::LEFT_CENTER,
-            *k,
+            crate::lang::l(k),
             FontId::proportional(12.0),
             sk().txt3,
         );
@@ -2677,7 +2838,7 @@ fn dashed_line(p: &egui::Painter, a: egui::Pos2, b: egui::Pos2, color: Color32) 
 fn callout(ui: &mut egui::Ui, text: &str) {
     let inner_w = (ui.available_width() - 28.0).max(80.0);
     let g = ui.painter().layout(
-        text.to_string(),
+        crate::lang::l(text).to_string(),
         FontId::proportional(12.5),
         sk().txt2,
         inner_w,
@@ -2756,6 +2917,8 @@ fn sett_line(ui: &mut egui::Ui, title: &str, desc: &str, pill: Option<&str>) {
 /// 返回 `Some(true/false)` = 用户刚拨了开关 —— 面板不自己改状态：
 /// 开关位置的真假由 app 去读写注册表决定，下一帧现读注册表显示结果。
 fn sett_switch(ui: &mut egui::Ui, title: &str, desc: &str, on: bool) -> Option<bool> {
+    let title = crate::lang::l(title);
+    let desc = crate::lang::l(desc);
     let h = 76.0;
     let (rect, _) =
         ui.allocate_exact_size(egui::vec2(ui.available_width(), h), egui::Sense::hover());
@@ -2822,14 +2985,17 @@ fn about_block(ui: &mut egui::Ui) {
         format!(
             "版本 {}　·　github.com/FanHuaWuYang/Lexideck",
             env!("CARGO_PKG_VERSION")
-        ),
+        )
+        .replace("版本", crate::lang::l("版本")),
         FontId::proportional(12.5),
         sk().txt3,
     );
     p.text(
         egui::pos2(x, rect.top() + 68.0),
         Align2::LEFT_CENTER,
-        "免安装绿色版：设置、主库、状态都放在 exe 同目录，整个文件夹拷走就带走全部状态",
+        crate::lang::l(
+            "免安装绿色版：设置、主库、状态都保存在程序文件夹中，复制整个文件夹即可迁移。",
+        ),
         FontId::proportional(12.0),
         sk().txt3,
     );
@@ -2837,6 +3003,8 @@ fn about_block(ui: &mut egui::Ui) {
 
 /// 卡片层级的一档（整卡可点，选中 = 绿框 + 「当前」标签）
 fn layer_option(ui: &mut egui::Ui, w: f32, title: &str, disc: &str, on: bool) -> bool {
+    let title = crate::lang::l(title);
+    let disc = crate::lang::l(disc);
     let pw = (w - 28.0).max(80.0);
     let g = ui
         .painter()
@@ -2875,7 +3043,16 @@ fn layer_option(ui: &mut egui::Ui, w: f32, title: &str, disc: &str, on: bool) ->
         sk().txt,
     );
     if on {
-        let bw = 34.0;
+        // 徽标宽度按文字实际宽度算：中文「当前」两字，英文 Current 更长（写死 34 会裁字）
+        let bw =
+            (p.layout_no_wrap(
+                crate::lang::l("当前").to_string(),
+                FontId::proportional(11.0),
+                sk().txt,
+            )
+            .size()
+            .x + 14.0)
+                .max(34.0);
         let br = egui::Rect::from_min_size(
             egui::pos2(rect.left() + 14.0 + g.size().x + 8.0, rect.top() + 12.0),
             egui::vec2(bw, g.size().y),
@@ -2884,7 +3061,7 @@ fn layer_option(ui: &mut egui::Ui, w: f32, title: &str, disc: &str, on: bool) ->
         p.text(
             br.center(),
             Align2::CENTER_CENTER,
-            "当前",
+            crate::lang::l("当前"),
             FontId::proportional(11.0),
             if sk().is_dark {
                 Color32::from_rgb(0x14, 0x14, 0x14)
@@ -2942,12 +3119,13 @@ fn theme_thumb(ui: &mut egui::Ui, kind: ThemeKind, on: bool) -> bool {
             StrokeKind::Inside,
         );
     }
-    let resp = resp.on_hover_text(kind.label());
+    let resp = resp.on_hover_text(crate::lang::l(kind.label()));
     resp.clicked()
 }
 
 /// 内容来源的两档按钮（选中 = 绿底白字）
 fn mode_btn(ui: &mut egui::Ui, label: &str, on: bool) -> bool {
+    let label = crate::lang::l(label);
     let font = FontId::proportional(13.5);
     let galley = ui
         .painter()
@@ -2981,6 +3159,7 @@ fn mode_btn(ui: &mut egui::Ui, label: &str, on: bool) -> bool {
 
 /// 安静按钮（无边框，用于「重播动画」「复位 0.70」）
 fn quiet_btn(ui: &mut egui::Ui, icon: &str, label: &str, enabled: bool) -> bool {
+    let label = crate::lang::l(label);
     let font = FontId::proportional(12.5);
     let galley = ui
         .painter()
@@ -3026,6 +3205,7 @@ fn quiet_btn(ui: &mut egui::Ui, icon: &str, label: &str, enabled: bool) -> bool 
 }
 
 fn gold_button(ui: &mut egui::Ui, icon: Option<&str>, label: &str) -> bool {
+    let label = crate::lang::l(label);
     let font = FontId::proportional(13.5);
     let galley = ui
         .painter()
