@@ -1,4 +1,4 @@
-//! 控制面板（v2：四个板块 —— 词表 / 卡片 / 策略 / 设置）。
+//! 控制面板（v2：四个板块 —— 词表 / 卡片 / 排期 / 设置）。
 //! 面板只产生"意图"（ControlResult），由 app 执行实际动作；这里不碰数据。
 //!
 //! 布局：顶栏（自绘，含拖拽与窗口按钮）→ 标签行 → 内容（主列 + 说明列）→ 底栏。
@@ -156,7 +156,7 @@ impl PanelTab {
         match self {
             PanelTab::Words => crate::lang::l("词表"),
             PanelTab::Cards => crate::lang::l("卡片"),
-            PanelTab::Plans => crate::lang::l("策略"),
+            PanelTab::Plans => crate::lang::l("排期"),
             PanelTab::Settings => crate::lang::l("设置"),
         }
     }
@@ -175,9 +175,9 @@ pub struct PanelState {
     pub tab: PanelTab,
     pub search: String,
     pub filter: WordFilter,
-    /// 策略页里展开看明细的那几条（键 = `plan_key`）
+    /// 排期页里展开看明细的那几条（键 = `plan_key`）
     pub plans_open: HashSet<String>,
-    /// 策略页「已经结束」那段是否展开（默认收起）
+    /// 排期页「已经结束」那段是否展开（默认收起）
     pub past_open: bool,
     /// 设置页「开机自启动」的现状（`None` = 还没查过 / 该重查）。
     /// 状态以**注册表**为准，所以：离开设置页就丢掉缓存（见 draw），
@@ -204,7 +204,7 @@ impl Default for PanelState {
     }
 }
 
-/// 策略行的稳定键（词 + 日期段），展开状态与开关都按它认人
+/// 排期行的稳定键（词 + 日期段），展开状态与开关都按它认人
 pub fn plan_key(word: &str, r: &Range) -> String {
     format!(
         "{}\u{1}{}\u{1}{}",
@@ -235,7 +235,7 @@ pub struct ControlResult {
     pub open_taskbar_settings: bool,
     /// 回到「按今日展示」（屏幕内容交回展示时间引擎）
     pub back_to_today: bool,
-    /// 永久关闭 / 打开一条策略（词 + 日期段）
+    /// 永久关闭 / 打开一条排期（词 + 日期段）
     pub toggle_off: Option<(String, Range)>,
     /// 屏幕内容来源：Some(true) = 按今日展示，Some(false) = 手动展示
     pub set_screen_auto: Option<bool>,
@@ -280,11 +280,11 @@ pub struct CardRow {
     pub range_label: String,
     /// 来源文件（没有就写"手动展示"）
     pub source: String,
-    /// 这张卡额外隐藏的区块（策略内隐藏 ∪ 词条自己的 hide）
+    /// 这张卡额外隐藏的区块（排期内隐藏 ∪ 词条自己的 hide）
     pub hide: Vec<String>,
 }
 
-/// 策略（展示时间）列表里的一行 —— 一条策略 = 一个词的一段展示时间
+/// 排期（展示时间）列表里的一行 —— 一条排期 = 一个词的一段展示时间
 pub struct PlanRow {
     pub word: String,
     /// 原始日期段（开关回传要用它）
@@ -295,7 +295,7 @@ pub struct PlanRow {
     pub off: bool,
     /// 来自哪份导入文件（只作展示）
     pub source: String,
-    /// 这段策略里额外隐藏的区块名（`deck::HIDE_KEYS`）
+    /// 这段排期里额外隐藏的区块名（`deck::HIDE_KEYS`）
     pub hide: Vec<String>,
     /// 展开看明细
     pub expanded: bool,
@@ -337,7 +337,7 @@ pub struct Ctx<'a> {
     pub today: &'a str,
     /// 最近一次操作的反馈（空串 = 显示默认状态行）
     pub status: &'a str,
-    /// 解析与校验提示
+    /// 解析与校验
     pub warns: &'a [String],
     pub import: &'a ImportCtx<'a>,
     pub confirm_exit: bool,
@@ -515,7 +515,7 @@ pub fn draw(
     let main = main.translate(egui::vec2(0.0, rise));
     let side = side.translate(egui::vec2(0.0, rise));
 
-    // 卡片/策略/设置：整页（含右栏说明）一起滚动，滚动条落在内容区最右缘
+    // 卡片/排期/设置：整页（含右栏说明）一起滚动，滚动条落在内容区最右缘
     let whole_page = matches!(
         panel.tab,
         PanelTab::Cards | PanelTab::Plans | PanelTab::Settings
@@ -564,7 +564,7 @@ pub fn draw(
                 ui.add_space(8.0);
                 let (status, color) = if cx.confirm_exit {
                     (
-                        crate::lang::l("再点一次「×」退出程序（5 秒内有效）").to_string(),
+                        crate::lang::l("再次点击「×」退出程序（5 秒内有效）").to_string(),
                         sk().danger,
                     )
                 } else if !cx.status.is_empty() {
@@ -598,7 +598,7 @@ pub fn draw(
                             if gold_button(ui, None, "保存设置") {
                                 r.changed = true;
                                 r.status_msg = Some(
-                                    crate::lang::l("设置已保存到程序文件夹的「设置.txt」（改动即时生效）")
+                                    crate::lang::l("设置已保存（即时生效）")
                                         .into(),
                                 );
                             }
@@ -773,7 +773,7 @@ fn words_tab(
         child.horizontal(|ui| {
             ui.add_space(14.0);
             let msg = if cx.total_entries == 0 {
-                "词库还是空的 —— 点右上「导入词表…」选一份 JSON"
+                "词库为空，请导入词表"
             } else {
                 "没有符合条件的词条"
             };
@@ -822,10 +822,7 @@ fn cards_tab(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResul
 
 fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResult) {
     h4(ui, "float_list", "桌面卡片");
-    lead(
-        ui,
-        "屏幕上现在的内容。位置由平铺规则决定（右上角起、往下排、满列向左），放不下按顺序截断。",
-    );
+    lead(ui, "屏幕当前内容。按平铺规则排列，超出部分按顺序截断。");
 
     stats(
         ui,
@@ -840,25 +837,17 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
         ],
     );
 
-    group_head(
-        ui,
-        "屏幕上的卡片",
-        "顺序 = 上屏顺序",
-        Some("截断时先来先上"),
-    );
+    group_head(ui, "屏幕上的卡片", "顺序 = 上屏顺序", Some("超出按序截断"));
     rows_box(ui, |ui| {
         if cx.card_rows.is_empty() {
-            empty_line(
-                ui,
-                "桌面上没有卡片——今天没有排期，或尚未在「词表」中勾选词条",
-            );
+            empty_line(ui, "暂无卡片：今日无排期，或未勾选词条");
         }
         for (i, row) in cx.card_rows.iter().enumerate() {
             card_row(ui, row, i + 1);
         }
     });
 
-    group_head(ui, "屏幕内容从哪来", "", None);
+    group_head(ui, "内容来源", "", None);
     ui.horizontal(|ui| {
         ui.spacing_mut().item_spacing.x = 0.0;
         if mode_btn(ui, "按今日展示", cx.screen_auto) && !cx.screen_auto {
@@ -872,13 +861,13 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
     mini(
         ui,
         if cx.screen_auto {
-            "自动：按今天的策略上屏，跨过零点自动换下一批；今天没有排期就是空白屏幕。"
+            "按今日排期上屏，零点后自动切换；无排期时屏幕空白。"
         } else {
-            "手动：只显示你在「词表」里勾选的那几个词（调试用）；想回到自动就点右下角「按今日展示」。"
+            "仅显示「词表」中勾选的词条，用于调试。"
         },
     );
 
-    group_head(ui, "字号", "", Some("全局一个档位，所有卡片一起变"));
+    group_head(ui, "字号", "", Some("统一字号"));
     ui.horizontal(|ui| {
         ui.spacing_mut().item_spacing.x = 10.0;
         if sq_btn(ui, "A−", cfg.font_scale > FONT_MIN + 1e-4) {
@@ -902,10 +891,7 @@ fn cards_body(ui: &mut egui::Ui, cfg: &mut Config, cx: &Ctx, r: &mut ControlResu
         }
     });
     ui.add_space(14.0);
-    mini(
-        ui,
-        "卡片可以拖开临时让位；下次重排（卡片增删、字号变化）会回到平铺位置。",
-    );
+    mini(ui, "可拖动卡片临时让位，重排后自动归位。");
 }
 
 fn plans_tab(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
@@ -915,10 +901,10 @@ fn plans_tab(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contro
 }
 
 fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut ControlResult) {
-    h4(ui, "display", "展示策略");
+    h4(ui, "display", "展示排期");
     lead(
         ui,
-        "一条策略 = 一个词的一段展示时间。关掉它，这个词在这段时间就不上屏，永久生效，直到你在这里重新打开。",
+        "一条排期对应一个词的一段展示时间。关闭后该时段不再上屏，直至手动重新开启。",
     );
 
     let (n_now, n_off, n_future) = plan_counts(cx.plan_rows);
@@ -942,10 +928,7 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
 
     if cx.plan_rows.is_empty() {
         ui.add_space(10.0);
-        mini(
-            ui,
-            "主库里还没有展示时间 —— 导入一份带 display_time 的文件即可。",
-        );
+        mini(ui, "暂无展示时间，请导入含 display_time 的文件");
         return;
     }
 
@@ -960,10 +943,10 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
         ui,
         "正在生效",
         &crate::lang::tf("{n} 条", &[("n", &now.len())]),
-        Some("今天就在屏幕上"),
+        Some("今日生效"),
     );
     if now.is_empty() {
-        empty_line(ui, "今天没有生效的策略（屏幕是空白的）");
+        empty_line(ui, "今日无生效排期");
     } else {
         rows_box(ui, |ui| {
             for p in &now {
@@ -976,13 +959,10 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
         ui,
         "还没开始",
         &crate::lang::tf("{n} 条", &[("n", &future.len())]),
-        Some("按日期自动接上"),
+        Some("到期自动生效"),
     );
     if future.is_empty() {
-        empty_line(
-            ui,
-            "没有排在未来 —— 想提前排课就在词表 JSON 里加 display_time",
-        );
+        empty_line(ui, "未来无排期；可在词表 JSON 中添加 display_time");
     } else {
         rows_box(ui, |ui| {
             for p in &future {
@@ -998,9 +978,9 @@ fn plans_body(ui: &mut egui::Ui, panel: &mut PanelState, cx: &Ctx, r: &mut Contr
         None,
     );
     if past.is_empty() {
-        empty_line(ui, "还没有结束的展示策略");
+        empty_line(ui, "暂无已结束排期");
     } else {
-        let label = crate::lang::tf("展示已经结束的展示策略（{n} 条）", &[("n", &past.len())]);
+        let label = crate::lang::tf("展示已经结束的展示排期（{n} 条）", &[("n", &past.len())]);
         if sq_btn_icon(
             ui,
             if panel.past_open { "chev_up" } else { "chev" },
@@ -1042,12 +1022,12 @@ fn settings_body(
     h4(ui, "geo", "设置");
     lead(
         ui,
-        "面板与卡片共用主题。设置会自动保存到程序文件夹的「设置.txt」，策略开关保存在「状态.json」。",
+        "设置自动保存至「设置.txt」，排期开关保存至「状态.json」。",
     );
 
     ui.add_space(18.0);
     sep_line(ui);
-    group_head(ui, "界面语言", "", Some("切换界面语言（立即生效）"));
+    group_head(ui, "界面语言", "", Some("立即生效"));
     ui.horizontal(|ui| {
         let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
         let en = cfg.lang == "en";
@@ -1062,12 +1042,7 @@ fn settings_body(
         }
     });
 
-    group_head(
-        ui,
-        "卡片层级",
-        "",
-        Some("其他课程的 PPT 不能被遮挡，所以默认置底"),
-    );
+    group_head(ui, "卡片层级", "", Some("默认置底，避免遮挡课件"));
     let on_top = cfg.layer == Layer::Top;
     ui.horizontal(|ui| {
         let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
@@ -1075,7 +1050,7 @@ fn settings_body(
             ui,
             w,
             "置底（默认）",
-            "卡片贴在桌面最底层，任何窗口都会盖住它。代价：全屏放 PPT 时卡片看不见，只在课间/桌面状态看得到。",
+            "位于桌面最底层，任何窗口均可覆盖；全屏演示时不可见。",
             !on_top,
         ) && on_top
         {
@@ -1086,7 +1061,7 @@ fn settings_body(
             ui,
             w,
             "置顶",
-            "卡片始终压在其它窗口最上层。代价：会占掉 PPT 右侧版面；若不配合穿透，点卡片会落在卡片上。",
+            "始终位于其他窗口上方，占用屏幕右侧区域。",
             on_top,
         ) && !on_top
         {
@@ -1095,7 +1070,7 @@ fn settings_body(
     });
 
     ui.add_space(14.0);
-    group_head(ui, "鼠标穿透", "", Some("和层级无关，四种组合都能选"));
+    group_head(ui, "鼠标穿透", "", Some("与层级独立"));
     let pt = cfg.passthrough;
     ui.horizontal(|ui| {
         let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
@@ -1103,7 +1078,7 @@ fn settings_body(
             ui,
             w,
             "不穿透（默认）",
-            "卡片照常接收鼠标：点卡片会落在卡片上，拖着卡片挪位置也要靠它。",
+            "卡片接收鼠标事件，可点击与拖动。",
             !pt,
         ) && pt
         {
@@ -1114,7 +1089,7 @@ fn settings_body(
             ui,
             w,
             "穿透",
-            "卡片收不到任何鼠标事件，点击全部穿过去落到 PPT 上（贴在 PPT 上层常显时用它）。",
+            "卡片不接收鼠标事件，点击传递至下层窗口。",
             pt,
         ) && !pt
         {
@@ -1124,7 +1099,7 @@ fn settings_body(
     ui.add_space(12.0);
     callout(
         ui,
-        "穿透是整个窗口粒度的：开启后卡片收不到任何鼠标事件，恢复通道只有这个面板 —— 面板里提供「关闭穿透」和「隐藏全部卡片」。",
+        "穿透作用于整个卡片窗口。开启后仅可通过本面板关闭穿透或隐藏全部卡片。",
     );
     ui.add_space(10.0);
     ui.horizontal(|ui| {
@@ -1134,12 +1109,7 @@ fn settings_body(
     });
 
     ui.add_space(14.0);
-    group_head(
-        ui,
-        "主题",
-        "",
-        Some("只换配色，不动版式（版式一变，教室可读性要重测）"),
-    );
+    group_head(ui, "主题", "", Some("仅更换配色"));
     ui.horizontal(|ui| {
         for kind in [ThemeKind::Plain, ThemeKind::Wuling, ThemeKind::Yellow] {
             let on = cfg.theme == kind.as_str();
@@ -1158,19 +1128,14 @@ fn settings_body(
     });
 
     ui.add_space(14.0);
-    group_head(
-        ui,
-        "动画流畅度",
-        "",
-        Some("卡片入场动画的帧率上限：跟着屏幕走最省，不限帧最快"),
-    );
+    group_head(ui, "动画流畅度", "", Some("动画帧率上限"));
     ui.horizontal(|ui| {
         let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
         if layer_option(
             ui,
             w,
             "跟随显示器（默认）",
-            "帧率跟随显示器刷新率：60Hz 屏幕为 60 帧，165Hz 屏幕最高 165 帧。画面不撕裂，也不浪费 CPU。",
+            "帧率跟随显示器刷新率，避免撕裂与额外占用。",
             cfg.vsync,
         ) && !cfg.vsync
         {
@@ -1182,7 +1147,7 @@ fn settings_body(
             ui,
             w,
             "不限帧（最快）",
-            "关闭垂直同步，以尽可能高的帧率绘制。代价：CPU/GPU 占用更高，60Hz 屏幕上可能出现撕裂。",
+            "关闭垂直同步，以最高帧率绘制；占用较高，可能出现撕裂。",
             !cfg.vsync,
         ) && cfg.vsync
         {
@@ -1191,26 +1156,18 @@ fn settings_body(
         }
     });
     ui.add_space(8.0);
-    callout(
-        ui,
-        "这一项在程序启动时生效，改完要重开一次 Lexideck；动画本身不受影响，只影响它每秒画多少帧。",
-    );
+    callout(ui, "重启程序后生效。");
 
     ui.add_space(18.0);
     sep_line(ui);
-    group_head(
-        ui,
-        "关闭窗口时",
-        "",
-        Some("面板顶栏的 ✕（或系统关闭）：驻留托盘 = 收进托盘；直接退出 = 走 5 秒二次确认"),
-    );
+    group_head(ui, "关闭窗口时", "", Some("关闭窗口的行为"));
     ui.horizontal(|ui| {
         let w = ((ui.available_width() - 10.0) / 2.0).max(170.0);
         if layer_option(
             ui,
             w,
             "驻留托盘（默认）",
-            "关闭面板后程序继续运行，卡片不会消失；可通过托盘图标（在右下角 ^ 折叠区）、托盘右键菜单，或再次启动 Lexideck 唤回面板。",
+            "关闭面板后程序继续运行，卡片保持显示；可通过托盘图标或再次启动唤回面板。",
             cfg.close_action == CloseAction::Tray,
         ) && cfg.close_action != CloseAction::Tray
         {
@@ -1221,7 +1178,7 @@ fn settings_body(
             ui,
             w,
             "直接退出",
-            "关掉面板 = 退出程序（5 秒内点两次 ✕ 确认）。教室策略挡掉托盘图标时用这档。",
+            "关闭面板即退出程序，需连续点击两次 ✕ 确认。",
             cfg.close_action == CloseAction::Exit,
         ) && cfg.close_action != CloseAction::Exit
         {
@@ -1235,7 +1192,7 @@ fn settings_body(
         }
         ui.add_space(10.0);
         ui.label(
-            RichText::new(crate::lang::l("点了立即退出（驻留托盘时也能从这里退）"))
+            RichText::new(crate::lang::l("立即退出程序"))
                 .size(12.0)
                 .color(sk().txt3),
         );
@@ -1250,7 +1207,7 @@ fn settings_body(
     ui.add_space(6.0);
     ui.label(
         RichText::new(
-            "托盘图标去哪了：Windows 11 默认把新图标收进任务栏右下角的 ^ 折叠区，不进常驻区（程序自己抢不进去）。\
+            "托盘图标：Windows 11 默认把新图标收进任务栏右下角的 ^ 折叠区，不进常驻区（程序自己抢不进去）。\
              点上面的按钮打开「设置 → 个性化 → 任务栏 → 其他系统托盘图标」，把 Lexideck 打开它就常驻了；\
              实在找不到图标也不慌 —— 再双击一次 lexideck.exe 同样能把面板唤回来（同一个程序只会跑一份）。",
         )
@@ -1262,12 +1219,7 @@ fn settings_body(
     sep_line(ui);
     // ── 开机自启动（P3b）──
     // 状态以注册表为准：这格现读一次就缓存住，离开设置页或拨过开关就丢掉重读（见 draw / 下面两处）
-    group_head(
-        ui,
-        "开机自启动",
-        "",
-        Some("写当前用户的启动项，免管理员；开关位置反映注册表里的实际情况"),
-    );
+    group_head(ui, "开机自启动", "", Some("当前用户启动项，无需管理员"));
     if panel.autostart.is_none() {
         panel.autostart = Some(autostart::query());
     }
@@ -1313,22 +1265,17 @@ fn settings_body(
     callout(
         ui,
         "自启动只在登录后把程序拉起来，卡片照常按今天该显示的词上屏；把启动项里这一条删掉就等于关闭。\
-         教室一体机如果被组策略挡着，这一项会写不进去，面板会如实报错。",
+         教室一体机如果被组排期挡着，这一项会写不进去，面板会如实报错。",
     );
 
     ui.add_space(12.0);
-    sett_line(
-        ui,
-        "单实例",
-        "已启用：第二次双击不会再开一个窗口，会把已有窗口（藏在托盘里也行）唤到前台",
-        None,
-    );
+    sett_line(ui, "单实例", "重复启动不会新建窗口，将唤回已有窗口。", None);
 
     ui.add_space(14.0);
     about_block(ui);
     ui.add_space(12.0);
     if !cx.warns.is_empty() {
-        mini(ui, "解析与校验提示");
+        mini(ui, "解析与校验");
         for w in cx.warns.iter().take(6) {
             mini(ui, w);
         }
@@ -1411,10 +1358,7 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
     match tab {
         PanelTab::Words => {
             hd(ui, "词库");
-            pg(
-                ui,
-                "词条只从 JSON 文件来。导入 = 并进主库：同名词条更新、其余追加。",
-            );
+            pg(ui, "词条仅来自 JSON 文件；导入时同名更新、其余追加。");
             gd(
                 ui,
                 "勾选几个词，点右下角「立即展示」，卡片就会出现在桌面上。",
@@ -1424,69 +1368,44 @@ fn help_pane(ui: &mut egui::Ui, tab: PanelTab, cx: &Ctx) {
             st(ui, "已选", &cx.selected.to_string());
             st(ui, "展示时间条目", &cx.display_items.to_string());
             ui.add_space(12.0);
-            mn(ui, "面板里不提供改词条内容的功能——改内容请改 JSON 再导入。");
-            mn(ui, "格式不对的文件会被整份拒绝，主库不受影响。");
+            mn(ui, "词条内容需修改 JSON 后重新导入。");
+            mn(ui, "格式错误时整份拒绝，主库不变。");
         }
         PanelTab::Cards => {
-            hd(ui, "屏幕内容从哪来");
-            pg(
-                ui,
-                "两种来源：按今日展示（自动）／手动展示（调试用）。启动时默认按今日展示。",
-            );
+            hd(ui, "内容来源");
+            pg(ui, "来源：今日排期（自动）或手动选择（调试）。");
             hd(ui, "截断规则");
-            pg(
-                ui,
-                "放不下就按顺序截断：先排的先上屏，后面的不显示，面板会把「生效 N 个 / 已显示 M 个」写清楚。",
-            );
-            hd(ui, "卡片可以拖开临时让位");
-            pg(
-                ui,
-                "位置平时由排列规则决定；拖走后，下次重排（卡片增删、字号变化）会拉回平铺位置。",
-            );
+            pg(ui, "超出屏幕时按顺序截断；面板显示生效数与上屏数。");
+            hd(ui, "卡片位置");
+            pg(ui, "位置由排列规则决定，重排后自动归位。");
             sp(ui);
             st(ui, "本次生效", &cx.effective.to_string());
             st(ui, "屏幕上显示", &cx.shown.to_string());
         }
         PanelTab::Plans => {
-            hd(ui, "怎么理解这一页");
-            pg(
-                ui,
-                "一条策略 = 一个词的一段展示时间。同一个词可以有好几段（比如第 5 周再轮一次），每段各自开关。",
-            );
-            hd(ui, "关掉会怎样");
-            pg(
-                ui,
-                "关闭后永久生效：这个词在这段时间内不再上屏，第二天也不会自动恢复，必须在这里手动打开。",
-            );
-            hd(ui, "关掉是不是删了内容");
-            pg(ui, "不是。词条和日期段都还在主库里，只是这段时间不上屏。");
+            hd(ui, "页面说明");
+            pg(ui, "一条排期对应一个词的一段展示时间；同一词可有多段。");
+            hd(ui, "关闭后");
+            pg(ui, "关闭后该时段永久不显示，需手动开启。");
+            hd(ui, "是否删除内容");
+            pg(ui, "不删除内容，仅停止上屏。");
             sp(ui);
             st(ui, "展示时间条目", &cx.display_items.to_string());
             ui.add_space(12.0);
-            mn(ui, "今天没有排期 → 屏幕空白（不沿用上一批）。");
+            mn(ui, "无排期时屏幕空白，不沿用前一批。");
         }
         PanelTab::Settings => {
-            hd(ui, "为什么默认置底");
+            hd(ui, "默认置底");
+            pg(ui, "避免遮挡其他课程的 PPT，默认置底；常显时切「置顶」。");
+            hd(ui, "层级与穿透");
             pg(
                 ui,
-                "其他课上 PPT 不能被卡片遮挡，所以默认藏在最底层；需要常显就切「置顶」。",
+                "层级决定覆盖关系，穿透决定点击去向，两者独立；常用组合为「置顶 + 穿透」。",
             );
-            hd(ui, "层级和穿透是两件事");
-            pg(
-                ui,
-                "层级决定卡片压在谁上面，穿透决定点击能不能穿过卡片，两边各自独立、四种组合都能选。\
-                 常见搭配是「置顶 + 穿透」：卡片常显，点击照常落到 PPT 上。",
-            );
-            hd(ui, "穿透的风险");
-            pg(
-                ui,
-                "开启后卡片点不到，只能从这个面板恢复。所以面板本身永远是正常可交互的。",
-            );
-            hd(ui, "设置都写在哪");
-            pg(
-                ui,
-                "主库 lexideck.json、设置 设置.txt、策略开关 状态.json 都保存在程序文件夹中；复制整个文件夹即可带走全部数据。",
-            );
+            hd(ui, "穿透说明");
+            pg(ui, "开启后卡片不可点击，仅能通过本面板恢复。");
+            hd(ui, "数据位置");
+            pg(ui, "主库、设置与状态文件均位于程序文件夹。");
             if !cx.warns.is_empty() {
                 sp(ui);
                 mn(ui, "提示");
@@ -1911,7 +1830,7 @@ fn card_row(ui: &mut egui::Ui, row: &CardRow, pos: usize) {
     p.galley(egui::pos2(x, cy - g.size().y / 2.0), g, sk().txt);
 }
 
-/// 一条策略的版式尺寸（触摸规格：第一行 52 ≥ 50，开关 52×30，箭头 34×34）
+/// 一条排期的版式尺寸（触摸规格：第一行 52 ≥ 50，开关 52×30，箭头 34×34）
 const PLAN_L1_H: f32 = 52.0;
 const PLAN_L2_H: f32 = 28.0;
 /// 第二行小标签的中心相对「第一行下缘」的下移量。
@@ -1927,7 +1846,7 @@ const SWITCH_H: f32 = 30.0;
 const EXPAND_W: f32 = 34.0;
 const CHIP_H: f32 = 22.0;
 
-/// 一条策略 = 一行两段：
+/// 一条排期 = 一行两段：
 ///   · 第一行：`词 + 日期段 + 「出卡片/已关闭」 + 开关 + 展开箭头`
 ///   · 第二行：`来源文件` / `这段隐藏 例句/备注` 两个小标签（有才显示）
 /// 展开后是 4 行明细（来源文件 / 日期段+原因 / 这段隐藏 / 操作提示）。
@@ -2147,9 +2066,9 @@ fn plan_row(ui: &mut egui::Ui, row: &PlanRow, panel: &mut PanelState, r: &mut Co
             (
                 "操作",
                 if row.off {
-                    crate::lang::l("这条已永久关闭，卡片不会出现在屏幕上").to_string()
+                    crate::lang::l("该排期已永久关闭").to_string()
                 } else {
-                    crate::lang::l("点右侧开关可永久关闭这条策略的卡片").to_string()
+                    crate::lang::l("点右侧开关可永久关闭这条排期的卡片").to_string()
                 },
             ),
         ];
@@ -2192,7 +2111,7 @@ fn plan_row(ui: &mut egui::Ui, row: &PlanRow, panel: &mut PanelState, r: &mut Co
     }
 }
 
-/// 永久关闭一条策略的开关：开 = 出卡片（默认），关 = 已关闭
+/// 永久关闭一条排期的开关：开 = 出卡片（默认），关 = 已关闭
 fn switch_btn(ui: &mut egui::Ui, rect: egui::Rect, id: egui::Id, on: bool) -> bool {
     let resp = ui.interact(rect, id, egui::Sense::click());
     let hov = ui
@@ -2232,7 +2151,7 @@ fn switch_btn(ui: &mut egui::Ui, rect: egui::Rect, id: egui::Id, on: bool) -> bo
     resp.clicked()
 }
 
-/// 展开 / 收起一条策略的明细
+/// 展开 / 收起一条排期的明细
 fn expand_btn(ui: &mut egui::Ui, rect: egui::Rect, id: egui::Id, open: bool) -> bool {
     let resp = ui.interact(rect, id, egui::Sense::click());
     let hov = ui
@@ -2644,7 +2563,7 @@ fn font_step(cur: f32, dir: i32) -> f32 {
     }
 }
 
-/// 策略分组与计数：(今天生效且没关的条数, 被永久关闭的条数, 未来排期的条数)
+/// 排期分组与计数：(今天生效且没关的条数, 被永久关闭的条数, 未来排期的条数)
 fn plan_counts(rows: &[PlanRow]) -> (usize, usize, usize) {
     let mut now = 0;
     let mut off = 0;
@@ -2918,7 +2837,7 @@ fn sett_line(ui: &mut egui::Ui, title: &str, desc: &str, pill: Option<&str>) {
     }
 }
 
-/// 设置页的一行开关（标题 + 说明 + 右侧方形开关，和策略行同一种开关）。
+/// 设置页的一行开关（标题 + 说明 + 右侧方形开关，和排期行同一种开关）。
 /// 返回 `Some(true/false)` = 用户刚拨了开关 —— 面板不自己改状态：
 /// 开关位置的真假由 app 去读写注册表决定，下一帧现读注册表显示结果。
 fn sett_switch(ui: &mut egui::Ui, title: &str, desc: &str, on: bool) -> Option<bool> {
@@ -3430,7 +3349,7 @@ mod tests {
         }
     }
 
-    /// 策略三段的计数：今天生效（且没关）/ 被永久关闭 / 未来排期
+    /// 排期三段的计数：今天生效（且没关）/ 被永久关闭 / 未来排期
     #[test]
     fn plan_counts_group_and_count() {
         let rows = vec![
@@ -3513,7 +3432,7 @@ mod tests {
         assert!(r.style_changed, "两次切换都要让 app 重发窗口样式");
     }
 
-    /// 策略行右侧的开关真的会回传「永久关闭这一条」
+    /// 排期行右侧的开关真的会回传「永久关闭这一条」
     #[test]
     fn plan_switch_click_reports_toggle_off() {
         let p = plan(
@@ -3534,7 +3453,7 @@ mod tests {
         assert_eq!(
             res.toggle_off,
             Some(("seek".to_string(), range("2026-10-06", "2026-10-12"))),
-            "点开关必须回传这一条策略"
+            "点开关必须回传这一条排期"
         );
         assert!(panel.plans_open.is_empty(), "点开关不该连带展开整行");
     }
@@ -3556,7 +3475,7 @@ mod tests {
         let res = run_with_click(size, egui::pos2(40.0, 26.0), |ui, r| {
             plan_row(ui, &p, &mut panel, r)
         });
-        assert_eq!(res.toggle_off, None, "点词不该关掉策略");
+        assert_eq!(res.toggle_off, None, "点词不该关掉排期");
         assert!(panel.plans_open.contains(&p.key()), "点行本体应展开");
     }
 
@@ -3688,7 +3607,7 @@ mod tests {
         }
     }
 
-    /// 策略页的三段分组：展开「已经结束」才画那些行
+    /// 排期页的三段分组：展开「已经结束」才画那些行
     #[test]
     fn plans_past_group_is_collapsed_by_default() {
         let errors: Vec<String> = Vec::new();
@@ -3731,7 +3650,7 @@ mod tests {
         );
     }
 
-    /// 展开一条策略要多画 4 行明细
+    /// 展开一条排期要多画 4 行明细
     #[test]
     fn plan_row_expanded_draws_details() {
         let errors: Vec<String> = Vec::new();
@@ -3849,7 +3768,7 @@ mod tests {
         );
     }
 
-    /// 空词表 / 空策略都不能崩（首次运行、导入前）
+    /// 空词表 / 空排期都不能崩（首次运行、导入前）
     #[test]
     fn empty_library_renders() {
         let errors: Vec<String> = Vec::new();
@@ -3986,6 +3905,6 @@ mod tests {
             &mut cfg,
             &mut panel,
         );
-        assert!(n > 20, "极窄窗口下策略行没画出来（{n}）");
+        assert!(n > 20, "极窄窗口下排期行没画出来（{n}）");
     }
 }
