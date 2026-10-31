@@ -48,11 +48,11 @@ pub struct FloatWin {
     /// **行位置是对的，但每个字都是错的形状**。所以计划改为惰性重建。
     plan_dirty: bool,
     pos: Option<egui::Pos2>,
-    /// 当前排版计划（词条 / 缩放 / 主题 / 策略内隐藏变化时置脏重建）
+    /// 当前排版计划（词条 / 缩放 / 主题 / 排期内隐藏变化时置脏重建）
     plan: Option<CardPlan>,
-    /// 计划对应的键：(词条, 缩放 bits, 主题, 策略内额外隐藏)
+    /// 计划对应的键：(词条, 缩放 bits, 主题, 排期内额外隐藏)
     plan_key: Option<(String, u32, ThemeKind, Vec<String>)>,
-    /// 这条策略内额外隐藏的区块（来自展示时间项的 `hide`；并进卡片的隐藏判断）
+    /// 这条排期内额外隐藏的区块（来自展示时间项的 `hide`；并进卡片的隐藏判断）
     pub hide_extra: Vec<String>,
     /// 当前目标窗口尺寸
     size: Option<egui::Vec2>,
@@ -93,7 +93,7 @@ impl FloatWin {
 /// 屏幕上卡片内容的来源（设计 §5.5）：启动时必须是 Auto。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Screen {
-    /// 自动：今天生效的展示策略（去掉被关闭的），按主库顺序
+    /// 自动：今天生效的展示排期（去掉被关闭的），按主库顺序
     Auto,
     /// 手动：面板里勾选后点「立即展示」的那几个词
     Manual,
@@ -129,7 +129,7 @@ pub struct LexideckApp {
     /// 保留内存里那份等着文件回来（见 poll_library / prune_state 的说明）
     lib_missing: bool,
     // ── 展示时间（P2）──
-    /// 被永久关闭的展示策略（exe 同目录 `状态.json`）
+    /// 被永久关闭的展示排期（exe 同目录 `状态.json`）
     sc: schedule::State,
     sc_path: PathBuf,
     /// 状态文件是否可信（读不懂 = false；此时拒绝写盘，绝不覆盖坏文件）
@@ -551,7 +551,7 @@ impl LexideckApp {
             .collect()
     }
 
-    /// 策略页的一行 = 主库里一个词的一段日期（主库顺序，先导入的在前）
+    /// 排期页的一行 = 主库里一个词的一段日期（主库顺序，先导入的在前）
     fn build_plan_rows(&self) -> Vec<PlanRow> {
         let today = self.today;
         let mut out = Vec::new();
@@ -675,16 +675,16 @@ impl LexideckApp {
     }
 
     /// 让悬浮窗数量 / 内容 / 位置与"当前屏幕来源"保持一致：
-    /// Auto = 今日生效的词（带策略内隐藏），Manual = cfg.shown。截断/平铺算法不变。
+    /// Auto = 今日生效的词（带排期内隐藏），Manual = cfg.shown。截断/平铺算法不变。
     fn reconcile_floats(&mut self, ctx: &egui::Context, th: &Theme) {
         let scale = self.cfg.font_scale * self.screen_scale(ctx);
         let monitor = self.monitor_size(ctx);
 
-        // 要显示的 (词条 key, 策略内额外隐藏)
+        // 要显示的 (词条 key, 排期内额外隐藏)
         let want: Vec<(String, Vec<String>)> = match self.screen {
             Screen::Auto => {
                 let mut out: Vec<(String, Vec<String>)> = Vec::new();
-                // active_today 已按主库顺序（先导入的先上屏），并去掉被关闭的策略
+                // active_today 已按主库顺序（先导入的先上屏），并去掉被关闭的排期
                 for a in schedule::active_today(&self.lib, self.today, &self.sc) {
                     // 映射到主库里的词条 key；库里没有的词跳过
                     let key = a.word.trim().to_lowercase();
@@ -1429,7 +1429,7 @@ impl LexideckApp {
         }
     }
 
-    /// 永久关闭 / 打开一条策略（词 + 日期段）。
+    /// 永久关闭 / 打开一条排期（词 + 日期段）。
     /// 状态文件读不懂时**拒绝写入**，绝不覆盖坏文件。
     fn toggle_strategy(&mut self, word: &str, rng: &deck::Range) {
         if !self.sc_ok {
@@ -1446,9 +1446,9 @@ impl LexideckApp {
         match schedule::save_state(&self.sc_path, &self.sc) {
             Ok(()) => {
                 self.status = Some(if now_off {
-                    crate::lang::tf("已关闭「{word}」这条策略", &[("word", &word)])
+                    crate::lang::tf("已关闭「{word}」这条排期", &[("word", &word)])
                 } else {
-                    crate::lang::tf("已打开「{word}」这条策略", &[("word", &word)])
+                    crate::lang::tf("已打开「{word}」这条排期", &[("word", &word)])
                 });
                 // 如果是 Auto，重建卡片（下一帧按新集合上屏）
                 if self.screen == Screen::Auto {
