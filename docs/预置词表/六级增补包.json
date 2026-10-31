@@ -144,6 +144,12 @@
      "pos": "v.",
      "meaning": "设以空调设备，用空调调节"
     }
+   ],
+   "phrases": [
+    {
+     "text": "air-condition sth",
+     "meaning": "给…装空调"
+    }
    ]
   },
   {
@@ -160,7 +166,7 @@
    "senses": [
     {
      "pos": "adj.",
-     "meaning": "1. 警惕的，警觉的 2. 敏捷的，灵活的  n. 警报 ||on the alert (for)警惕着，对…保持戒备(状态)  v. 向…发出警报"
+     "meaning": "1. 警惕的，警觉的 2. 敏捷的，灵活的  n. 警报 ||on the alert (for)警惕着"
     }
    ]
   },
@@ -170,6 +176,16 @@
     {
      "pos": "n.",
      "meaning": "外侨，外国人 adj. 1. 外国的，异邦的 2. 敌对的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "alien to sb",
+     "meaning": "对某人陌生的事物"
+    },
+    {
+     "text": "alien from sth",
+     "meaning": "与…相异之物"
     }
    ]
   },
@@ -206,6 +222,16 @@
     {
      "pos": "n.",
      "meaning": "同盟，联盟"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "alliance with sb",
+     "meaning": "与…的联盟"
+    },
+    {
+     "text": "alliance against sth",
+     "meaning": "对抗…的联盟"
     }
    ]
   },
@@ -306,6 +332,12 @@
      "pos": "n.",
      "meaning": "1. (古罗马圆形剧场中央的)竞技场地，竞技场 2. 活动场所，竞争场所"
     }
+   ],
+   "phrases": [
+    {
+     "text": "arena for sth",
+     "meaning": "…的舞台"
+    }
    ]
   },
   {
@@ -323,6 +355,12 @@
     {
      "pos": "n.",
      "meaning": "1. 展示，陈列 2. 排列整齐的一队人，一长列(物品) 3. (特殊场合穿的)盛装"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "array of sth",
+     "meaning": "一系列…"
     }
    ]
   },
@@ -414,6 +452,12 @@
      "pos": "n.",
      "meaning": "猛烈地攻击，突击，突袭 v. 1. 突击，袭击 2. 殴打 3. 强奸"
     }
+   ],
+   "phrases": [
+    {
+     "text": "assault on sb",
+     "meaning": "对某人的袭击"
+    }
    ]
   },
   {
@@ -423,6 +467,16 @@
      "pos": "v.",
      "meaning": "1. 宣称，断言 2. 维护，坚持(权利等)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "assert one's right to sth",
+     "meaning": "主张对…的权利"
+    },
+    {
+     "text": "assert control over sth",
+     "meaning": "对…施加控制"
+    }
    ]
   },
   {
@@ -431,6 +485,16 @@
     {
      "pos": "n.",
      "meaning": "1. 资产，财产 2. 有价值的特性(技能)"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "asset to sth",
+     "meaning": "对…是财富"
+    },
+    {
+     "text": "assets of sth",
+     "meaning": "…的资产"
     }
    ]
   },
@@ -637,7 +701,7 @@
    "senses": [
     {
      "pos": "adj.",
-     "meaning": "1. 钝的，不锋利的 2. (举止言谈等)生硬的，直率的，不拐弯抹角的 3. (感觉、理解方面)迟钝的 v. 把…弄钝，把…弄迟钝"
+     "meaning": "1. 钝的，不锋利的 2. (举止言谈等)生硬的，直率的，不拐弯抹角的 3. (感觉、理解方面)迟钝的 v. 把…弄钝"
     }
    ]
   },
@@ -682,7 +746,7 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. 支柱，支架 2. 一双，一对 3. 大括号{}的前半或后 4. (pl BrE)(裤子)背带=(AmE) suspenders v. 1. 拉紧，系紧 2. 支住，撑牢  3. 激励，振奋  4. 打起精神，下定决心"
+     "meaning": "1. 支柱，支架 2. 一双"
     }
    ]
   },
@@ -756,6 +820,16 @@
      "pos": "n.",
      "meaning": "雄鹿，雄兔  adj. 雄的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "buck for sth",
+     "meaning": "争取…"
+    },
+    {
+     "text": "buck up",
+     "meaning": "振作起来"
+    }
    ]
   },
   {
@@ -791,6 +865,12 @@
     {
      "pos": "v.",
      "meaning": "1. 碰撞 2. 撞击 3. 颠簸地行驶 n. 1. 碰撞 2. 肿块"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "bump into",
+     "meaning": "［非正式用语］撞见"
     }
    ]
   },
@@ -845,6 +925,12 @@
     {
      "pos": "n.",
      "meaning": "(热量单位)卡路里"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "calories in sth",
+     "meaning": "…中的热量"
     }
    ]
   },
@@ -972,6 +1058,16 @@
      "pos": "v.",
      "meaning": "描绘……的特性，刻划……的性格"
     }
+   ],
+   "phrases": [
+    {
+     "text": "characterize sth. as sth",
+     "meaning": "把…描述为…"
+    },
+    {
+     "text": "be characterized by sth",
+     "meaning": "以…为特征"
+    }
    ]
   },
   {
@@ -990,6 +1086,20 @@
      "pos": "n.",
      "meaning": "碎片，薄片"
     }
+   ],
+   "phrases": [
+    {
+     "text": "chip of sth",
+     "meaning": "一块…碎片"
+    },
+    {
+     "text": "chip in",
+     "meaning": "凑钱；插话"
+    },
+    {
+     "text": "chip on one's shoulder",
+     "meaning": "心中怨气"
+    }
    ]
   },
   {
@@ -998,6 +1108,12 @@
     {
      "pos": "n.",
      "meaning": "胆固醇"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "cholesterol level in sth",
+     "meaning": "某物中的胆固醇水平"
     }
    ]
   },
@@ -1016,6 +1132,12 @@
     {
      "pos": "adj.",
      "meaning": "1. (病症)长期未愈的，慢性的 2. 极坏的，极差的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "chronic shortage of sth",
+     "meaning": "…的长期短缺"
     }
    ]
   },
@@ -1043,6 +1165,20 @@
     {
      "pos": "v.",
      "meaning": "引用，引证，举(例)"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "cite sth as an example",
+     "meaning": "举…为例"
+    },
+    {
+     "text": "cite from sth",
+     "meaning": "引用…"
+    },
+    {
+     "text": "cite sb. for sth",
+     "meaning": "因…表彰某人"
     }
    ]
   },
@@ -1098,6 +1234,12 @@
      "pos": "n.",
      "meaning": "1. 委托人，(律师的)当事人，(私人医生的)病人 2. (商店等)顾客"
     }
+   ],
+   "phrases": [
+    {
+     "text": "client of sth",
+     "meaning": "…的客户"
+    }
    ]
   },
   {
@@ -1152,6 +1294,12 @@
      "pos": "n.",
      "meaning": "一串，一束，一簇，一群，一组  v. 使成群，把…集成一束(一组)，群集，丛生"
     }
+   ],
+   "phrases": [
+    {
+     "text": "cluster of sth",
+     "meaning": "一串/一群…"
+    }
    ]
   },
   {
@@ -1169,6 +1317,16 @@
     {
      "pos": "n.",
      "meaning": "政党的联盟，联合"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "coalition of sth",
+     "meaning": "…的联盟"
+    },
+    {
+     "text": "coalition with sb",
+     "meaning": "与…的联合"
     }
    ]
   },
@@ -1242,6 +1400,12 @@
      "pos": "adj.",
      "meaning": "1. 殖民地的，关于殖民地的 2. (cap)(美国独立前)十三州时代的，美国初期的 3. 拥有殖民地的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "colonial rule over sth",
+     "meaning": "对…的殖民统治"
+    }
    ]
   },
   {
@@ -1250,6 +1414,16 @@
     {
      "pos": "n.",
      "meaning": "1. 战斗，格斗，反对 2. 竞争 v. 跟…战斗，反对"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "combat with sb",
+     "meaning": "与…的战斗"
+    },
+    {
+     "text": "combat against sth",
+     "meaning": "对抗…的斗争"
     }
    ]
   },
@@ -1386,6 +1560,16 @@
      "pos": "adj.",
      "meaning": "1. 竞争性的，  竞争的，有竞争力的 2. 比赛的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be competitive with sb",
+     "meaning": "与…有竞争力"
+    },
+    {
+     "text": "be competitive in sth",
+     "meaning": "在…上有竞争力"
+    }
    ]
   },
   {
@@ -1512,6 +1696,16 @@
      "pos": "v.",
      "meaning": "1. (困难等)临头 2. (使)面对，使)面临 3. 勇敢地面对(危险等)，正视，对抗"
     }
+   ],
+   "phrases": [
+    {
+     "text": "confront sb. with sth",
+     "meaning": "使某人面对…"
+    },
+    {
+     "text": "be confronted with sth",
+     "meaning": "面临…"
+    }
    ]
   },
   {
@@ -1593,6 +1787,16 @@
      "pos": "v.",
      "meaning": "构成，组成"
     }
+   ],
+   "phrases": [
+    {
+     "text": "constitute a threat to sth",
+     "meaning": "对…构成威胁"
+    },
+    {
+     "text": "constitute a violation of sth",
+     "meaning": "构成对…的违反"
+    }
    ]
   },
   {
@@ -1610,6 +1814,12 @@
     {
      "pos": "n.",
      "meaning": "消费者"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "consumer of sth",
+     "meaning": "…的消费者"
     }
    ]
   },
@@ -1637,6 +1847,16 @@
     {
      "pos": "v.",
      "meaning": "1. 搏斗，争斗 2. 争，竞争 3. 声称，主张"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "contend with sth",
+     "meaning": "应对…"
+    },
+    {
+     "text": "contend for sth",
+     "meaning": "争夺…"
     }
    ]
   },
@@ -1674,6 +1894,16 @@
      "pos": "n.",
      "meaning": "争论，辩论"
     }
+   ],
+   "phrases": [
+    {
+     "text": "controversy over sth",
+     "meaning": "关于…的争议"
+    },
+    {
+     "text": "controversy about sth",
+     "meaning": "关于…的争论"
+    }
    ]
   },
   {
@@ -1700,6 +1930,16 @@
     {
      "pos": "v.",
      "meaning": "证明、宣判…有罪，定罪 n. 被判入狱的罪犯"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "convict sb. of sth",
+     "meaning": "判某人犯…罪"
+    },
+    {
+     "text": "be convicted of sth",
+     "meaning": "被判…罪"
     }
    ]
   },
@@ -1782,6 +2022,16 @@
      "pos": "n.",
      "meaning": "1. 辩护律师 2. (专业)意见，忠告，劝告 v. 劝告，提供意见"
     }
+   ],
+   "phrases": [
+    {
+     "text": "counsel for sb",
+     "meaning": "某人的辩护律师"
+    },
+    {
+     "text": "counsel to sb",
+     "meaning": "给某人的忠告"
+    }
    ]
   },
   {
@@ -1790,6 +2040,16 @@
     {
      "pos": "n.",
      "meaning": "相对应的人(物)"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "counterpart of sth",
+     "meaning": "…的对应物"
+    },
+    {
+     "text": "counterpart in sth",
+     "meaning": "在…中的对等者"
     }
    ]
   },
@@ -1818,6 +2078,16 @@
      "pos": "n.",
      "meaning": "1. 报道 2. 赔偿范围，保险额 3. 范围"
     }
+   ],
+   "phrases": [
+    {
+     "text": "coverage of sth",
+     "meaning": "对…的报道"
+    },
+    {
+     "text": "coverage for sth",
+     "meaning": "对…的保险"
+    }
    ]
   },
   {
@@ -1845,6 +2115,16 @@
      "pos": "n.",
      "meaning": "1. 创造，创作 2. 作品"
     }
+   ],
+   "phrases": [
+    {
+     "text": "creation of sth",
+     "meaning": "…的创造"
+    },
+    {
+     "text": "creation in sth",
+     "meaning": "…中的创造"
+    }
    ]
   },
   {
@@ -1866,20 +2146,21 @@
    ]
   },
   {
-   "word": "criterion",
-   "senses": [
-    {
-     "pos": "",
-     "meaning": "（pl criteria) n. 标准，准则）"
-    }
-   ]
-  },
-  {
    "word": "crucial",
    "senses": [
     {
      "pos": "adj.",
      "meaning": "极重要的，决定性的，关键性的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be crucial to sth",
+     "meaning": "对…至关重要"
+    },
+    {
+     "text": "be crucial for doing sth",
+     "meaning": "对做…至关重要"
     }
    ]
   },
@@ -2016,6 +2297,20 @@
      "pos": "v.",
      "meaning": "1. 以…奉献 2. 为…举行落成仪式  3. 把(一生等)献给，把(时间、精力等)用于"
     }
+   ],
+   "phrases": [
+    {
+     "text": "dedicate oneself to sth",
+     "meaning": "献身于…"
+    },
+    {
+     "text": "dedicate sth. to sth",
+     "meaning": "把…献给…"
+    },
+    {
+     "text": "be dedicated to doing sth",
+     "meaning": "致力于做…"
+    }
    ]
   },
   {
@@ -2052,6 +2347,12 @@
      "pos": "n.",
      "meaning": "被告"
     }
+   ],
+   "phrases": [
+    {
+     "text": "defendant in sth",
+     "meaning": "某案中的被告"
+    }
    ]
   },
   {
@@ -2078,6 +2379,16 @@
     {
      "pos": "n.",
      "meaning": "赤字，亏损"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "deficit in sth",
+     "meaning": "…的赤字；缺陷"
+    },
+    {
+     "text": "deficit of sth",
+     "meaning": "…的亏空"
     }
    ]
   },
@@ -2160,6 +2471,16 @@
      "pos": "v.",
      "meaning": "(用图画、文字)表示，描述，描绘"
     }
+   ],
+   "phrases": [
+    {
+     "text": "depict sb. as sth",
+     "meaning": "把某人描绘成…"
+    },
+    {
+     "text": "depict sth. in sth",
+     "meaning": "在…中描绘…"
+    }
    ]
   },
   {
@@ -2177,6 +2498,16 @@
     {
      "pos": "n.",
      "meaning": "1. 沮丧，抑郁，萧条(期)  2. 凹地，洼地，低压(地区)"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "depression over sth",
+     "meaning": "对…的沮丧"
+    },
+    {
+     "text": "depression about sth",
+     "meaning": "对…的消沉"
     }
    ]
   },
@@ -2286,6 +2617,20 @@
      "pos": "v.",
      "meaning": "诊断(疾病)，判断，调查分析(问题等的)原因(性质)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "diagnose sb. with sth",
+     "meaning": "诊断某人患…"
+    },
+    {
+     "text": "be diagnosed with sth",
+     "meaning": "被诊断患有…"
+    },
+    {
+     "text": "diagnose sth. as sth",
+     "meaning": "把…诊断为…"
+    }
    ]
   },
   {
@@ -2321,6 +2666,16 @@
     {
      "pos": "v.",
      "meaning": "1. 减少，(使)减小，降低 2. 贬低，使降级，削弱"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "diminish in sth",
+     "meaning": "在…方面减弱"
+    },
+    {
+     "text": "diminish to sth",
+     "meaning": "减少到…"
     }
    ]
   },
@@ -2529,6 +2884,16 @@
      "pos": "n.",
      "meaning": "1. 信条，教条，主义 2. 学说，原理，教诲"
     }
+   ],
+   "phrases": [
+    {
+     "text": "doctrine of sth",
+     "meaning": "…的学说"
+    },
+    {
+     "text": "doctrine on sth",
+     "meaning": "关于…的信条"
+    }
    ]
   },
   {
@@ -2565,6 +2930,12 @@
      "pos": "n.",
      "meaning": "1. 领域，范围，范畴 2. 领土，领地，势力范围"
     }
+   ],
+   "phrases": [
+    {
+     "text": "domain of sth",
+     "meaning": "…的领域"
+    }
    ]
   },
   {
@@ -2583,6 +2954,16 @@
      "pos": "adj.",
      "meaning": "1. 占优势的，支配的，显著的 2. 占首位的，主要的 3. 居高临下的，高耸的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be dominant in sth",
+     "meaning": "在…中占主导"
+    },
+    {
+     "text": "be dominant over sth",
+     "meaning": "支配…"
+    }
    ]
   },
   {
@@ -2591,6 +2972,12 @@
     {
      "pos": "v.",
      "meaning": "1. 支配，统治，控制 2. 占首要地位 3. 俯视，耸立于"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "dominate over sth",
+     "meaning": "支配…"
     }
    ]
   },
@@ -2680,7 +3067,7 @@
    "senses": [
     {
      "pos": "",
-     "meaning": "1 [ˈdjuːplɪkət] adj. &n. 完全一样(的)，复制(的)，副本(的)  || in dupli-cate一式两份的(地)"
+     "meaning": "1 [ˈdjuːplɪkət] adj. &n. 完全一样(的)，复制(的)"
     }
    ]
   },
@@ -2799,6 +3186,12 @@
      "pos": "n.",
      "meaning": "精华，精英，中坚"
     }
+   ],
+   "phrases": [
+    {
+     "text": "elite of sth",
+     "meaning": "…的精英阶层"
+    }
    ]
   },
   {
@@ -2889,6 +3282,20 @@
      "pos": "n.",
      "meaning": "1. 约会，约定 2. 订婚，婚约"
     }
+   ],
+   "phrases": [
+    {
+     "text": "engagement with sb",
+     "meaning": "与…的互动"
+    },
+    {
+     "text": "engagement in sth",
+     "meaning": "参与…"
+    },
+    {
+     "text": "engagement to sb",
+     "meaning": "与某人订婚"
+    }
    ]
   },
   {
@@ -2897,6 +3304,16 @@
     {
      "pos": "v.",
      "meaning": "增加，提高，增强"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "enhance the quality of sth",
+     "meaning": "提高…的质量"
+    },
+    {
+     "text": "enhance one's ability to do sth",
+     "meaning": "增强做某事的能力"
     }
    ]
   },
@@ -2925,6 +3342,20 @@
      "pos": "v.",
      "meaning": "登记，使加入，注册"
     }
+   ],
+   "phrases": [
+    {
+     "text": "enroll in sth",
+     "meaning": "报名参加…"
+    },
+    {
+     "text": "enroll on sth",
+     "meaning": "注册…课程"
+    },
+    {
+     "text": "enroll sb. in sth",
+     "meaning": "给某人报名…"
+    }
    ]
   },
   {
@@ -2951,6 +3382,12 @@
     {
      "pos": "n.",
      "meaning": "独立存在体，实体"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "entity separate from sth",
+     "meaning": "独立于…的实体"
     }
    ]
   },
@@ -3024,6 +3461,12 @@
      "pos": "n.",
      "meaning": "1. 本质，实质，要素 2. 精髓，精华 3. 香精，香料"
     }
+   ],
+   "phrases": [
+    {
+     "text": "essence of sth",
+     "meaning": "…的本质"
+    }
    ]
   },
   {
@@ -3077,6 +3520,16 @@
     {
      "pos": "adj.",
      "meaning": "1. 除外的，排外的 2. 专有的，独占的，惟一的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be exclusive to sth",
+     "meaning": "为…所独有"
+    },
+    {
+     "text": "be exclusive of sth",
+     "meaning": "不包括…"
     }
    ]
   },
@@ -3168,6 +3621,16 @@
      "pos": "n.",
      "meaning": "专门技能(知识)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "expertise in sth",
+     "meaning": "在…方面的专长"
+    },
+    {
+     "text": "expertise on sth",
+     "meaning": "关于…的专业知识"
+    }
    ]
   },
   {
@@ -3258,6 +3721,16 @@
      "pos": "v.",
      "meaning": "使容易，使便利，促进"
     }
+   ],
+   "phrases": [
+    {
+     "text": "facilitate access to sth",
+     "meaning": "使更易获得…"
+    },
+    {
+     "text": "facilitate the process of sth",
+     "meaning": "促进…的进程"
+    }
    ]
   },
   {
@@ -3346,7 +3819,7 @@
    "senses": [
     {
      "pos": "v.",
-     "meaning": "1. 拍打，拍动，摆动 2. (鸟)振(翅) 3. 平卧，垂下 n. 1. 拍打，拍动，(鸟的)振翅 2. 下垂物，覆盖物 3. (袋)盖，(帽)边，信封口盖"
+     "meaning": "1. 拍打，拍动，摆动 2. (鸟)振(翅) 3. 平卧，垂下 n. 1. 拍打，拍动，(鸟的)振翅 2. 下垂物"
     }
    ]
   },
@@ -3392,6 +3865,16 @@
     {
      "pos": "v.",
      "meaning": "1. 把…抛向空中，捻，快速地翻转(猛然移动) 2. 大怒，强烈地反应 n. 轻弹(打、抛)"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "flip through sth",
+     "meaning": "翻阅…"
+    },
+    {
+     "text": "flip sth. over",
+     "meaning": "把…翻过来"
     }
    ]
   },
@@ -3508,7 +3991,7 @@
    "senses": [
     {
      "pos": "",
-     "meaning": "1 [faʊl] adj. 1. 难闻的，恶臭的，腐败的 2. 下流的，邪恶的，不正当的 3. 污浊的，肮脏的 v. 1. 弄脏，污染 2. 玷污，败坏"
+     "meaning": "1 [faʊl] adj. 1. 难闻的，恶臭的，腐败的 2. 下流的，邪恶的，不正当的 3. 污浊的"
     }
    ]
   },
@@ -3545,6 +4028,16 @@
     {
      "pos": "n.",
      "meaning": "1. 欺骗(行为)，诈骗(罪) 2. 骗子，冒名顶替者"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "fraud on sb",
+     "meaning": "对某人的欺诈"
+    },
+    {
+     "text": "fraud against sb",
+     "meaning": "针对某人的诈骗"
     }
    ]
   },
@@ -3600,6 +4093,12 @@
      "pos": "n.",
      "meaning": "1. 星系  2. (cap)银河系 3. 一群(杰出或著名的人物)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "galaxy of sth",
+     "meaning": "一群(杰出人物)"
+    }
    ]
   },
   {
@@ -3618,6 +4117,16 @@
      "pos": "n.",
      "meaning": "1. 齿轮 2. 一套用具"
     }
+   ],
+   "phrases": [
+    {
+     "text": "gear up for sth",
+     "meaning": "为…做好准备"
+    },
+    {
+     "text": "gear sth. to sth",
+     "meaning": "使…适应…"
+    }
    ]
   },
   {
@@ -3635,6 +4144,16 @@
     {
      "pos": "adj.",
      "meaning": "遗传(学)的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be genetic in origin",
+     "meaning": "源于遗传"
+    },
+    {
+     "text": "genetic predisposition to sth",
+     "meaning": "对…的遗传易感性"
     }
    ]
   },
@@ -3671,6 +4190,12 @@
     {
      "pos": "prep.",
      "meaning": "考虑到 adj. 特定的，规定的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "given that",
+     "meaning": "考虑到；如果"
     }
    ]
   },
@@ -3906,6 +4431,12 @@
      "pos": "n.",
      "meaning": "文化遗产，继承物"
     }
+   ],
+   "phrases": [
+    {
+     "text": "heritage of sth",
+     "meaning": "…的遗产"
+    }
    ]
   },
   {
@@ -3923,6 +4454,12 @@
     {
      "pos": "n.",
      "meaning": "1. 最有意思(最精彩)的部分 2. (绘画、摄影等上的)亮部 v. 对…以特别的注意，强调"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "highlight of sth",
+     "meaning": "…的最精彩部分"
     }
    ]
   },
@@ -3949,7 +4486,7 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. 铰链，枢纽 2. 关键，转折点 v. 装上铰链，用铰链接合 || hinge on; hinge upon①靠铰链转动，附于②随…而定，取决于"
+     "meaning": "1. 铰链，枢纽 2. 关键，转折点 v. 装上铰链，用铰链接合 || hinge on"
     }
    ]
   },
@@ -3959,6 +4496,16 @@
     {
      "pos": "n.",
      "meaning": "历史学家，记事者"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "historian of sth",
+     "meaning": "…的历史学家"
+    },
+    {
+     "text": "historian at sth",
+     "meaning": "某机构的历史学家"
     }
    ]
   },
@@ -4023,6 +4570,12 @@
      "pos": "n.",
      "meaning": "人质，抵押品"
     }
+   ],
+   "phrases": [
+    {
+     "text": "hostage to sth",
+     "meaning": "受…摆布"
+    }
    ]
   },
   {
@@ -4068,6 +4621,12 @@
      "pos": "",
      "meaning": "hjuːˈmænətɪ /n. 1. 人性，人类，人 2. 人道，博爱，仁慈 3. (pl)人文学科"
     }
+   ],
+   "phrases": [
+    {
+     "text": "the humanities",
+     "meaning": "人文学科 (the arts)"
+    }
    ]
   },
   {
@@ -4095,6 +4654,16 @@
      "pos": "n.",
      "meaning": "假设，假定，假说"
     }
+   ],
+   "phrases": [
+    {
+     "text": "hypothesis about sth",
+     "meaning": "关于…的假说"
+    },
+    {
+     "text": "hypothesis on sth",
+     "meaning": "关于…的假设"
+    }
    ]
   },
   {
@@ -4112,6 +4681,16 @@
     {
      "pos": "n.",
      "meaning": "意识形态，思想意识"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "ideology of sth",
+     "meaning": "…的意识形态"
+    },
+    {
+     "text": "ideology behind sth",
+     "meaning": "…背后的意识形态"
     }
    ]
   },
@@ -4239,6 +4818,12 @@
      "pos": "v.",
      "meaning": "1. 实行，实施，执行 2. 完成，实现   n. 1. 工具，器具 2. (pl)装备，家具，服装"
     }
+   ],
+   "phrases": [
+    {
+     "text": "implement sth in practice",
+     "meaning": "在实践中落实"
+    }
    ]
   },
   {
@@ -4274,6 +4859,16 @@
     {
      "pos": "n.",
      "meaning": "刺激，鼓励，推动力"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "incentive to do sth",
+     "meaning": "做…的动力"
+    },
+    {
+     "text": "incentive for sb. to do sth",
+     "meaning": "促使某人做…的诱因"
     }
    ]
   },
@@ -4311,6 +4906,16 @@
      "pos": "v.",
      "meaning": "把…合并，并入，收编"
     }
+   ],
+   "phrases": [
+    {
+     "text": "incorporate sth. into sth",
+     "meaning": "把…纳入…之中"
+    },
+    {
+     "text": "incorporate sth. in sth",
+     "meaning": "将…包含在…内"
+    }
    ]
   },
   {
@@ -4319,6 +4924,12 @@
     {
      "pos": "adj.",
      "meaning": "1. 难以置信的，不可思议的，精彩的 2. 不能相信的，不可信的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "incredible as it may seem",
+     "meaning": "尽管难以置信"
     }
    ]
   },
@@ -4410,6 +5021,16 @@
      "pos": "n.",
      "meaning": "1. (混合物的)组成成分，(烹调的)原料，配料 2. 要素"
     }
+   ],
+   "phrases": [
+    {
+     "text": "ingredient in sth",
+     "meaning": "…的成分"
+    },
+    {
+     "text": "ingredient for sth",
+     "meaning": "制作…的原料"
+    }
    ]
   },
   {
@@ -4437,6 +5058,16 @@
      "pos": "v.",
      "meaning": "1. 开始实施，创始，发起 2. 介绍(接纳)某人加入(某团体)，传授基  本要领(秘密知识)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "initiate sb. into sth",
+     "meaning": "引导某人入门…"
+    },
+    {
+     "text": "initiate sth. with sth",
+     "meaning": "以…开始…"
+    }
    ]
   },
   {
@@ -4444,7 +5075,21 @@
    "senses": [
     {
      "pos": "adj.",
-     "meaning": "起始的，初步的，创始的 n. 1. 进取心，首创精神，倡议 2. 主动性，主动权 || on one’s own initiative主动地 /take the initiative采取主动，首先采取行动"
+     "meaning": "起始的，初步的，创始的 n. 1. 进取心，首创精神，倡议 2. 主动性"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "initiative to do sth",
+     "meaning": "做…的举措"
+    },
+    {
+     "text": "initiative in doing sth",
+     "meaning": "做…的主动性"
+    },
+    {
+     "text": "initiative for sth",
+     "meaning": "针对…的倡议"
     }
    ]
   },
@@ -4473,6 +5118,16 @@
      "pos": "n.",
      "meaning": "1. 革新，创新 2. 新方法，新发明"
     }
+   ],
+   "phrases": [
+    {
+     "text": "innovation in sth",
+     "meaning": "在…方面的创新"
+    },
+    {
+     "text": "innovation of sth",
+     "meaning": "…的创新"
+    }
    ]
   },
   {
@@ -4499,6 +5154,16 @@
     {
      "pos": "n.",
      "meaning": "洞察力，深入了解，洞悉"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "insight into sth",
+     "meaning": "对…的洞察"
+    },
+    {
+     "text": "insight from sth",
+     "meaning": "从…中获得的洞见"
     }
    ]
   },
@@ -4572,6 +5237,16 @@
      "pos": "n.",
      "meaning": "1. 完整，完全，完善 2. 正直，诚实，廉正"
     }
+   ],
+   "phrases": [
+    {
+     "text": "integrity of sth",
+     "meaning": "…的完整性"
+    },
+    {
+     "text": "integrity in sth",
+     "meaning": "在…方面的正直"
+    }
    ]
   },
   {
@@ -4606,7 +5281,17 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. 意图，目的 2. 意义，含义 || to all intents and purposes在任何一方面，实际上 adj. 1. (目光等)不转移的，集中的，热切的 2. 专心致志的，坚决的"
+     "meaning": "1. 意图，目的 2. 意义，含义 || to all intents and purposes在任何一方面"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "intent to do sth",
+     "meaning": "做…的意图"
+    },
+    {
+     "text": "intent on doing sth",
+     "meaning": "决心做…"
     }
    ]
   },
@@ -4742,6 +5427,12 @@
     {
      "pos": "n.",
      "meaning": "(商品的)目录，清单，盘存"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "inventory of sth",
+     "meaning": "…的清单"
     }
    ]
   },
@@ -4914,6 +5605,16 @@
      "pos": "n.",
      "meaning": "立法，制定法律"
     }
+   ],
+   "phrases": [
+    {
+     "text": "legislation on sth",
+     "meaning": "关于…的立法"
+    },
+    {
+     "text": "legislation against sth",
+     "meaning": "针对…的立法"
+    }
    ]
   },
   {
@@ -4922,6 +5623,16 @@
     {
      "pos": "adj.",
      "meaning": "1. 合法的，法律认可的 2. 合乎逻辑的  v. 使合法"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be legitimate for sb. to do sth",
+     "meaning": "某人做…是正当的"
+    },
+    {
+     "text": "legitimate concern about sth",
+     "meaning": "对…的合理担忧"
     }
    ]
   },
@@ -5103,6 +5814,12 @@
      "pos": "n.",
      "meaning": "1. 巨大，庞大 2. 重要性，重大 3. 大小，量，亮度"
     }
+   ],
+   "phrases": [
+    {
+     "text": "magnitude of sth",
+     "meaning": "…的规模"
+    }
    ]
   },
   {
@@ -5219,6 +5936,16 @@
     {
      "pos": "adj.",
      "meaning": "1. 巨大的，大而结实的 2. 大量的，大规模的，强大的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be massive in scale",
+     "meaning": "规模庞大"
+    },
+    {
+     "text": "massive increase in sth",
+     "meaning": "…的大幅增加"
     }
    ]
   },
@@ -5346,6 +6073,16 @@
      "pos": "v.",
      "meaning": "将……减到最少，最小化"
     }
+   ],
+   "phrases": [
+    {
+     "text": "minimize the risk of sth",
+     "meaning": "把…的风险降到最低"
+    },
+    {
+     "text": "minimize the impact of sth",
+     "meaning": "减小…的影响"
+    }
    ]
   },
   {
@@ -5463,6 +6200,12 @@
      "pos": "n.",
      "meaning": "1. 抵押，抵押借款 2. 抵押契据，按揭"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mortgage on sth",
+     "meaning": "对…的抵押贷款"
+    }
    ]
   },
   {
@@ -5517,6 +6260,16 @@
      "pos": "n.",
      "meaning": "1. 神话 2. 神话式的人(或物) 3. 虚构的故事，荒诞的说法"
     }
+   ],
+   "phrases": [
+    {
+     "text": "myth about sth",
+     "meaning": "关于…的错误看法"
+    },
+    {
+     "text": "myth of sth",
+     "meaning": "…的神话"
+    }
    ]
   },
   {
@@ -5543,6 +6296,16 @@
     {
      "pos": "adj.",
      "meaning": "叙述的，叙事体的 n. 1. 叙述， 记事 2. 叙述手法"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "narrative of sth",
+     "meaning": "对…的叙述"
+    },
+    {
+     "text": "narrative about sth",
+     "meaning": "关于…的故事"
     }
    ]
   },
@@ -5589,6 +6352,16 @@
      "pos": "n.",
      "meaning": "无，全无，零"
     }
+   ],
+   "phrases": [
+    {
+     "text": "nil by mouth",
+     "meaning": "禁食"
+    },
+    {
+     "text": "nil in sth",
+     "meaning": "…中为零"
+    }
    ]
   },
   {
@@ -5625,6 +6398,16 @@
      "pos": "n.",
      "meaning": "1. 标准，规范，准则 2. (工作量)定额"
     }
+   ],
+   "phrases": [
+    {
+     "text": "norm of sth",
+     "meaning": "…的准则"
+    },
+    {
+     "text": "norm for sth",
+     "meaning": "对…的常规"
+    }
    ]
   },
   {
@@ -5660,6 +6443,12 @@
     {
      "pos": "n.",
      "meaning": "1. 概念，观念 2. 想法，见解 3. 打算，意图"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "notion of sth",
+     "meaning": "对…的概念"
     }
    ]
   },
@@ -5742,6 +6531,16 @@
      "pos": "n.",
      "meaning": "责任，义务"
     }
+   ],
+   "phrases": [
+    {
+     "text": "obligation to do sth",
+     "meaning": "做…的义务"
+    },
+    {
+     "text": "obligation to sb",
+     "meaning": "对某人的义务"
+    }
    ]
   },
   {
@@ -5778,6 +6577,12 @@
      "pos": "n.",
      "meaning": "1. 犯罪 2 冒犯，伤感情 3. 攻击"
     }
+   ],
+   "phrases": [
+    {
+     "text": "offense against sb",
+     "meaning": "对某人的冒犯"
+    }
    ]
   },
   {
@@ -5786,6 +6591,16 @@
     {
      "pos": "adj.",
      "meaning": "1. 冒犯的 2. 进攻性的 3. 极讨厌的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be offensive to sb",
+     "meaning": "冒犯某人"
+    },
+    {
+     "text": "be offensive in sth",
+     "meaning": "在…上令人反感"
     }
    ]
   },
@@ -5858,6 +6673,16 @@
     {
      "pos": "n.",
      "meaning": "1. 倾向性 2. 确定方位(方向)，熟悉，适应"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "orientation towards sth",
+     "meaning": "对…的倾向"
+    },
+    {
+     "text": "orientation of sth",
+     "meaning": "…的方向"
     }
    ]
   },
@@ -5985,6 +6810,16 @@
      "pos": "adj.",
      "meaning": "压倒一切的，无法抗拒的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be overwhelming to sb",
+     "meaning": "令某人难以承受"
+    },
+    {
+     "text": "overwhelming majority of sth",
+     "meaning": "…的绝大多数"
+    }
    ]
   },
   {
@@ -6074,6 +6909,16 @@
     {
      "pos": "n.",
      "meaning": "参与者，参加者"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "participant in sth",
+     "meaning": "…的参与者"
+    },
+    {
+     "text": "participants in sth",
+     "meaning": "…的参加者"
     }
    ]
   },
@@ -6174,6 +7019,16 @@
      "pos": "n.",
      "meaning": "惩罚，刑罚，罚款"
     }
+   ],
+   "phrases": [
+    {
+     "text": "penalty for sth",
+     "meaning": "对…的处罚"
+    },
+    {
+     "text": "penalty on sth",
+     "meaning": "对…的罚款"
+    }
    ]
   },
   {
@@ -6200,6 +7055,16 @@
     {
      "pos": "n.",
      "meaning": "1. 感觉，知觉 2. 观念，看法 3. 洞察力，理解力"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "perception of sth",
+     "meaning": "对…的看法"
+    },
+    {
+     "text": "perception among sb",
+     "meaning": "…中的认知"
     }
    ]
   },
@@ -6381,6 +7246,20 @@
      "pos": "v.",
      "meaning": "1. 恳求，祈求 2. (法庭上)辩护 3. 以…为理由(或借口)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "plead with sb. for sth",
+     "meaning": "向某人恳求…"
+    },
+    {
+     "text": "plead for sth",
+     "meaning": "恳求…"
+    },
+    {
+     "text": "plead guilty to sth",
+     "meaning": "对…认罪"
+    }
    ]
   },
   {
@@ -6389,15 +7268,6 @@
     {
      "pos": "n.",
      "meaning": "1. 誓言，誓约 2. 保证物，信物 v. 1. 保证 2. 抵押"
-    }
-   ]
-  },
-  {
-   "word": "poke",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "1. 伸出 2. 刺，戳，捅，触 n. 刺，触"
     }
    ]
   },
@@ -6444,6 +7314,16 @@
      "pos": "v.",
      "meaning": "1. 描绘，描写 2. 扮演"
     }
+   ],
+   "phrases": [
+    {
+     "text": "portray sb. as sth",
+     "meaning": "把某人刻画成…"
+    },
+    {
+     "text": "portray sth. in sth",
+     "meaning": "在…中表现…"
+    }
    ]
   },
   {
@@ -6452,6 +7332,20 @@
     {
      "pos": "v.",
      "meaning": "1. 摆姿势 2. 装腔作势 3. 提出(问题) || pose as假装，摆出…的样子"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "pose a threat to sth",
+     "meaning": "对…构成威胁"
+    },
+    {
+     "text": "pose for sb",
+     "meaning": "为某人摆姿势"
+    },
+    {
+     "text": "pose as sb",
+     "meaning": "冒充某人"
     }
    ]
   },
@@ -6624,6 +7518,16 @@
      "pos": "n.",
      "meaning": "1. 优先，优先权 2. 优先考虑的事"
     }
+   ],
+   "phrases": [
+    {
+     "text": "priority over sth",
+     "meaning": "优先于…"
+    },
+    {
+     "text": "priority in sth",
+     "meaning": "在…中的优先地位"
+    }
    ]
   },
   {
@@ -6632,6 +7536,12 @@
     {
      "pos": "n.",
      "meaning": "1. 独处，隐私 2. 秘密，私下"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "privacy of sth",
+     "meaning": "…的私密性"
     }
    ]
   },
@@ -6695,6 +7605,16 @@
     {
      "pos": "adj.",
      "meaning": "1. 深厚的，深刻的，深奥的 2. 知识渊博的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be profound in sth",
+     "meaning": "在…上深刻"
+    },
+    {
+     "text": "profound impact on sth",
+     "meaning": "对…的深远影响"
     }
    ]
   },
@@ -6939,6 +7859,16 @@
      "pos": "adj.",
      "meaning": "1. 根本的，基本的 2. 彻底的，完全的 3. (对政治)激进的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be radical in sth",
+     "meaning": "在…上激进"
+    },
+    {
+     "text": "radical change in sth",
+     "meaning": "…方面的根本变化"
+    }
    ]
   },
   {
@@ -6946,7 +7876,7 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. (轻快的)敲击声 2. 唠叨 || beat the rap 责备某人 /take the rap受罚，背黑锅 v. 1. (轻而快地)敲击(某物) 2. 责备或训斥(某人) 3. 唠叨"
+     "meaning": "1. (轻快的)敲击声 2. 唠叨 || beat the rap 责备某人 /take the rap受罚"
     }
    ]
   },
@@ -6975,6 +7905,16 @@
      "pos": "n.",
      "meaning": "1. 等级，级别，评定结果 2. (pl) (电视节目、广播节目的)收视率，收听率"
     }
+   ],
+   "phrases": [
+    {
+     "text": "rating of sth",
+     "meaning": "…的评级"
+    },
+    {
+     "text": "rating for sth",
+     "meaning": "对…的评分"
+    }
    ]
   },
   {
@@ -6983,6 +7923,16 @@
     {
      "pos": "adj.",
      "meaning": "1. 现实主义的，现实主义者的 2. 现实的，实际的，逼真的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be realistic about sth",
+     "meaning": "对…持现实态度"
+    },
+    {
+     "text": "realistic approach to sth",
+     "meaning": "对…的现实做法"
     }
    ]
   },
@@ -7011,6 +7961,12 @@
      "pos": "n.",
      "meaning": "1. (经济)衰退，不景气 2. 后退，撤退"
     }
+   ],
+   "phrases": [
+    {
+     "text": "recession in sth",
+     "meaning": "…的衰退"
+    }
    ]
   },
   {
@@ -7019,6 +7975,12 @@
     {
      "pos": "n.",
      "meaning": "接受者，领受者"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "recipient of sth",
+     "meaning": "…的接受者"
     }
    ]
   },
@@ -7083,6 +8045,12 @@
      "pos": "n.",
      "meaning": "新兵，新成员，新手 v. 征募(新兵)，吸收(新成员)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "recruit to sth",
+     "meaning": "…的新成员"
+    }
    ]
   },
   {
@@ -7145,6 +8113,12 @@
     {
      "pos": "n.",
      "meaning": "政权，政府，政治制度"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "regime of sth",
+     "meaning": "…的制度"
     }
    ]
   },
@@ -7263,6 +8237,12 @@
      "pos": "adj.",
      "meaning": "1. 住宅的，适于作住宅的  2. 与居住有关的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "residential area in sth",
+     "meaning": "某地的住宅区"
+    }
    ]
   },
   {
@@ -7335,6 +8315,12 @@
      "pos": "n.",
      "meaning": "1. 国家的税收，岁入 2. (pl)收入总额 3. (个人或国家的)税务所，税务局"
     }
+   ],
+   "phrases": [
+    {
+     "text": "revenue from sth",
+     "meaning": "来自…的收入"
+    }
    ]
   },
   {
@@ -7360,7 +8346,7 @@
    "senses": [
     {
      "pos": "",
-     "meaning": "1 [rɪɡ] v. 给(船)装配帆、索具等 || rig out为(某人)装扮，使穿上奇异或可笑的服装 / rig up拼凑，草草做成 n. 1. 船具装置的方式 2. 成套器材或用具"
+     "meaning": "1 [rɪɡ] v. 给(船)装配帆、索具等 || rig out为(某人)装扮"
     }
    ]
   },
@@ -7389,6 +8375,20 @@
      "pos": "v.",
      "meaning": "撕，扯，撕开 n. 长裂痕，裂口"
     }
+   ],
+   "phrases": [
+    {
+     "text": "rip sth. off",
+     "meaning": "撕掉;敲竹杠"
+    },
+    {
+     "text": "rip sth. out of sth",
+     "meaning": "从…中撕下…"
+    },
+    {
+     "text": "rip into sb",
+     "meaning": "猛攻某人"
+    }
    ]
   },
   {
@@ -7397,6 +8397,12 @@
     {
      "pos": "adj.",
      "meaning": "仪式的，祭典的 n. 1. 仪式，祭典 2. 惯例"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "ritual of sth",
+     "meaning": "…的仪式"
     }
    ]
   },
@@ -7441,7 +8447,7 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. 破裂，断裂 2. (友好关系的)决裂，绝交 3. 疝 v. 1. (使身体组织、器官等)破裂，裂开 2. 发生疝 3. (使关系等)破裂，断绝"
+     "meaning": "1. 破裂，断裂 2. (友好关系的)决裂，绝交 3. 疝 v. 1. (使身体组织、器官等)破裂"
     }
    ]
   },
@@ -7470,6 +8476,16 @@
      "pos": "n.",
      "meaning": "1. 批准，认可 2. 制裁 3. 约束力 v. 1. 同意，认可 2. 承认，接纳"
     }
+   ],
+   "phrases": [
+    {
+     "text": "sanction against sth",
+     "meaning": "对…的制裁"
+    },
+    {
+     "text": "sanctions on sth",
+     "meaning": "对…的制裁措施"
+    }
    ]
   },
   {
@@ -7487,6 +8503,16 @@
     {
      "pos": "n.",
      "meaning": "1. 丑事，丑闻 2. 流言蜚语，诽谤"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "scandal over sth",
+     "meaning": "关于…的丑闻"
+    },
+    {
+     "text": "scandal surrounding sth",
+     "meaning": "围绕…的丑闻"
     }
    ]
   },
@@ -7551,6 +8577,12 @@
      "pos": "n.",
      "meaning": "部分，片，片段 v. 分割"
     }
+   ],
+   "phrases": [
+    {
+     "text": "segment of sth",
+     "meaning": "…的一部分"
+    }
    ]
   },
   {
@@ -7568,6 +8600,16 @@
     {
      "pos": "n.",
      "meaning": "参议员"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "senator from sth",
+     "meaning": "来自某地的参议员"
+    },
+    {
+     "text": "senator for sth",
+     "meaning": "代表某州的参议员"
     }
    ]
   },
@@ -7686,6 +8728,16 @@
      "pos": "v.",
      "meaning": "(表示冷淡·怀疑等)耸(肩)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "shrug off sth",
+     "meaning": "对…不屑一顾"
+    },
+    {
+     "text": "shrug at sth",
+     "meaning": "对…耸肩表示不在乎"
+    }
    ]
   },
   {
@@ -7785,6 +8837,12 @@
      "pos": "adj.",
      "meaning": "怀疑的，多疑的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "(be) sceptical about / of",
+     "meaning": "对…持怀疑态度"
+    }
    ]
   },
   {
@@ -7819,7 +8877,7 @@
    "senses": [
     {
      "pos": "v.",
-     "meaning": "1. 挥砍，劈刺 2. 大幅度裁减或削减(某物) 3. 在(衣服)上开长缝作装饰 4. 严厉批评 n. 1. 砍，抽 2. 长的切口或裂口 3. 衣服的叉"
+     "meaning": "1. 挥砍，劈刺 2. 大幅度裁减或削减(某物) 3. 在(衣服)上开长缝作装饰 4. 严厉批评 n. 1. 砍"
     }
    ]
   },
@@ -7846,7 +8904,7 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. (可投入东西的)孔 2. 沟，槽，滑道 3. 在名单、系统、组织等中的位置、空位 v. 1. 在(某物)中开缺口、狭缝、沟槽等 2. 把…安插在空位中，安置"
+     "meaning": "1. (可投入东西的)孔 2. 沟，槽"
     }
    ]
   },
@@ -7974,6 +9032,12 @@
      "pos": "n.",
      "meaning": "(sing &pl) 1. (生物)种 2. 种类"
     }
+   ],
+   "phrases": [
+    {
+     "text": "species of sth",
+     "meaning": "一种…"
+    }
    ]
   },
   {
@@ -8000,6 +9064,12 @@
     {
      "pos": "n.",
      "meaning": "1. 光谱 2. 波长，范围"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "spectrum of sth",
+     "meaning": "…的范围"
     }
    ]
   },
@@ -8035,7 +9105,7 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. 螺线，螺旋状的物体 2. 不断加强的上升或下降 adj. 螺旋形的，盘旋的 v. 1. 螺旋形移动，盘旋移动 2. 连续增长或减少"
+     "meaning": "1. 螺线，螺旋状的物体 2. 不断加强的上升或下降 adj. 螺旋形的，盘旋的 v. 1. 螺旋形移动"
     }
    ]
   },
@@ -8046,6 +9116,12 @@
      "pos": "n.",
      "meaning": "怨恨，恶意 || in spite of不管，不顾 v. 刁难，使恼怒"
     }
+   ],
+   "phrases": [
+    {
+     "text": "in spite of",
+     "meaning": "不管；尽管 (despite)"
+    }
    ]
   },
   {
@@ -8054,6 +9130,12 @@
     {
      "pos": "n.",
      "meaning": "配偶"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "spouse of sb",
+     "meaning": "某人的配偶"
     }
    ]
   },
@@ -8271,6 +9353,16 @@
      "pos": "adj.",
      "meaning": "1. 微细的，微妙的，难以察觉的 2. 精巧的，精妙的 3. 敏感的，敏锐的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be subtle about sth",
+     "meaning": "对…含蓄"
+    },
+    {
+     "text": "be subtle in sth",
+     "meaning": "在…上微妙"
+    }
    ]
   },
   {
@@ -8288,6 +9380,20 @@
     {
      "pos": "v.",
      "meaning": "1. 控告(某人) 2. 请求(常于法庭上)"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "sue sb. for sth",
+     "meaning": "因…起诉某人"
+    },
+    {
+     "text": "sue for divorce",
+     "meaning": "提出离婚诉讼"
+    },
+    {
+     "text": "sue sb. over sth",
+     "meaning": "就…起诉某人"
     }
    ]
   },
@@ -8315,6 +9421,16 @@
     {
      "pos": "n.",
      "meaning": "1. 顶点，极点 2. (山的)尖峰，巅峰，高峰 3. 政府首脑会议，高峰会议"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "summit of sth",
+     "meaning": "…的顶峰"
+    },
+    {
+     "text": "summit on sth",
+     "meaning": "关于…的峰会"
     }
    ]
   },
@@ -8467,7 +9583,7 @@
    "senses": [
     {
      "pos": "n.",
-     "meaning": "1. (橄榄球赛中)阻挡并绊倒 对手，抢球 2. 用具，器械 3. 滑车，滑车索具 v. 1. 着手处理，对付 2. 向某人提起(尴尬之事) 3. (橄榄球赛中)抱住并摔倒或挡住(对方球员)，(球赛中向对方球员)抢球"
+     "meaning": "1. (橄榄球赛中)阻挡并绊倒 对手，抢球 2. 用具，器械 3. 滑车，滑车索具 v. 1. 着手处理"
     }
    ]
   },
@@ -8495,6 +9611,12 @@
     {
      "pos": "n.",
      "meaning": "电讯，远距离通讯，无线电通讯"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "telecommunication with sb",
+     "meaning": "与…通信"
     }
    ]
   },
@@ -8550,6 +9672,20 @@
      "pos": "v.",
      "meaning": "1. 作证，证实 2. 表明，证明"
     }
+   ],
+   "phrases": [
+    {
+     "text": "testify to sth",
+     "meaning": "证明…"
+    },
+    {
+     "text": "testify against sb",
+     "meaning": "作证指控某人"
+    },
+    {
+     "text": "testify in court",
+     "meaning": "出庭作证"
+    }
    ]
   },
   {
@@ -8558,6 +9694,16 @@
     {
      "pos": "n.",
      "meaning": "1. (书面或口头的)证词(尤指发誓后作出的) 2. (对事物的)见证或证明"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "testimony to sth",
+     "meaning": "对…的证明"
+    },
+    {
+     "text": "testimony against sb",
+     "meaning": "指证某人的证词"
     }
    ]
   },
@@ -8739,6 +9885,16 @@
      "pos": "n.",
      "meaning": "(人的)个性，显著的特点"
     }
+   ],
+   "phrases": [
+    {
+     "text": "trait of sth",
+     "meaning": "…的特征"
+    },
+    {
+     "text": "trait in sb",
+     "meaning": "某人身上的特点"
+    }
    ]
   },
   {
@@ -8747,6 +9903,16 @@
     {
      "pos": "n.",
      "meaning": "1. 办理，处理 2. 业务，交易 3. (pl)(学术团体会议的)议事录，公报"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "transaction with sb",
+     "meaning": "与…的交易"
+    },
+    {
+     "text": "transaction in sth",
+     "meaning": "…方面的交易"
     }
    ]
   },
@@ -8783,6 +9949,20 @@
     {
      "pos": "n.",
      "meaning": "转变，过渡，变迁"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "transition from A to B",
+     "meaning": "从A到B的过渡"
+    },
+    {
+     "text": "transition to sth",
+     "meaning": "向…的过渡"
+    },
+    {
+     "text": "transition in sth",
+     "meaning": "…中的转变"
     }
    ]
   },
@@ -8828,6 +10008,12 @@
     {
      "pos": "n.",
      "meaning": "(枪的)扳机，触发器 v. 激发起，引起"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "trigger for sth",
+     "meaning": "…的诱因"
     }
    ]
   },
@@ -8909,6 +10095,16 @@
     {
      "pos": "v.",
      "meaning": "1. 损毁…的地基 2. 削弱 3. 逐渐摧毁"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "undermine confidence in sth",
+     "meaning": "削弱对…的信心"
+    },
+    {
+     "text": "undermine the authority of sth",
+     "meaning": "削弱…的权威"
     }
    ]
   },
@@ -9135,6 +10331,16 @@
      "pos": "adj.",
      "meaning": "1. 易受攻击的，有弱点的 2. (指人)易受伤害的，脆弱的，敏感的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be vulnerable to sth",
+     "meaning": "易受…的伤害"
+    },
+    {
+     "text": "be vulnerable to attack",
+     "meaning": "易受攻击"
+    }
    ]
   },
   {
@@ -9180,6 +10386,12 @@
      "pos": "n.",
      "meaning": "瓦(电力单位)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "watts of power",
+     "meaning": "功率瓦数"
+    }
    ]
   },
   {
@@ -9197,6 +10409,16 @@
     {
      "pos": "adj.",
      "meaning": "古怪的，奇异的，荒谬的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be weird about sth",
+     "meaning": "对…很古怪"
+    },
+    {
+     "text": "be weird to sb",
+     "meaning": "对某人来说怪异"
     }
    ]
   },
@@ -9912,7 +11134,7 @@
    ]
   },
   {
-   "word": "be indignant about sth.",
+   "word": "be indignant",
    "senses": [
     {
      "pos": "phr.",
@@ -10070,15 +11292,6 @@
     {
      "pos": "phr.",
      "meaning": "用木板封住, 用木板隔断"
-    }
-   ]
-  },
-  {
-   "word": "boast about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "自夸"
     }
    ]
   },
@@ -10692,6 +11905,12 @@
      "pos": "phr.",
      "meaning": "拒绝(做)..."
     }
+   ],
+   "phrases": [
+    {
+     "text": "deny doing sth",
+     "meaning": "否认做某事"
+    }
    ]
   },
   {
@@ -11055,7 +12274,7 @@
    ]
   },
   {
-   "word": "fiddle about",
+   "word": "fiddle",
    "senses": [
     {
      "pos": "phr.",
@@ -11541,7 +12760,7 @@
    ]
   },
   {
-   "word": "have a thing about",
+   "word": "have a thing",
    "senses": [
     {
      "pos": "phr.",
@@ -12882,15 +14101,6 @@
    ]
   },
   {
-   "word": "particular about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "讲究，挑剔"
-    }
-   ]
-  },
-  {
    "word": "pass one's verdict upon",
    "senses": [
     {
@@ -13355,6 +14565,12 @@
     {
      "pos": "phr.",
      "meaning": "向…问好"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "remember to do sth",
+     "meaning": "记住要做某事"
     }
    ]
   },
@@ -14151,7 +15367,7 @@
    ]
   },
   {
-   "word": "throw one's weight about",
+   "word": "throw one's weight",
    "senses": [
     {
      "pos": "phr.",
@@ -14535,6 +15751,12 @@
      "pos": "phr.",
      "meaning": "何妨"
     }
+   ],
+   "phrases": [
+    {
+     "text": "Why not do sth.?",
+     "meaning": "为什么不做某事？"
+    }
    ]
   },
   {
@@ -14858,6 +16080,12 @@
     {
      "pos": "phr.",
      "meaning": "承认做过"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "admit doing sth",
+     "meaning": "承认做某事"
     }
    ]
   },
@@ -15222,7 +16450,7 @@
    ]
   },
   {
-   "word": "be cautious about",
+   "word": "be cautious",
    "senses": [
     {
      "pos": "phr.",
@@ -15339,7 +16567,7 @@
    ]
   },
   {
-   "word": "be enthusiastic about",
+   "word": "be enthusiastic",
    "senses": [
     {
      "pos": "phr.",
@@ -16068,7 +17296,7 @@
    ]
   },
   {
-   "word": "complain to sb. about sth.",
+   "word": "complain to sb.",
    "senses": [
     {
      "pos": "phr.",
@@ -16140,7 +17368,7 @@
    ]
   },
   {
-   "word": "concern oneself about",
+   "word": "concern oneself",
    "senses": [
     {
      "pos": "phr.",
@@ -16149,7 +17377,7 @@
    ]
   },
   {
-   "word": "concerned about",
+   "word": "concerned",
    "senses": [
     {
      "pos": "phr.",
@@ -16212,7 +17440,7 @@
    ]
   },
   {
-   "word": "confer with sb. about sth.",
+   "word": "confer with sb.",
    "senses": [
     {
      "pos": "phr.",
@@ -16379,15 +17607,6 @@
     {
      "pos": "phr.",
      "meaning": "塞进"
-    }
-   ]
-  },
-  {
-   "word": "crazy about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "为……着迷"
     }
    ]
   },
@@ -16932,7 +18151,7 @@
    ]
   },
   {
-   "word": "flatter sb. about sth.",
+   "word": "flatter sb.",
    "senses": [
     {
      "pos": "phr.",
@@ -17315,15 +18534,6 @@
     {
      "pos": "phr.",
      "meaning": "得意洋洋"
-    }
-   ]
-  },
-  {
-   "word": "go about with",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "与……来往"
     }
    ]
   },
@@ -18624,7 +19834,7 @@
    ]
   },
   {
-   "word": "make inquiries of sb. about sth.",
+   "word": "make inquiries of sb.",
    "senses": [
     {
      "pos": "phr.",
@@ -19623,15 +20833,6 @@
    ]
   },
   {
-   "word": "skeptical about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "对……持怀疑态度"
-    }
-   ]
-  },
-  {
    "word": "small scale",
    "senses": [
     {
@@ -19682,15 +20883,6 @@
     {
      "pos": "phr.",
      "meaning": "……的解决办法"
-    }
-   ]
-  },
-  {
-   "word": "speculate about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "推测"
     }
    ]
   },
@@ -19920,7 +21112,7 @@
    ]
   },
   {
-   "word": "tackle sb. about sth.",
+   "word": "tackle sb.",
    "senses": [
     {
      "pos": "phr.",
@@ -20415,7 +21607,7 @@
    ]
   },
   {
-   "word": "absence of mind being absent-minded",
+   "word": "absence of mind",
    "senses": [
     {
      "pos": "phr.",
@@ -20433,15 +21625,6 @@
    ]
   },
   {
-   "word": "by accident by chance accidentally",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "偶然地意外"
-    }
-   ]
-  },
-  {
    "word": "be accustomed to / be used to",
    "senses": [
     {
@@ -20451,7 +21634,7 @@
    ]
   },
   {
-   "word": "adapt oneself to adjust oneself to",
+   "word": "adapt oneself to",
    "senses": [
     {
      "pos": "phr.",
@@ -20496,29 +21679,11 @@
    ]
   },
   {
-   "word": "above all especially most important of all",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "尤其是 最重要的"
-    }
-   ]
-  },
-  {
    "word": "take into consideration / take into account",
    "senses": [
     {
      "pos": "phr.",
      "meaning": "考虑到 估计到"
-    }
-   ]
-  },
-  {
-   "word": "amount to be equal to",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "总计 等于"
     }
    ]
   },
@@ -20604,7 +21769,7 @@
    ]
   },
   {
-   "word": "in briefing as few words as possible",
+   "word": "in briefing",
    "senses": [
     {
      "pos": "phr.",
@@ -20694,7 +21859,7 @@
    ]
   },
   {
-   "word": "complain of or about",
+   "word": "complain of or",
    "senses": [
     {
      "pos": "phr.",
@@ -20708,15 +21873,6 @@
     {
      "pos": "phr.",
      "meaning": "集中专心"
-    }
-   ]
-  },
-  {
-   "word": "be concerned with about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "与…有关"
     }
    ]
   },
@@ -20766,15 +21922,6 @@
    ]
   },
   {
-   "word": "to one’s heart’s content",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "尽情地痛痛快快"
-    }
-   ]
-  },
-  {
    "word": "be content with be satisfied with",
    "senses": [
     {
@@ -20807,15 +21954,6 @@
     {
      "pos": "phr.",
      "meaning": "应付 处理"
-    }
-   ]
-  },
-  {
-   "word": "correspond with exchange letters regularly",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "通信"
     }
    ]
   },
@@ -20928,15 +22066,6 @@
    ]
   },
   {
-   "word": "with the exception of except apart from",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "除去…. 除…以外1"
-    }
-   ]
-  },
-  {
    "word": "faithful to loyal to",
    "senses": [
     {
@@ -20951,15 +22080,6 @@
     {
      "pos": "phr.",
      "meaning": "熟悉了解"
-    }
-   ]
-  },
-  {
-   "word": "find fault with complain about criticize",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "找毛病，对…吹毛求疵"
     }
    ]
   },
@@ -21117,15 +22237,6 @@
    ]
   },
   {
-   "word": "be indifferent to not interested in",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "对…漠不关心冷淡 不在乎"
-    }
-   ]
-  },
-  {
    "word": "be innocent of",
    "senses": [
     {
@@ -21149,15 +22260,6 @@
     {
      "pos": "phr.",
      "meaning": "代替，而不是…"
-    }
-   ]
-  },
-  {
-   "word": "be involved in become connected or concerned",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "卷入 参加"
     }
    ]
   },
@@ -21207,15 +22309,6 @@
    ]
   },
   {
-   "word": "y all means at all costs",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "不惜一切"
-    }
-   ]
-  },
-  {
    "word": "be in a mess",
    "senses": [
     {
@@ -21239,15 +22332,6 @@
     {
      "pos": "phr.",
      "meaning": "更不用说…"
-    }
-   ]
-  },
-  {
-   "word": "object to be opposed to",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "反对"
     }
    ]
   },
@@ -21320,15 +22404,6 @@
     {
      "pos": "phr.",
      "meaning": "私下 秘密地"
-    }
-   ]
-  },
-  {
-   "word": "on purpose by intention deliberately",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "故意"
     }
    ]
   },
@@ -21410,6 +22485,12 @@
     {
      "pos": "phr.",
      "meaning": "提醒某人…使某人向想起"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "remind sb. of sth",
+     "meaning": "使某人想起某情况（事）"
     }
    ]
   },
@@ -21536,15 +22617,6 @@
     {
      "pos": "phr.",
      "meaning": "对…有效的"
-    }
-   ]
-  },
-  {
-   "word": "against one’s will",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "违心地违背意愿地"
     }
    ]
   },
@@ -22472,15 +23544,6 @@
     {
      "pos": "phr.",
      "meaning": "坚持计划"
-    }
-   ]
-  },
-  {
-   "word": "think twice about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "三思"
     }
    ]
   },
