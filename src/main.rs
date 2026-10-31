@@ -20,6 +20,7 @@ mod library;
 mod menu;
 mod schedule;
 mod single;
+mod svg_icon;
 mod theme;
 mod tray;
 mod util;
