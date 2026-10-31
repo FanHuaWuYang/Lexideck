@@ -419,21 +419,6 @@
    ]
   },
   {
-   "word": "arise",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "出现；由…引起"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "arise from / out of",
-     "meaning": "因…产生；由…引起"
-    }
-   ]
-  },
-  {
    "word": "arouse",
    "senses": [
     {
@@ -648,15 +633,6 @@
    ]
   },
   {
-   "word": "awake",
-   "senses": [
-    {
-     "pos": "a.",
-     "meaning": "醒着的 vt.唤醒"
-    }
-   ]
-  },
-  {
    "word": "awfully",
    "senses": [
     {
@@ -695,21 +671,6 @@
     {
      "text": "bacteria in sth",
      "meaning": "…中的细菌"
-    }
-   ]
-  },
-  {
-   "word": "bad",
-   "senses": [
-    {
-     "pos": "a.",
-     "meaning": "坏的，恶的；严重的"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "from bad to worse",
-     "meaning": "每况愈下"
     }
    ]
   },
@@ -765,53 +726,11 @@
    ]
   },
   {
-   "word": "beat",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "&vi.打，敲；打败"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "beat about / around the bush",
-     "meaning": "说话拐弯抹角"
-    },
-    {
-     "text": "beat sb down",
-     "meaning": "使某人沮丧"
-    },
-    {
-     "text": "beat out",
-     "meaning": "打败"
-    }
-   ]
-  },
-  {
    "word": "beggar",
    "senses": [
     {
      "pos": "n.",
      "meaning": "乞丐，穷人"
-    }
-   ]
-  },
-  {
-   "word": "begin",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "开始 vt.开始"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "begin to do sth / begin doing sth",
-     "meaning": "开始做某事"
-    },
-    {
-     "text": "to begin with",
-     "meaning": "[插入语] 首先；第一"
     }
    ]
   },
@@ -853,21 +772,6 @@
    ]
   },
   {
-   "word": "bend",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "使弯曲 vi.弯曲"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "bend to sb’s will",
-     "meaning": "[正式用语] 屈服于某人的意愿"
-    }
-   ]
-  },
-  {
    "word": "berry",
    "senses": [
     {
@@ -901,15 +805,6 @@
    ]
   },
   {
-   "word": "bike",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "自行车 vi.骑自行车"
-    }
-   ]
-  },
-  {
    "word": "bind",
    "senses": [
     {
@@ -929,25 +824,6 @@
     {
      "text": "bind sth together",
      "meaning": "把…捆在一起"
-    }
-   ]
-  },
-  {
-   "word": "bite",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "咬，叮，螫；剌穿"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "bite into sth",
-     "meaning": "咬进某物"
-    },
-    {
-     "text": "bite off sth",
-     "meaning": "咬下某物"
     }
    ]
   },
@@ -1046,25 +922,6 @@
     {
      "pos": "vi.",
      "meaning": "自夸 vt.吹嘘"
-    }
-   ]
-  },
-  {
-   "word": "body",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "身体；主体；尸体"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "body and soul",
-     "meaning": "全心全意"
-    },
-    {
-     "text": "keep body and soul together",
-     "meaning": "勉强糊口 (survive)"
     }
    ]
   },
@@ -1198,29 +1055,6 @@
    ]
   },
   {
-   "word": "bring",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "带来；引出；促使"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "bring sb. doing sth",
-     "meaning": "引起某人做某事"
-    },
-    {
-     "text": "bring sb. sth. = bring sth. to sb",
-     "meaning": "把某带给某人"
-    },
-    {
-     "text": "bring about",
-     "meaning": "引起； 造成"
-    }
-   ]
-  },
-  {
    "word": "brisk",
    "senses": [
     {
@@ -1320,25 +1154,6 @@
    ]
   },
   {
-   "word": "build",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "建筑；建立；创立"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "build on / upon",
-     "meaning": "在…基础上发展；把…作为… 的基础"
-    },
-    {
-     "text": "build up",
-     "meaning": "树立；逐步建立；增强"
-    }
-   ]
-  },
-  {
    "word": "bulb",
    "senses": [
     {
@@ -1399,25 +1214,6 @@
     {
      "text": "bureau for sth",
      "meaning": "负责…的办事处"
-    }
-   ]
-  },
-  {
-   "word": "buy",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "买，购买 vi.买"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "buy sb. sth. = buy sth. for sb",
-     "meaning": "为某人买某物"
-    },
-    {
-     "text": "buy up",
-     "meaning": "迅速地囤积；大量买下"
     }
    ]
   },
@@ -1636,29 +1432,6 @@
    ]
   },
   {
-   "word": "catch",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "捉住；赶上；领会"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "catch sb. doing sth",
-     "meaning": "碰上（撞上）某人做某事"
-    },
-    {
-     "text": "catch on",
-     "meaning": "流行；［非正式用语］了解；理解"
-    },
-    {
-     "text": "catch sb’s eye",
-     "meaning": "引起某人注意"
-    }
-   ]
-  },
-  {
    "word": "cease",
    "senses": [
     {
@@ -1796,29 +1569,6 @@
     {
      "text": "chin of sth",
      "meaning": "…的下巴"
-    }
-   ]
-  },
-  {
-   "word": "choose",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "选择，挑选；情愿"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "choose to do sth",
-     "meaning": "决定做某事"
-    },
-    {
-     "text": "choose sb. sth. = choose sth. for sb",
-     "meaning": "为某人选某物"
-    },
-    {
-     "text": "cannot choose but (do)",
-     "meaning": "不得不；只好"
     }
    ]
   },
@@ -2102,29 +1852,6 @@
    ]
   },
   {
-   "word": "come",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "来，来到；出现"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "come about",
-     "meaning": "(尤指未经计划地) 发生；产生"
-    },
-    {
-     "text": "come along",
-     "meaning": "一起来；出现；（非正式用语）进展"
-    },
-    {
-     "text": "come and go",
-     "meaning": "来来去去；时有时无"
-    }
-   ]
-  },
-  {
    "word": "commander",
    "senses": [
     {
@@ -2253,25 +1980,6 @@
     {
      "pos": "vt.",
      "meaning": "编辑，编制，搜集"
-    }
-   ]
-  },
-  {
-   "word": "complain",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "抱怨，拆苦；控告"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "complain about sth",
-     "meaning": "抱怨…"
-    },
-    {
-     "text": "complain to sb. about sth",
-     "meaning": "向某人抱怨…"
     }
    ]
   },
@@ -3939,29 +3647,6 @@
    ]
   },
   {
-   "word": "dig",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "掘，挖；采掘"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "dig (...) into",
-     "meaning": "插入；戳进；探究"
-    },
-    {
-     "text": "dig out",
-     "meaning": "挖出；找出；发现"
-    },
-    {
-     "text": "dig up",
-     "meaning": "掘起；开垦 (荒地)；搜集"
-    }
-   ]
-  },
-  {
    "word": "diligent",
    "senses": [
     {
@@ -3994,21 +3679,6 @@
     {
      "pos": "vt.",
      "meaning": "使无能，使伤残"
-    }
-   ]
-  },
-  {
-   "word": "disk",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "圆盘，唱片；磁盘"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "disk of sth",
-     "meaning": "一块…圆盘"
     }
    ]
   },
@@ -4381,29 +4051,6 @@
    ]
   },
   {
-   "word": "draw",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "画，划；拖；拨出"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "draw sb. sth. = draw sth. for sb",
-     "meaning": "为某人画某物"
-    },
-    {
-     "text": "draw in",
-     "meaning": "(火车等) 进站"
-    },
-    {
-     "text": "draw near / closer",
-     "meaning": "接近；靠近"
-    }
-   ]
-  },
-  {
    "word": "dread",
    "senses": [
     {
@@ -4437,25 +4084,6 @@
     {
      "pos": "vi.",
      "meaning": "滴下；漏水 n.水滴"
-    }
-   ]
-  },
-  {
-   "word": "drive",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "驾驶；打入；驱"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "drive sb. to do sth",
-     "meaning": "驱使某人做某事"
-    },
-    {
-     "text": "drive away",
-     "meaning": "驱车离开；赶跑"
     }
    ]
   },
@@ -4557,29 +4185,6 @@
     {
      "pos": "a.",
      "meaning": "认真的，诚恳的"
-    }
-   ]
-  },
-  {
-   "word": "eat",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "吃，喝 vi.吃饭"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "eat one's words",
-     "meaning": "收回前言；承认错误"
-    },
-    {
-     "text": "eat out",
-     "meaning": "外出就餐"
-    },
-    {
-     "text": "eat up",
-     "meaning": "吃完；耗尽"
     }
    ]
   },
@@ -5442,30 +5047,6 @@
    ]
   },
   {
-   "word": "exam",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "考试；检查，细查"
-    }
-   ]
-  },
-  {
-   "word": "examination",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "考试；检/细查"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "examination of sth",
-     "meaning": "对…的检查"
-    }
-   ]
-  },
-  {
    "word": "exceed",
    "senses": [
     {
@@ -6065,29 +5646,6 @@
    ]
   },
   {
-   "word": "feed",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "喂(养) vi.吃饲料"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "(be) fed up with",
-     "meaning": "(对…) 感到厌烦 (be bored with)"
-    },
-    {
-     "text": "feed back (into / to)",
-     "meaning": "反馈；反过来对…起作用"
-    },
-    {
-     "text": "feed into",
-     "meaning": "对…的发展产生影响"
-    }
-   ]
-  },
-  {
    "word": "feedback",
    "senses": [
     {
@@ -6103,29 +5661,6 @@
     {
      "text": "feedback from sb",
      "meaning": "来自某人的反馈"
-    }
-   ]
-  },
-  {
-   "word": "feel",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "有知觉 vt.触，摸"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "feel like doing sth",
-     "meaning": "想要做某事"
-    },
-    {
-     "text": "feel sb. doing sth",
-     "meaning": "感觉某人做某事"
-    },
-    {
-     "text": "feel sb. do sth",
-     "meaning": "感觉某人做了某事"
     }
    ]
   },
@@ -6278,29 +5813,6 @@
     {
      "pos": "vi.",
      "meaning": "奔流；(脸)发红"
-    }
-   ]
-  },
-  {
-   "word": "foot",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "脚；最下部；英尺"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "on foot",
-     "meaning": "步行"
-    },
-    {
-     "text": "on one's feet",
-     "meaning": "痊愈；(困境后) 恢复"
-    },
-    {
-     "text": "set foot in / on",
-     "meaning": "进入；访问；参观"
     }
    ]
   },
@@ -6499,15 +6011,6 @@
     {
      "pos": "ad.",
      "meaning": "时常，常常"
-    }
-   ]
-  },
-  {
-   "word": "fridge",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "电冰箱"
     }
    ]
   },
@@ -6786,29 +6289,6 @@
    ]
   },
   {
-   "word": "get",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "变得，成为；到达"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "get sth. done",
-     "meaning": "让某事被做"
-    },
-    {
-     "text": "get sb. to do sth",
-     "meaning": "使（要）某人做某事"
-    },
-    {
-     "text": "get sb. doing sth",
-     "meaning": "使某人做某事"
-    }
-   ]
-  },
-  {
    "word": "ghost",
    "senses": [
     {
@@ -6839,29 +6319,6 @@
     {
      "text": "giant in sth",
      "meaning": "…领域的巨头"
-    }
-   ]
-  },
-  {
-   "word": "give",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "做，作；送给"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "give up doing sth",
-     "meaning": "放弃做某事"
-    },
-    {
-     "text": "give back",
-     "meaning": "(归) 还；使返回；恢复"
-    },
-    {
-     "text": "give off",
-     "meaning": "发出 (气味、光、热等)"
     }
    ]
   },
@@ -6916,52 +6373,6 @@
     {
      "pos": "n.",
      "meaning": "白热光 vi.发白热光"
-    }
-   ]
-  },
-  {
-   "word": "go",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "去；走；变为"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "go on to do sth",
-     "meaning": "做完某事后接着做另一事"
-    },
-    {
-     "text": "go on doing sth",
-     "meaning": "继续做一直在做的事"
-    },
-    {
-     "text": "(be) on the go",
-     "meaning": "忙个不停"
-    }
-   ]
-  },
-  {
-   "word": "good",
-   "senses": [
-    {
-     "pos": "a.",
-     "meaning": "好的；有本事的"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "be no good",
-     "meaning": "没有用处"
-    },
-    {
-     "text": "do good (to)",
-     "meaning": "(对…) 有益"
-    },
-    {
-     "text": "do sb good",
-     "meaning": "对某人有好处"
     }
    ]
   },
@@ -7049,24 +6460,6 @@
     {
      "pos": "a.",
      "meaning": "语法上的"
-    }
-   ]
-  },
-  {
-   "word": "grandfather",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "祖父；外祖父"
-    }
-   ]
-  },
-  {
-   "word": "grandmother",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "祖母，外祖母"
     }
    ]
   },
@@ -7230,29 +6623,6 @@
    ]
   },
   {
-   "word": "grow",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "生长；变得；增长"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "grow into",
-     "meaning": "变成；发展成"
-    },
-    {
-     "text": "grow out of",
-     "meaning": "产生于；长大得与…不再相称"
-    },
-    {
-     "text": "grow up",
-     "meaning": "成熟；长成；形成；发展"
-    }
-   ]
-  },
-  {
    "word": "gulf",
    "senses": [
     {
@@ -7303,29 +6673,6 @@
     {
      "pos": "vi.",
      "meaning": "停止；立定 n.停住"
-    }
-   ]
-  },
-  {
-   "word": "hang",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "挂，悬；吊死"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "hang about / around",
-     "meaning": "(在…附近) 闲逛；晃悠"
-    },
-    {
-     "text": "hang about / around with sb",
-     "meaning": "与某人厮混；聚在一起"
-    },
-    {
-     "text": "hang on",
-     "meaning": "抓紧不放；[非正式用语] 不要挂断(hold on)"
     }
    ]
   },
@@ -7430,29 +6777,6 @@
    ]
   },
   {
-   "word": "have",
-   "senses": [
-    {
-     "pos": "v.aux.",
-     "meaning": "已经 vt.有；吃"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "have sth. done",
-     "meaning": "让某事被做"
-    },
-    {
-     "text": "have sb. doing sth",
-     "meaning": "使某人做某事"
-    },
-    {
-     "text": "have sb. do sth",
-     "meaning": "使某人做某事"
-    }
-   ]
-  },
-  {
    "word": "hazard",
    "senses": [
     {
@@ -7501,29 +6825,6 @@
     {
      "text": "heal over / up",
      "meaning": "愈合；痊愈"
-    }
-   ]
-  },
-  {
-   "word": "hear",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "听见；审讯；听说"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "hear sb. doing sth",
-     "meaning": "听见某人正在做某事"
-    },
-    {
-     "text": "hear sb. do sth",
-     "meaning": "听见某人做某事"
-    },
-    {
-     "text": "hear about",
-     "meaning": "听说 (…的情况)"
     }
    ]
   },
@@ -7635,25 +6936,6 @@
    ]
   },
   {
-   "word": "hide",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "把…藏起来；隐瞒"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "hide sth. from sb",
-     "meaning": "把某事瞒着某人"
-    },
-    {
-     "text": "hide from sb",
-     "meaning": "躲避某人"
-    }
-   ]
-  },
-  {
    "word": "highly",
    "senses": [
     {
@@ -7691,48 +6973,6 @@
     {
      "pos": "a.",
      "meaning": "历史的，有关历史的"
-    }
-   ]
-  },
-  {
-   "word": "hit",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "打；碰撞 n.击"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "hit on / upon",
-     "meaning": "突然想到 (come up with)"
-    },
-    {
-     "text": "take a hit",
-     "meaning": "遭到破坏；受到严重影响"
-    }
-   ]
-  },
-  {
-   "word": "hold",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "拿住；掌握；拥有"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "hold on to / onto",
-     "meaning": "守住；保住 (不送 / 不卖)"
-    },
-    {
-     "text": "hold the line",
-     "meaning": "别挂断；等会儿"
-    },
-    {
-     "text": "catch / get / take (a) hold of",
-     "meaning": "抓住；拿着；握住"
     }
    ]
   },
@@ -7878,21 +7118,6 @@
     {
      "pos": "a.",
      "meaning": "湿的，湿气重的"
-    }
-   ]
-  },
-  {
-   "word": "hurt",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "使受伤；使痛心"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "it won’t / doesn’t hurt (sb) to do sth",
-     "meaning": "(某人) 做某事也无妨"
     }
    ]
   },
@@ -8502,15 +7727,6 @@
     {
      "pos": "n.",
      "meaning": "输入；投入的资金"
-    }
-   ]
-  },
-  {
-   "word": "inquire",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "打听，询问；调查"
     }
    ]
   },
@@ -9181,29 +8397,6 @@
    ]
   },
   {
-   "word": "keep",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "保持；坚持"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "keep sb. from doing sth",
-     "meaning": "阻止某人做某事"
-    },
-    {
-     "text": "keep doing sth",
-     "meaning": "保持做某事"
-    },
-    {
-     "text": "keep sb. doing sth",
-     "meaning": "使某人不停地做某事"
-    }
-   ]
-  },
-  {
    "word": "kilometer",
    "senses": [
     {
@@ -9249,29 +8442,6 @@
    ]
   },
   {
-   "word": "know",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "知道；认识；通晓"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "be known as",
-     "meaning": "以…而出名；被称作；被认为"
-    },
-    {
-     "text": "be known for",
-     "meaning": "因…而闻名 (be famous for)"
-    },
-    {
-     "text": "be known to",
-     "meaning": "为…所熟知"
-    }
-   ]
-  },
-  {
    "word": "label",
    "senses": [
     {
@@ -9287,15 +8457,6 @@
     {
      "text": "label for sth",
      "meaning": "给…贴的标签"
-    }
-   ]
-  },
-  {
-   "word": "laboratory",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "实验室，研究室"
     }
    ]
   },
@@ -9416,21 +8577,6 @@
    ]
   },
   {
-   "word": "lay",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "置放；铺设；设置"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "lay down",
-     "meaning": "放下；停止使用 (put down)；规定"
-    }
-   ]
-  },
-  {
    "word": "layer",
    "senses": [
     {
@@ -9459,25 +8605,6 @@
    ]
   },
   {
-   "word": "lead",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "为…带路；领导"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "lead up to",
-     "meaning": "是…的先导；是导致…的原因"
-    },
-    {
-     "text": "lead a ... life",
-     "meaning": "过着……的生活"
-    }
-   ]
-  },
-  {
    "word": "leadership",
    "senses": [
     {
@@ -9493,21 +8620,6 @@
     {
      "text": "leadership in + sth",
      "meaning": "在…方面的领导地位"
-    }
-   ]
-  },
-  {
-   "word": "leaf",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "叶，叶子"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "leaf through sth",
-     "meaning": "翻阅某物"
     }
    ]
   },
@@ -9577,29 +8689,6 @@
    ]
   },
   {
-   "word": "leave",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "离去 vt.离开"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "leave sb. to do sth",
-     "meaning": "留下某人做某事"
-    },
-    {
-     "text": "(be) left over",
-     "meaning": "被剩下；被留下"
-    },
-    {
-     "text": "leave room for",
-     "meaning": "为…留有余地"
-    }
-   ]
-  },
-  {
    "word": "legend",
    "senses": [
     {
@@ -9620,25 +8709,6 @@
     {
      "pos": "n.",
      "meaning": "空闲时间；悠闲"
-    }
-   ]
-  },
-  {
-   "word": "lend",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "把…借给，贷(款)"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "lend sb. sth. = lend sth. to sb",
-     "meaning": "把某物借给"
-    },
-    {
-     "text": "give / lend (sb) a hand",
-     "meaning": "帮助 (某人)"
     }
    ]
   },
@@ -9735,49 +8805,11 @@
    ]
   },
   {
-   "word": "lie",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "躺，平放；位于"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "lie down",
-     "meaning": "躺下；屈服；顺从"
-    }
-   ]
-  },
-  {
    "word": "lieutenant",
    "senses": [
     {
      "pos": "n.",
      "meaning": "陆军中尉；副职官员"
-    }
-   ]
-  },
-  {
-   "word": "life",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "生命；一生；寿命"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "all one's life",
-     "meaning": "终生；一辈子"
-    },
-    {
-     "text": "bring … to life",
-     "meaning": "使苏醒过来；使更生动"
-    },
-    {
-     "text": "come to life",
-     "meaning": "苏醒过来；变得活跃 (come alive)"
     }
    ]
   },
@@ -9907,29 +8939,6 @@
     {
      "pos": "n.",
      "meaning": "听者，听众之一"
-    }
-   ]
-  },
-  {
-   "word": "little",
-   "senses": [
-    {
-     "pos": "a.",
-     "meaning": "小的；少；幼小的"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "a little",
-     "meaning": "[表示肯定含义] 少量；有点儿 (a bit)"
-    },
-    {
-     "text": "little by little",
-     "meaning": "逐渐地；一点点地"
-    },
-    {
-     "text": "not a little",
-     "meaning": "相当多 (much)"
     }
    ]
   },
@@ -10097,21 +9106,6 @@
     {
      "pos": "n.",
      "meaning": "贵族；上帝，基督"
-    }
-   ]
-  },
-  {
-   "word": "lose",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "失去；迷失；输掉"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "lose oneself in",
-     "meaning": "专心于；全神贯注于"
     }
    ]
   },
@@ -10284,38 +9278,6 @@
    ]
   },
   {
-   "word": "make",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "使；做，制造"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "make sb. do sth",
-     "meaning": "使某人做某事"
-    },
-    {
-     "text": "make sb. sth. = make sth. for sb",
-     "meaning": "为某人做某物"
-    },
-    {
-     "text": "be made from / of",
-     "meaning": "由…制造；用…为原料制取"
-    }
-   ]
-  },
-  {
-   "word": "man",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "男人；人；人类"
-    }
-   ]
-  },
-  {
    "word": "management",
    "senses": [
     {
@@ -10373,29 +9335,6 @@
     {
      "text": "manufacturer of sth",
      "meaning": "…的制造商"
-    }
-   ]
-  },
-  {
-   "word": "many",
-   "senses": [
-    {
-     "pos": "a.",
-     "meaning": "许多的 pron.许多人"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "a good / great many",
-     "meaning": "很多 / 极多"
-    },
-    {
-     "text": "as many as",
-     "meaning": "多达"
-    },
-    {
-     "text": "many a",
-     "meaning": "[正式用语] [接可数名词单数作主语时，谓语动词用单数] 许多的；非常多的"
     }
    ]
   },
@@ -10491,15 +9430,6 @@
    ]
   },
   {
-   "word": "mathematics",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "数学"
-    }
-   ]
-  },
-  {
    "word": "maths",
    "senses": [
     {
@@ -10529,29 +9459,6 @@
     {
      "pos": "n.",
      "meaning": "草地，牧草地"
-    }
-   ]
-  },
-  {
-   "word": "mean",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "作…解释；意指"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "mean sb. to do sth",
-     "meaning": "打算要某人做某事"
-    },
-    {
-     "text": "mean to do sth",
-     "meaning": "打算做某事"
-    },
-    {
-     "text": "mean doing sth",
-     "meaning": "意味着做某事"
     }
    ]
   },
@@ -10642,21 +9549,6 @@
     {
      "pos": "n.",
      "meaning": "地中海 a.地中海的"
-    }
-   ]
-  },
-  {
-   "word": "meet",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "遇见 vi.相遇"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "meet up",
-     "meaning": "碰面；会面"
     }
    ]
   },
@@ -10852,25 +9744,6 @@
     {
      "text": "mission of + sth",
      "meaning": "…的使命"
-    }
-   ]
-  },
-  {
-   "word": "mistake",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "错误 vi.误解，弄错"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "by mistake",
-     "meaning": "错误地；无意地 (accidentally)"
-    },
-    {
-     "text": "mistake ... for",
-     "meaning": "把…错当成…"
     }
    ]
   },
@@ -11114,38 +9987,6 @@
     {
      "text": "mount up to sth",
      "meaning": "增加到某一数量"
-    }
-   ]
-  },
-  {
-   "word": "mouse",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "鼠，耗子"
-    }
-   ]
-  },
-  {
-   "word": "much",
-   "senses": [
-    {
-     "pos": "ad.",
-     "meaning": "非常，很 a.许多的"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "as much",
-     "meaning": "同样数量；同样的事"
-    },
-    {
-     "text": "as much as",
-     "meaning": "像…那么多；多达"
-    },
-    {
-     "text": "as much … as",
-     "meaning": "和…同样多的；和…一样"
     }
    ]
   },
@@ -12104,15 +10945,6 @@
    ]
   },
   {
-   "word": "ox",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "牛；公牛，阉牛"
-    }
-   ]
-  },
-  {
    "word": "pad",
    "senses": [
     {
@@ -12615,21 +11447,6 @@
    ]
   },
   {
-   "word": "phone",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "电话，电话机；耳机"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "(be) on the phone",
-     "meaning": "在打电话"
-    }
-   ]
-  },
-  {
    "word": "photographic",
    "senses": [
     {
@@ -12795,21 +11612,6 @@
     {
      "pos": "n.",
      "meaning": "诗，诗歌，诗作"
-    }
-   ]
-  },
-  {
-   "word": "pop",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "流行音乐，流行歌曲"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "pop up",
-     "meaning": "突然出现；冒出来"
     }
    ]
   },
@@ -15009,15 +13811,6 @@
    ]
   },
   {
-   "word": "ride",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "&n.骑马，乘车"
-    }
-   ]
-  },
-  {
    "word": "rider",
    "senses": [
     {
@@ -15051,40 +13844,6 @@
     {
      "pos": "n.",
      "meaning": "步枪，来复枪"
-    }
-   ]
-  },
-  {
-   "word": "ring",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "环形物(如圈、环等)"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "ring off",
-     "meaning": "挂断电话"
-    },
-    {
-     "text": "ring up",
-     "meaning": "打电话 (给)"
-    }
-   ]
-  },
-  {
-   "word": "rise",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "起立；升起；上涨"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "give rise to",
-     "meaning": "[正式用语] 引起；导致 (尤指坏事)"
     }
    ]
   },
@@ -15301,29 +14060,6 @@
    ]
   },
   {
-   "word": "run",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "跑，奔；行驶；流"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "run across",
-     "meaning": "跑着穿过；偶然碰见"
-    },
-    {
-     "text": "run after",
-     "meaning": "追赶；追求"
-    },
-    {
-     "text": "run away (from)",
-     "meaning": "逃走；逃避"
-    }
-   ]
-  },
-  {
    "word": "rural",
    "senses": [
     {
@@ -15406,7 +14142,7 @@
    "phrases": [
     {
      "text": "for the sake of sb / sth",
-     "meaning": "为了某人 / 某事物的缘故 (for sb’s / sth’s sake)"
+     "meaning": "为了某人 / 某事物的缘故 (for sb’s"
     }
    ]
   },
@@ -15472,29 +14208,6 @@
     {
      "pos": "n.",
      "meaning": "锯子 vt.锯，锯开"
-    }
-   ]
-  },
-  {
-   "word": "say",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "说；说明；比如说"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "I say",
-     "meaning": "[引起话头或表示惊奇、反悔] 喂；啊；哎"
-    },
-    {
-     "text": "it is said that ",
-     "meaning": "据说…"
-    },
-    {
-     "text": "that is to say",
-     "meaning": "也就是说"
     }
    ]
   },
@@ -15671,44 +14384,6 @@
    ]
   },
   {
-   "word": "see",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "看见；遇见；看出"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "see sb. doing sth",
-     "meaning": "看见某人做某事"
-    },
-    {
-     "text": "see sb. do sth",
-     "meaning": "看见某人做了某事"
-    },
-    {
-     "text": "let me see / let’s see",
-     "meaning": "让我 (们) 看看；让我 (们) 想想"
-    }
-   ]
-  },
-  {
-   "word": "seek",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "寻找，探索；试图"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "seek out",
-     "meaning": "找出；找到"
-    }
-   ]
-  },
-  {
    "word": "selection",
    "senses": [
     {
@@ -15724,29 +14399,6 @@
     {
      "text": "selection from sth",
      "meaning": "从…中选出"
-    }
-   ]
-  },
-  {
-   "word": "sell",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "&vi.卖，销售"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "sell sb. sth. = sell sth. to sb",
-     "meaning": "把某物卖给某人"
-    },
-    {
-     "text": "sell off",
-     "meaning": "廉价出售 (存货)"
-    },
-    {
-     "text": "sell oneself",
-     "meaning": "自荐"
     }
    ]
   },
@@ -15783,29 +14435,6 @@
     {
      "pos": "n.",
      "meaning": "参议院，上院"
-    }
-   ]
-  },
-  {
-   "word": "send",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "送，寄发；派遣"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "send sb. doing sth",
-     "meaning": "使某人（突然）做某事"
-    },
-    {
-     "text": "send sb. sth. = send sth. to sb",
-     "meaning": "把某物送给某人"
-    },
-    {
-     "text": "send away",
-     "meaning": "解雇；把…打发走"
     }
    ]
   },
@@ -15864,29 +14493,6 @@
    ]
   },
   {
-   "word": "set",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "放；安置 vi.落"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "set sb. doing sth",
-     "meaning": "使（引起）某人做某事"
-    },
-    {
-     "text": "set about",
-     "meaning": "开始；着手"
-    },
-    {
-     "text": "set aside",
-     "meaning": "留出；把…置于一旁"
-    }
-   ]
-  },
-  {
    "word": "setting",
    "senses": [
     {
@@ -15920,21 +14526,6 @@
     {
      "pos": "a.",
      "meaning": "成荫的，阴凉的"
-    }
-   ]
-  },
-  {
-   "word": "shake",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "摇，使震动 n.摇动"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "shake off",
-     "meaning": "摆脱；甩掉"
     }
    ]
   },
@@ -15980,15 +14571,6 @@
     {
      "pos": "vt.",
      "meaning": "流出；散发；脱落"
-    }
-   ]
-  },
-  {
-   "word": "shelf",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "搁板，架子"
     }
    ]
   },
@@ -16068,15 +14650,6 @@
     {
      "pos": "n.",
      "meaning": "不足，缺少，不足额"
-    }
-   ]
-  },
-  {
-   "word": "shot",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "发射；弹丸；射门"
     }
    ]
   },
@@ -16161,41 +14734,11 @@
    ]
   },
   {
-   "word": "sing",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "&vt.唱，演唱"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "sing sb. sth. = sing sth. for sb",
-     "meaning": "为某人唱歌"
-    }
-   ]
-  },
-  {
    "word": "singular",
    "senses": [
     {
      "pos": "a.",
      "meaning": "单一的；非凡的"
-    }
-   ]
-  },
-  {
-   "word": "sit",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "坐，就坐 vt.使坐"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "sit up",
-     "meaning": "坐起来；坐直；熬夜"
     }
    ]
   },
@@ -16602,29 +15145,6 @@
    ]
   },
   {
-   "word": "speak",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "说话；发言 vt.说"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "speak for",
-     "meaning": "代表…讲话 / 发言"
-    },
-    {
-     "text": "speak highly of",
-     "meaning": "赞扬"
-    },
-    {
-     "text": "speak of",
-     "meaning": "谈到；提及"
-    }
-   ]
-  },
-  {
    "word": "speciality",
    "senses": [
     {
@@ -16675,25 +15195,6 @@
     {
      "pos": "n.",
      "meaning": "光景，景象；眼镜"
-    }
-   ]
-  },
-  {
-   "word": "spend",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "用钱，花费；度过"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "spend time/money on sth",
-     "meaning": "把时间或钱花在…上"
-    },
-    {
-     "text": "spend time (in) doing sth",
-     "meaning": "花时间做某事"
     }
    ]
   },
@@ -16922,25 +15423,6 @@
    ]
   },
   {
-   "word": "steal",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "偷，窍取"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "steal sb. sth. = steal sth. for sb",
-     "meaning": "为某人偷某物"
-    },
-    {
-     "text": "be a steal",
-     "meaning": "[非正式用语] 非常便宜"
-    }
-   ]
-  },
-  {
    "word": "steamer",
    "senses": [
     {
@@ -16979,29 +15461,6 @@
     {
      "pos": "a.",
      "meaning": "严厉的；坚定的"
-    }
-   ]
-  },
-  {
-   "word": "stick",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "棍，棒 vt.刺；粘贴"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "be / get stuck in",
-     "meaning": "卡住；陷入"
-    },
-    {
-     "text": "stick around",
-     "meaning": "[非正式用语] 不走开；待在原地"
-    },
-    {
-     "text": "stick out",
-     "meaning": "伸出；突出"
     }
    ]
   },
@@ -17755,47 +16214,6 @@
    ]
   },
   {
-   "word": "swear",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "宣(誓) vi.诅咒"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "swear to do sth",
-     "meaning": "发誓做某事"
-    },
-    {
-     "text": "swear at sb",
-     "meaning": "咒骂某人"
-    },
-    {
-     "text": "swear by sth",
-     "meaning": "极其信赖某物"
-    }
-   ]
-  },
-  {
-   "word": "sweep",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "扫；刮起；扫过"
-    }
-   ]
-  },
-  {
-   "word": "swell",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "膨胀；隆起；增长"
-    }
-   ]
-  },
-  {
    "word": "sympathetic",
    "senses": [
     {
@@ -17832,29 +16250,6 @@
    ]
   },
   {
-   "word": "take",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "拿；抓；拿走；吃"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "take sb. sth. = take sth. to sb",
-     "meaning": "把某物带给某人"
-    },
-    {
-     "text": "take apart",
-     "meaning": "拆开"
-    },
-    {
-     "text": "take away",
-     "meaning": "拿走；带走；使消失"
-    }
-   ]
-  },
-  {
    "word": "tame",
    "senses": [
     {
@@ -17869,29 +16264,6 @@
     {
      "pos": "n.",
      "meaning": "棕褐色 a.棕黄色的"
-    }
-   ]
-  },
-  {
-   "word": "teach",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "讲；教育 vt.教书"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "teach sb. to do sth",
-     "meaning": "教某人做某事"
-    },
-    {
-     "text": "teach sb. sth. = teach sth. to sb",
-     "meaning": "教某人某事"
-    },
-    {
-     "text": "teach sb a lesson",
-     "meaning": "给某人一个教训"
     }
    ]
   },
@@ -17929,29 +16301,6 @@
     {
      "pos": "a.",
      "meaning": "冗长乏味的，沉闷的"
-    }
-   ]
-  },
-  {
-   "word": "tell",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "讲述；吩咐；辨别"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "tell sb. to do sth",
-     "meaning": "告诉某人做某事"
-    },
-    {
-     "text": "tell sb. sth. = tell sth. to sb",
-     "meaning": "告诉某人某事"
-    },
-    {
-     "text": "tell ... apart",
-     "meaning": "区分开"
     }
    ]
   },
@@ -18080,29 +16429,6 @@
    ]
   },
   {
-   "word": "think",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "想；想要；认为"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "think about",
-     "meaning": "思考；考虑"
-    },
-    {
-     "text": "think highly of",
-     "meaning": "对…高度评价"
-    },
-    {
-     "text": "think of ... as ",
-     "meaning": "把…看作…；认为…是…"
-    }
-   ]
-  },
-  {
    "word": "thirdly",
    "senses": [
     {
@@ -18191,29 +16517,6 @@
     {
      "pos": "n.",
      "meaning": "群，人群 vt.挤满"
-    }
-   ]
-  },
-  {
-   "word": "throw",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "投，掷，抛，扔"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "throw sb. sth. = throw sth. to sb",
-     "meaning": "把某物扔给某人"
-    },
-    {
-     "text": "throw away",
-     "meaning": "扔掉(throw out)；浪费 (金钱等)；放过 (机会等)"
-    },
-    {
-     "text": "throw off",
-     "meaning": "扔掉；摆脱；匆匆脱掉 (衣服)"
     }
    ]
   },
@@ -18310,15 +16613,6 @@
     {
      "text": "tone of sth",
      "meaning": "…的基调"
-    }
-   ]
-  },
-  {
-   "word": "tooth",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "牙齿"
     }
    ]
   },
@@ -18817,34 +17111,6 @@
    ]
   },
   {
-   "word": "understand",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "懂；获悉 vi.懂得"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "understand doing sth",
-     "meaning": "理解做某事"
-    },
-    {
-     "text": "make oneself understood",
-     "meaning": "[尤指用另一种语 言] 把自己的意思说清楚"
-    }
-   ]
-  },
-  {
-   "word": "undertake",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "从事；承担；保证"
-    }
-   ]
-  },
-  {
    "word": "undertaking",
    "senses": [
     {
@@ -19052,15 +17318,6 @@
    ]
   },
   {
-   "word": "us",
-   "senses": [
-    {
-     "pos": "pron.",
-     "meaning": "(宾格)我们"
-    }
-   ]
-  },
-  {
    "word": "usage",
    "senses": [
     {
@@ -19216,7 +17473,7 @@
    ],
    "phrases": [
     {
-     "text": "vary from ... to ",
+     "text": "vary from ... to",
      "meaning": "由……到……不等"
     }
    ]
@@ -19490,49 +17747,11 @@
    ]
   },
   {
-   "word": "wake",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "醒，醒来 vt.唤醒"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "wake up",
-     "meaning": "醒来；叫醒"
-    },
-    {
-     "text": "wake sb. up",
-     "meaning": "唤醒某人"
-    }
-   ]
-  },
-  {
    "word": "waken",
    "senses": [
     {
      "pos": "vi.",
      "meaning": "醒来 vt.弄醒"
-    }
-   ]
-  },
-  {
-   "word": "warn",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "警告 vi.发生警告"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "warn sb. to do sth",
-     "meaning": "警告某人做某事"
-    },
-    {
-     "text": "warn sb. of sth",
-     "meaning": "警告某人有某情况"
     }
    ]
   },
@@ -19588,21 +17807,6 @@
     {
      "text": "weapon of + sth",
      "meaning": "…武器"
-    }
-   ]
-  },
-  {
-   "word": "wear",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "穿着，戴；磨损"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "wear off",
-     "meaning": "逐渐减少；逐渐消失"
     }
    ]
   },
@@ -19757,21 +17961,6 @@
    ]
   },
   {
-   "word": "win",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "获胜，赢 vt.赢得"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "win ... back",
-     "meaning": "赢回；重新获得"
-    }
-   ]
-  },
-  {
    "word": "wireless",
    "senses": [
     {
@@ -19795,24 +17984,6 @@
     {
      "pos": "vt.",
      "meaning": "抵挡，反抗"
-    }
-   ]
-  },
-  {
-   "word": "wolf",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "狼"
-    }
-   ]
-  },
-  {
-   "word": "woman",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "妇女，女人，女性"
     }
    ]
   },
@@ -20644,7 +18815,7 @@
    ]
   },
   {
-   "word": "be mad about",
+   "word": "be mad",
    "senses": [
     {
      "pos": "phr.",
@@ -21526,15 +19697,6 @@
    ]
   },
   {
-   "word": "cast about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "搜索, 想方设法"
-    }
-   ]
-  },
-  {
    "word": "cast around",
    "senses": [
     {
@@ -22134,15 +20296,6 @@
     {
      "pos": "phr.",
      "meaning": "学习…的榜样"
-    }
-   ]
-  },
-  {
-   "word": "fool about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "闲荡, 玩弄"
     }
    ]
   },
@@ -22791,15 +20944,6 @@
     {
      "pos": "phr.",
      "meaning": "防止…张扬出去, 保持沉默, 掩盖"
-    }
-   ]
-  },
-  {
-   "word": "idle about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "闲逛, 无所事事"
     }
    ]
   },
@@ -24055,7 +22199,7 @@
    ]
   },
   {
-   "word": "make no bones about",
+   "word": "make no bones",
    "senses": [
     {
      "pos": "phr.",
@@ -24280,15 +22424,6 @@
    ]
   },
   {
-   "word": "mess about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "浪费时间, 荡来荡去, 闲逛, 混日子, 行动笨拙, 说话罗嗦"
-    }
-   ]
-  },
-  {
    "word": "mess around",
    "senses": [
     {
@@ -24348,15 +22483,6 @@
     {
      "pos": "phr.",
      "meaning": "多半, 通常"
-    }
-   ]
-  },
-  {
-   "word": "move about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "走来走去, 经常搬家"
     }
    ]
   },
@@ -24591,15 +22717,6 @@
     {
      "pos": "phr.",
      "meaning": "不很"
-    }
-   ]
-  },
-  {
-   "word": "nose about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "打听,探听,刺探"
     }
    ]
   },
@@ -25684,7 +23801,7 @@
    ]
   },
   {
-   "word": "poke about",
+   "word": "poke",
    "senses": [
     {
      "pos": "phr.",
@@ -25887,15 +24004,6 @@
     {
      "pos": "phr.",
      "meaning": "齐心协力"
-    }
-   ]
-  },
-  {
-   "word": "push about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "驱使,摆布"
     }
    ]
   },
@@ -26580,15 +24688,6 @@
     {
      "pos": "phr.",
      "meaning": "首屈一指"
-    }
-   ]
-  },
-  {
-   "word": "see about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "查询, 留意于, 料理"
     }
    ]
   },
@@ -27327,15 +25426,6 @@
     {
      "pos": "phr.",
      "meaning": "慢下来"
-    }
-   ]
-  },
-  {
-   "word": "smell about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "到处寻找, 到处嗅寻"
     }
    ]
   },
@@ -28524,15 +26614,6 @@
     {
      "pos": "phr.",
      "meaning": "完全, 彻底"
-    }
-   ]
-  },
-  {
-   "word": "throw about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "到处扔, 舞动"
     }
    ]
   },
@@ -29880,15 +27961,6 @@
     {
      "pos": "phr.",
      "meaning": "成为……的牺牲品"
-    }
-   ]
-  },
-  {
-   "word": "find out about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "查明"
     }
    ]
   },

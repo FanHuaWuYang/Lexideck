@@ -2447,7 +2447,7 @@
     },
     {
      "text": "if anything",
-     "meaning": "[口语] [用于补充内容以强调前面所说的话] 要是有什么的话"
+     "meaning": "[口语] [用于补充内容以强调前面所说的话]"
     }
    ]
   },
@@ -4251,13 +4251,14 @@
    ]
   },
   {
-   "word": "ballpoint = ballpoint pen",
+   "word": "ballpoint",
    "senses": [
     {
      "pos": "",
      "meaning": "圆珠笔"
     }
-   ]
+   ],
+   "note": "也作 ballpoint pen"
   },
   {
    "word": "bamboo",
@@ -4741,13 +4742,17 @@
    ]
   },
   {
-   "word": "beat beat beaten",
+   "word": "beat",
    "senses": [
     {
      "pos": "v.",
      "meaning": "敲打；跳动；打赢 n. （音乐）节拍 【一般现在 过去式 过去分词】"
     }
-   ]
+   ],
+   "forms": {
+    "past": "beat",
+    "past_participle": "beaten"
+   }
   },
   {
    "word": "beautiful",
@@ -5104,15 +5109,6 @@
    ]
   },
   {
-   "word": "bend bent bent",
-   "senses": [
-    {
-     "pos": "adj.",
-     "meaning": "弯曲的，变形的；vt. 使弯曲 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "beneath",
    "senses": [
     {
@@ -5330,15 +5326,6 @@
     {
      "pos": "a.",
      "meaning": "大的"
-    }
-   ]
-  },
-  {
-   "word": "bike = bicycle",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "自行车"
     }
    ]
   },
@@ -6048,10 +6035,6 @@
     {
      "text": "both ... and ",
      "meaning": "两个都；既…又…"
-    },
-    {
-     "text": "both ... and ",
-     "meaning": "两个都；既…又…"
     }
    ]
   },
@@ -6479,15 +6462,6 @@
    ]
   },
   {
-   "word": "bring brought brought",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "拿来，带来，取来 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "Britain",
    "senses": [
     {
@@ -6674,15 +6648,6 @@
     {
      "pos": "n.",
      "meaning": "自助餐"
-    }
-   ]
-  },
-  {
-   "word": "build built built",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "建筑；造 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -6995,15 +6960,6 @@
     {
      "pos": "n.",
      "meaning": "纽扣；（电铃等的）按钮 v. 扣（纽扣） "
-    }
-   ]
-  },
-  {
-   "word": "buy bought bought",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "买【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -7452,7 +7408,7 @@
     },
     {
      "text": "take care of",
-     "meaning": "照顾；照料 (care for / look after)； 处理"
+     "meaning": "照顾"
     },
     {
      "text": "Would you care for sth?",
@@ -7676,15 +7632,6 @@
     {
      "pos": "n.",
      "meaning": "灾难，灾祸，不幸事件"
-    }
-   ]
-  },
-  {
-   "word": "catch caught caught",
-   "senses": [
-    {
-     "pos": "",
-     "meaning": "v. 接住；捉住；赶上；染上（疾病） 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -10218,7 +10165,7 @@
     },
     {
      "text": "as a consequence of sth / in consequence of sth",
-     "meaning": "[正式用语] 由于…的缘故 as a result of sth"
+     "meaning": "[正式用语] 由于…的缘故 as a"
     }
    ]
   },
@@ -10476,7 +10423,7 @@
    "phrases": [
     {
      "text": "(be) content (for sb) to do sth",
-     "meaning": "乐得（让某人）做 某事；满足于（让某人）做某事 (willing to do sth)"
+     "meaning": "乐得（让某人）做 某事"
     }
    ]
   },
@@ -11553,15 +11500,6 @@
    ]
   },
   {
-   "word": "dad = daddy",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "（口）爸爸，爹爹"
-    }
-   ]
-  },
-  {
    "word": "daily",
    "senses": [
     {
@@ -12228,7 +12166,7 @@
    "phrases": [
     {
      "text": "delight in",
-     "meaning": "[不用于被动语态] 以…为乐；喜欢 (尤指他人认为不好的事)"
+     "meaning": "[不用于被动语态] 以…为乐"
     }
    ]
   },
@@ -12834,15 +12772,6 @@
    ]
   },
   {
-   "word": "dig dug dug",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "挖（洞沟）,掘 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "digest",
    "senses": [
     {
@@ -13268,13 +13197,14 @@
    ]
   },
   {
-   "word": "disk =disc",
+   "word": "disk",
    "senses": [
     {
      "pos": "n.",
      "meaning": "磁盘"
     }
-   ]
+   ],
+   "note": "也作 disc"
   },
   {
    "word": "dislike",
@@ -13569,13 +13499,14 @@
    ]
   },
   {
-   "word": "does doesn't = does not",
+   "word": "does",
    "senses": [
     {
      "pos": "v.",
      "meaning": "动词do的第三人称单数现在式"
     }
-   ]
+   ],
+   "note": "也作 does not"
   },
   {
    "word": "dog",
@@ -13838,13 +13769,14 @@
    ]
   },
   {
-   "word": "drier =dryer",
+   "word": "drier",
    "senses": [
     {
      "pos": "n.",
      "meaning": "烘干机；吹风机"
     }
-   ]
+   ],
+   "note": "也作 dryer"
   },
   {
    "word": "drill",
@@ -14477,7 +14409,7 @@
     },
     {
      "text": "take effect",
-     "meaning": "生效 (come into effect)；起作用"
+     "meaning": "生效 (come into effect)"
     }
    ]
   },
@@ -14583,7 +14515,7 @@
    "phrases": [
     {
      "text": "either … or …",
-     "meaning": "[可连接两个单词、短语或句子] 或者…或者…；要么…要么…"
+     "meaning": "[可连接两个单词、短语或句子] 或者…或者…"
     }
    ]
   },
@@ -15505,15 +15437,6 @@
    ]
   },
   {
-   "word": "exam = examination",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "考试，测试；检查；审查"
-    }
-   ]
-  },
-  {
    "word": "examine",
    "senses": [
     {
@@ -15632,7 +15555,7 @@
     },
     {
      "text": "excuse me",
-     "meaning": "[用于与陌生人谈话、插话、表示异议等] 对不起；抱歉；劳驾"
+     "meaning": "[用于与陌生人谈话、插话、表示异议等] 对不起"
     }
    ]
   },
@@ -16447,7 +16370,7 @@
     },
     {
      "text": "by far",
-     "meaning": "[修饰比较级或最高级，强调数量、程度等] …得多；最"
+     "meaning": "[修饰比较级或最高级"
     }
    ]
   },
@@ -16643,24 +16566,6 @@
     {
      "text": "fee for",
      "meaning": "…的费用"
-    }
-   ]
-  },
-  {
-   "word": "feed fed fed",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "喂（养）；饲（养） 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
-   "word": "feel felt felt",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "& link 感觉，觉得；摸，触 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -17448,7 +17353,7 @@
    "senses": [
     {
      "pos": "vi.",
-     "meaning": "（鸟、飞机）飞；（人乘飞机）飞行；（旗子等）飘动 vt. 空运（乘客，货物等）；放（风筝、飞机模型等） 【一般现在 过去式 过去分词】"
+     "meaning": "（鸟、飞机）飞；（人乘飞机）飞行；（旗子等）飘动 vt. 空运（乘客，货物等）"
     }
    ]
   },
@@ -17654,7 +17559,7 @@
     },
     {
      "text": "for the sake of sb / sth",
-     "meaning": "为了某人 / 某事物的缘故 (for sb’s / sth’s sake)"
+     "meaning": "为了某人 / 某事物的缘故 (for sb’s"
     }
    ]
   },
@@ -18193,13 +18098,14 @@
    ]
   },
   {
-   "word": "fridge =refrigerator",
+   "word": "fridge",
    "senses": [
     {
      "pos": "n.",
      "meaning": "冰箱"
     }
-   ]
+   ],
+   "note": "也作 refrigerator"
   },
   {
    "word": "fried",
@@ -18822,15 +18728,6 @@
    ]
   },
   {
-   "word": "get got got",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "成为；得到；具有；到达 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "gettogether",
    "senses": [
     {
@@ -19254,22 +19151,24 @@
    ]
   },
   {
-   "word": "grandma = grandmother",
+   "word": "grandma",
    "senses": [
     {
      "pos": "n.",
      "meaning": "奶奶；外婆"
     }
-   ]
+   ],
+   "note": "也作 grandmother"
   },
   {
-   "word": "grandpa = grandfather",
+   "word": "grandpa",
    "senses": [
     {
      "pos": "n.",
      "meaning": "爷爷,外公"
     }
-   ]
+   ],
+   "note": "也作 grandfather"
   },
   {
    "word": "grandparents",
@@ -19688,15 +19587,6 @@
    ]
   },
   {
-   "word": "gym =gymnasium",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "体操；体育馆；健身房"
-    }
-   ]
-  },
-  {
    "word": "gymnastics",
    "senses": [
     {
@@ -19904,15 +19794,6 @@
     {
      "pos": "a.",
      "meaning": "便利的，顺手的 hang(hanged,hanged) v. 处（人）绞刑；上吊"
-    }
-   ]
-  },
-  {
-   "word": "hang hung hung",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "悬挂，吊着；把……吊起 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -20280,15 +20161,6 @@
     {
      "pos": "n.",
      "meaning": "堆 v. 堆起来"
-    }
-   ]
-  },
-  {
-   "word": "hear heard heard",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "听见；听说,得知【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -20734,15 +20606,6 @@
    ]
   },
   {
-   "word": "hit hit hit",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "& vt. 打,撞,击中【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "hive",
    "senses": [
     {
@@ -20757,15 +20620,6 @@
     {
      "pos": "n.",
      "meaning": "业余爱好，嗜好"
-    }
-   ]
-  },
-  {
-   "word": "hold held held",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "拿；抱；握住；举行；进行"
     }
    ]
   },
@@ -21306,15 +21160,6 @@
     {
      "text": "hurry up",
      "meaning": "[口语] 快点；(使) 加快"
-    }
-   ]
-  },
-  {
-   "word": "hurt hurt hurt",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "伤害，受伤；伤人感情 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -22912,15 +22757,6 @@
    ]
   },
   {
-   "word": "keep kept kept",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "保持；保存；继续不断 vt. 培育，饲养 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "keeper",
    "senses": [
     {
@@ -23556,29 +23392,11 @@
    ]
   },
   {
-   "word": "lay laid laid",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "放，搁 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "lazy",
    "senses": [
     {
      "pos": "a.",
      "meaning": "懒惰的"
-    }
-   ]
-  },
-  {
-   "word": "lead led led",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "领导，带领 n. 铅 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -23692,15 +23510,6 @@
    ]
   },
   {
-   "word": "leave left left",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "离开;把…留下，剩下 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "lecture",
    "senses": [
     {
@@ -23800,15 +23609,6 @@
     {
      "pos": "n.",
      "meaning": "柠檬水"
-    }
-   ]
-  },
-  {
-   "word": "lend lent lent",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "借(出),把…借给 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -24319,7 +24119,7 @@
    "phrases": [
     {
      "text": "live a ... life",
-     "meaning": "过…生活 (lead / have a ... life)"
+     "meaning": "过…生活 (lead / have a ..."
     },
     {
      "text": "live by",
@@ -24351,7 +24151,7 @@
    "phrases": [
     {
      "text": "make / earn a living",
-     "meaning": "谋生；度日 (earn one's living)"
+     "meaning": "谋生"
     }
    ]
   },
@@ -24512,15 +24312,6 @@
     {
      "text": "loss of sth",
      "meaning": "丧失…"
-    }
-   ]
-  },
-  {
-   "word": "lose lost lost",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "失去，丢失 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -24835,15 +24626,6 @@
     {
      "text": "majority of sth",
      "meaning": "大多数…"
-    }
-   ]
-  },
-  {
-   "word": "make made made",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "制造,做;使得 n. 样式；制造 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -25164,15 +24946,6 @@
    ]
   },
   {
-   "word": "mathematics =math / maths",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "（常作单数用）数学, (英美口语) 数学"
-    }
-   ]
-  },
-  {
    "word": "matter",
    "senses": [
     {
@@ -25267,15 +25040,6 @@
     {
      "pos": "n.",
      "meaning": "一餐（饭） "
-    }
-   ]
-  },
-  {
-   "word": "mean meant meant",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "意思,意指 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -25425,15 +25189,6 @@
     {
      "text": "medium of communication",
      "meaning": "交流媒介"
-    }
-   ]
-  },
-  {
-   "word": "meet met met",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "/ n. 遇见，见到 会；集会 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -25879,7 +25634,7 @@
     },
     {
      "text": "bear / keep … in mind",
-     "meaning": "将…记在心中；记起 (bear / keep in mind that)"
+     "meaning": "将…记在心中"
     }
    ]
   },
@@ -26046,13 +25801,17 @@
    ]
   },
   {
-   "word": "mistake mistook mistaken",
+   "word": "mistake",
    "senses": [
     {
      "pos": "n.",
      "meaning": "错误 vt. 弄错 【一般现在 过去式 过去分词】"
     }
-   ]
+   ],
+   "forms": {
+    "past": "mistook",
+    "past_participle": "mistaken"
+   }
   },
   {
    "word": "mistaken",
@@ -26182,15 +25941,6 @@
    ]
   },
   {
-   "word": "Mom =Mum",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "妈妈"
-    }
-   ]
-  },
-  {
    "word": "moment",
    "senses": [
     {
@@ -26214,13 +25964,14 @@
    ]
   },
   {
-   "word": "mommy = mummy",
+   "word": "mommy",
    "senses": [
     {
      "pos": "n.",
      "meaning": "妈妈（美）"
     }
-   ]
+   ],
+   "note": "也作 mummy"
   },
   {
    "word": "Monday",
@@ -26345,7 +26096,7 @@
     },
     {
      "text": "more and more",
-     "meaning": "越来越 (多的 / 地) (increasingly)"
+     "meaning": "越来越 (多的 / 地)"
     },
     {
      "text": "more or less",
@@ -26404,7 +26155,7 @@
     },
     {
      "text": "make the most of",
-     "meaning": "充分利用 (get the most out of)"
+     "meaning": "充分利用 (get the most out"
     },
     {
      "text": "most of all",
@@ -30152,29 +29903,11 @@
    ]
   },
   {
-   "word": "phone = telephone",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "打电话 n. 电话，电话机"
-    }
-   ]
-  },
-  {
    "word": "phone-booth",
    "senses": [
     {
      "pos": "n.",
      "meaning": "公用电话间【连字符】"
-    }
-   ]
-  },
-  {
-   "word": "photo =photograph",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "照片"
     }
    ]
   },
@@ -30326,7 +30059,7 @@
    "phrases": [
     {
      "text": "a piece of",
-     "meaning": "[与不可数名词连用] 一张 / 片 / 块等；一篇 / 首 / 幅等"
+     "meaning": "[与不可数名词连用] 一张 / 片 / 块等"
     },
     {
      "text": "a piece of cake",
@@ -30487,7 +30220,7 @@
     },
     {
      "text": "in place of",
-     "meaning": "代替；取代 (in sb’s / sth’s place)"
+     "meaning": "代替"
     },
     {
      "text": "out of place",
@@ -31018,15 +30751,6 @@
     {
      "text": "be poor in sth",
      "meaning": "缺乏…"
-    }
-   ]
-  },
-  {
-   "word": "pop = popular",
-   "senses": [
-    {
-     "pos": "a.",
-     "meaning": "(口语) （音乐、艺术等）大众的，通俗的"
     }
    ]
   },
@@ -35812,15 +35536,6 @@
    ]
   },
   {
-   "word": "say said said",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "说，讲 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "saying",
    "senses": [
     {
@@ -36405,15 +36120,6 @@
    ]
   },
   {
-   "word": "seek sought sought",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "试图;探寻 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "seem",
    "senses": [
     {
@@ -36516,29 +36222,11 @@
    ]
   },
   {
-   "word": "sell sold sold",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "卖，售 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "semicircle",
    "senses": [
     {
      "pos": "n.",
      "meaning": "半圆"
-    }
-   ]
-  },
-  {
-   "word": "send sent sent",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "打发，派遣；送，邮寄 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -36749,15 +36437,6 @@
     {
      "pos": "n.",
      "meaning": "一场,一节,一段时间"
-    }
-   ]
-  },
-  {
-   "word": "set set set",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "释放，安置 n. 装备，设备 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -37877,15 +37556,6 @@
    ]
   },
   {
-   "word": "sit sat sat",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "坐 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "situation",
    "senses": [
     {
@@ -38126,16 +37796,11 @@
      "pos": "n.",
      "meaning": "睡觉"
     }
-   ]
-  },
-  {
-   "word": "sleep slept slept",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "睡觉 【一般现在 过去式 过去分词】"
-    }
-   ]
+   ],
+   "forms": {
+    "past": "slept",
+    "past_participle": "slept"
+   }
   },
   {
    "word": "sleepy",
@@ -39168,15 +38833,6 @@
    ]
   },
   {
-   "word": "spend spent spent",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "度过；花费（钱、时间等） 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "spin",
    "senses": [
     {
@@ -39527,16 +39183,11 @@
      "text": "stand back",
      "meaning": "退后；退一步 (考虑问题)"
     }
-   ]
-  },
-  {
-   "word": "stand stood stood",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "站；立；起立；坐落；经受；持久 【一般现在 过去式 过去分词】"
-    }
-   ]
+   ],
+   "forms": {
+    "past": "stood",
+    "past_participle": "stood"
+   }
   },
   {
    "word": "standard",
@@ -39839,15 +39490,6 @@
     {
      "pos": "n.",
      "meaning": "女乘务员,空中小姐"
-    }
-   ]
-  },
-  {
-   "word": "stick stuck stuck",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "粘住，钉住；坚持n. 木棒（棍）,枝条 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -41064,15 +40706,6 @@
    ]
   },
   {
-   "word": "sweep swept swept",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "扫除，扫 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "sweet",
    "senses": [
     {
@@ -41082,13 +40715,17 @@
    ]
   },
   {
-   "word": "swell swelled swollen",
+   "word": "swell",
    "senses": [
     {
      "pos": "v.",
      "meaning": "肿胀 【一般现在 过去式 过去分词】"
     }
-   ]
+   ],
+   "forms": {
+    "past": "swelled",
+    "past_participle": "swollen"
+   }
   },
   {
    "word": "swift",
@@ -41576,15 +41213,6 @@
    ]
   },
   {
-   "word": "teach taught taught",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "教书,教"
-    }
-   ]
-  },
-  {
    "word": "teacher",
    "senses": [
     {
@@ -41757,15 +41385,6 @@
     {
      "pos": "n.",
      "meaning": "电视"
-    }
-   ]
-  },
-  {
-   "word": "tell told told",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "告诉,讲述,吩咐 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -42303,15 +41922,6 @@
     {
      "text": "for one thing …, for another (thing) …",
      "meaning": "首先 …， 再者…"
-    }
-   ]
-  },
-  {
-   "word": "think thought thought",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "想；认为；考虑 【一般现在 过去式 过去分词】"
     }
    ]
   },
@@ -44226,15 +43836,6 @@
    ]
   },
   {
-   "word": "understand understood understood",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "懂得;明白;理解 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "understanding",
    "senses": [
     {
@@ -44250,13 +43851,17 @@
    ]
   },
   {
-   "word": "undertake undertook undertaken",
+   "word": "undertake",
    "senses": [
     {
      "pos": "v.",
      "meaning": "承担，从事，负责 【一般现在 过去式 过去分词】"
     }
-   ]
+   ],
+   "forms": {
+    "past": "undertook",
+    "past_participle": "undertaken"
+   }
   },
   {
    "word": "underwear",
@@ -44585,7 +44190,7 @@
    "senses": [
     {
      "pos": "ad.",
-     "meaning": "向上；在上方；起来；在…以上 a. 上面的，向上的，上行的 n. 上升；上坡；上行；繁荣 v. 举起；拿起；提高 prep. 向(高处)；向(在)……上(面)游"
+     "meaning": "向上；在上方；起来；在…以上 a. 上面的，向上的，上行的 n. 上升；上坡；上行；繁荣 v. 举起；拿起"
     }
    ],
    "phrases": [
@@ -44975,13 +44580,14 @@
    ]
   },
   {
-   "word": "VCD = versatile compact disk",
+   "word": "VCD",
    "senses": [
     {
      "pos": "n.",
      "meaning": "影碟光盘"
     }
-   ]
+   ],
+   "note": "也作 versatile compact disk"
   },
   {
    "word": "veal",
@@ -46116,7 +45722,7 @@
    "senses": [
     {
      "pos": "",
-     "meaning": "(better, best) ad. 好,令人满意地,完全地 a.好的,,健康的int. 表示惊讶同意或犹豫等,亦用于接话语;好吧,那么,哎呀 n. 井"
+     "meaning": "(better, best) ad. 好,令人满意地,完全地 a.好的,,健康的int. 表示惊讶同意或犹豫等"
     }
    ],
    "phrases": [
@@ -46581,15 +46187,6 @@
    ]
   },
   {
-   "word": "win won won",
-   "senses": [
-    {
-     "pos": "n.",
-     "meaning": "获胜，赢得 【一般现在 过去式 过去分词】"
-    }
-   ]
-  },
-  {
    "word": "wind",
    "senses": [
     {
@@ -46602,16 +46199,11 @@
      "text": "wind sb. up",
      "meaning": "故意惹恼（某人；尤指开玩笑）"
     }
-   ]
-  },
-  {
-   "word": "wind wound wound",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "缠，连带；蜿蜒，弯曲 【一般现在 过去式 过去分词】"
-    }
-   ]
+   ],
+   "forms": {
+    "past": "wound",
+    "past_participle": "wound"
+   }
   },
   {
    "word": "windbreaker",
@@ -46855,7 +46447,7 @@
    "phrases": [
     {
      "text": "I wonder if / whether",
-     "meaning": "[礼貌的请求] (我) 不知是否 (I was wondering if / whether)"
+     "meaning": "[礼貌的请求] (我) 不知是否 (I was"
     },
     {
      "text": "(it is) no wonder (that)",
@@ -49702,7 +49294,7 @@
    ]
   },
   {
-   "word": "come about",
+   "word": "come",
    "senses": [
     {
      "pos": "phr.",
@@ -50179,7 +49771,7 @@
    ]
   },
   {
-   "word": "be concerned about",
+   "word": "be concerned",
    "senses": [
     {
      "pos": "phr.",
@@ -50400,15 +49992,6 @@
     {
      "pos": "phr.",
      "meaning": "喜爱"
-    }
-   ]
-  },
-  {
-   "word": "care about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "关心"
     }
    ]
   },
@@ -54043,7 +53626,7 @@
    ]
   },
   {
-   "word": "set about",
+   "word": "set",
    "senses": [
     {
      "pos": "phr.",
@@ -56110,15 +55693,6 @@
    ]
   },
   {
-   "word": "be about to",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "即将"
-    }
-   ]
-  },
-  {
    "word": "be absorbed in",
    "senses": [
     {
@@ -56182,7 +55756,7 @@
    ]
   },
   {
-   "word": "be anxious about",
+   "word": "be anxious",
    "senses": [
     {
      "pos": "phr.",
@@ -56368,7 +55942,7 @@
    ]
   },
   {
-   "word": "be crazy about",
+   "word": "be crazy",
    "senses": [
     {
      "pos": "phr.",
@@ -56377,7 +55951,7 @@
    ]
   },
   {
-   "word": "be curious about",
+   "word": "be curious",
    "senses": [
     {
      "pos": "phr.",
@@ -56602,7 +56176,7 @@
    ]
   },
   {
-   "word": "be keen about",
+   "word": "be keen",
    "senses": [
     {
      "pos": "phr.",
@@ -56701,7 +56275,7 @@
    ]
   },
   {
-   "word": "be particular about",
+   "word": "be particular",
    "senses": [
     {
      "pos": "phr.",
@@ -56836,7 +56410,7 @@
    ]
   },
   {
-   "word": "be sure about",
+   "word": "be sure",
    "senses": [
     {
      "pos": "phr.",
@@ -57178,7 +56752,7 @@
    ]
   },
   {
-   "word": "bring about",
+   "word": "bring",
    "senses": [
     {
      "pos": "phr.",
@@ -57709,15 +57283,6 @@
    ]
   },
   {
-   "word": "cast about for",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "寻找"
-    }
-   ]
-  },
-  {
    "word": "cast aside",
    "senses": [
     {
@@ -58029,15 +57594,6 @@
     {
      "pos": "phr.",
      "meaning": "整理, 消除, 放晴"
-    }
-   ]
-  },
-  {
-   "word": "close about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "围住, 包围"
     }
    ]
   },
@@ -58465,7 +58021,7 @@
    ]
   },
   {
-   "word": "complain about",
+   "word": "complain",
    "senses": [
     {
      "pos": "phr.",
@@ -59442,15 +58998,6 @@
     {
      "pos": "phr.",
      "meaning": "开出"
-    }
-   ]
-  },
-  {
-   "word": "dream about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "想见,梦见,考虑"
     }
    ]
   },
@@ -60616,15 +60163,6 @@
    ]
   },
   {
-   "word": "forget about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "忘记,忘却"
-    }
-   ]
-  },
-  {
    "word": "free and easy",
    "senses": [
     {
@@ -60724,7 +60262,7 @@
    ]
   },
   {
-   "word": "get about",
+   "word": "get",
    "senses": [
     {
      "pos": "phr.",
@@ -61084,7 +60622,7 @@
    ]
   },
   {
-   "word": "go about",
+   "word": "go",
    "senses": [
     {
      "pos": "phr.",
@@ -61469,7 +61007,7 @@
    ]
   },
   {
-   "word": "hang about",
+   "word": "hang",
    "senses": [
     {
      "pos": "phr.",
@@ -61838,7 +61376,7 @@
    ]
   },
   {
-   "word": "hear about",
+   "word": "hear",
    "senses": [
     {
      "pos": "phr.",
@@ -62050,15 +61588,6 @@
     {
      "pos": "phr.",
      "meaning": "能盛水, 站得住脚"
-    }
-   ]
-  },
-  {
-   "word": "how about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "…怎么样, …怎么办"
     }
    ]
   },
@@ -63638,7 +63167,7 @@
    ]
   },
   {
-   "word": "inquire about",
+   "word": "inquire",
    "senses": [
     {
      "pos": "phr.",
@@ -63802,15 +63331,6 @@
     {
      "pos": "phr.",
      "meaning": "等一会儿"
-    }
-   ]
-  },
-  {
-   "word": "just about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "几乎, 正是"
     }
    ]
   },
@@ -64265,7 +63785,7 @@
    ]
   },
   {
-   "word": "know about",
+   "word": "know",
    "senses": [
     {
      "pos": "phr.",
@@ -64468,15 +63988,6 @@
     {
      "pos": "phr.",
      "meaning": "接受教训,吸取教训"
-    }
-   ]
-  },
-  {
-   "word": "learn about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "学习,听说,得悉,了解"
     }
    ]
   },
@@ -64873,15 +64384,6 @@
     {
      "pos": "phr.",
      "meaning": "在...以前很久"
-    }
-   ]
-  },
-  {
-   "word": "look about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "四处寻找, 考虑, 察看"
     }
    ]
   },
@@ -68541,15 +68043,6 @@
    ]
   },
   {
-   "word": "talk about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "讨论, 谈论"
-    }
-   ]
-  },
-  {
    "word": "talk of",
    "senses": [
     {
@@ -68685,7 +68178,7 @@
    ]
   },
   {
-   "word": "think about",
+   "word": "think",
    "senses": [
     {
      "pos": "phr.",
@@ -69477,15 +68970,6 @@
    ]
   },
   {
-   "word": "wander about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "漫步, 徘徊"
-    }
-   ]
-  },
-  {
    "word": "warm up",
    "senses": [
     {
@@ -69590,15 +69074,6 @@
     {
      "pos": "phr.",
      "meaning": "穿破, 用坏, 疲劳, 经受住, 消磨"
-    }
-   ]
-  },
-  {
-   "word": "what about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "怎么样，以为如何（提出建议或用以引出话题）"
     }
    ]
   },
@@ -69815,15 +69290,6 @@
     {
      "pos": "phr.",
      "meaning": "永远"
-    }
-   ]
-  },
-  {
-   "word": "worry about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "焦虑..., 为...而操心/担心"
     }
    ]
   },
@@ -70365,30 +69831,6 @@
    ]
   },
   {
-   "word": "be about to do",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "即将做"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "be about to do sth",
-     "meaning": "即将做某事"
-    }
-   ]
-  },
-  {
-   "word": "be about to do sth.",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "即将做某事"
-    }
-   ]
-  },
-  {
    "word": "be acquainted with",
    "senses": [
     {
@@ -70443,20 +69885,11 @@
    ]
   },
   {
-   "word": "be angry about",
+   "word": "be angry",
    "senses": [
     {
      "pos": "phr.",
      "meaning": "因……生气"
-    }
-   ]
-  },
-  {
-   "word": "be angry about sth.",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "因某事生气"
     }
    ]
   },
@@ -70830,7 +70263,7 @@
    ]
   },
   {
-   "word": "be pleased about",
+   "word": "be pleased",
    "senses": [
     {
      "pos": "phr.",
@@ -71435,15 +70868,6 @@
     {
      "pos": "phr.",
      "meaning": "随着……跳舞"
-    }
-   ]
-  },
-  {
-   "word": "debate about",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "关于……辩论"
     }
    ]
   },
@@ -73356,15 +72780,6 @@
    ]
   },
   {
-   "word": "look about for",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "四处寻找"
-    }
-   ]
-  },
-  {
    "word": "look away from",
    "senses": [
     {
@@ -74277,7 +73692,7 @@
    ]
   },
   {
-   "word": "quarrel with sb. about sth.",
+   "word": "quarrel with sb.",
    "senses": [
     {
      "pos": "phr.",
@@ -74313,20 +73728,11 @@
    ]
   },
   {
-   "word": "raise doubt about",
+   "word": "raise doubt",
    "senses": [
     {
      "pos": "phr.",
      "meaning": "对……提出质疑"
-    }
-   ]
-  },
-  {
-   "word": "raise doubt about sth.",
-   "senses": [
-    {
-     "pos": "phr.",
-     "meaning": "对某事提出质疑"
     }
    ]
   },
@@ -75150,7 +74556,7 @@
    ]
   },
   {
-   "word": "tell about",
+   "word": "tell",
    "senses": [
     {
      "pos": "phr.",
@@ -75186,7 +74592,7 @@
    ]
   },
   {
-   "word": "tell sb. about sth.",
+   "word": "tell sb.",
    "senses": [
     {
      "pos": "phr.",
@@ -75675,7 +75081,7 @@
    ]
   },
   {
-   "word": "warn about",
+   "word": "warn",
    "senses": [
     {
      "pos": "phr.",
@@ -77220,7 +76626,7 @@
    ]
   },
   {
-   "word": "be careful about",
+   "word": "be careful",
    "senses": [
     {
      "pos": "phr.",
@@ -77229,7 +76635,7 @@
    ]
   },
   {
-   "word": "be certain about",
+   "word": "be certain",
    "senses": [
     {
      "pos": "phr.",
@@ -77238,7 +76644,7 @@
    ]
   },
   {
-   "word": "be disappointed about",
+   "word": "be disappointed",
    "senses": [
     {
      "pos": "phr.",
@@ -77247,7 +76653,7 @@
    ]
   },
   {
-   "word": "be excited about",
+   "word": "be excited",
    "senses": [
     {
      "pos": "phr.",
@@ -77256,7 +76662,7 @@
    ]
   },
   {
-   "word": "be glad about",
+   "word": "be glad",
    "senses": [
     {
      "pos": "phr.",
@@ -77265,7 +76671,7 @@
    ]
   },
   {
-   "word": "be happy about",
+   "word": "be happy",
    "senses": [
     {
      "pos": "phr.",
@@ -77274,7 +76680,7 @@
    ]
   },
   {
-   "word": "be hopeful about",
+   "word": "be hopeful",
    "senses": [
     {
      "pos": "phr.",
@@ -77283,7 +76689,7 @@
    ]
   },
   {
-   "word": "be nervous about",
+   "word": "be nervous",
    "senses": [
     {
      "pos": "phr.",
@@ -77292,7 +76698,7 @@
    ]
   },
   {
-   "word": "be sad about",
+   "word": "be sad",
    "senses": [
     {
      "pos": "phr.",
@@ -77301,7 +76707,7 @@
    ]
   },
   {
-   "word": "be serious about",
+   "word": "be serious",
    "senses": [
     {
      "pos": "phr.",
@@ -77310,7 +76716,7 @@
    ]
   },
   {
-   "word": "be worried about",
+   "word": "be worried",
    "senses": [
     {
      "pos": "phr.",
@@ -78621,7 +78027,7 @@
    ]
   },
   {
-   "word": "be strict about",
+   "word": "be strict",
    "senses": [
     {
      "pos": "phr.",
@@ -78706,53 +78112,11 @@
      "text": "that is to say",
      "meaning": "也就是说"
     }
-   ]
-  },
-  {
-   "word": "go",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "去, 走, 达到, 运转, 查阅, 消失, 结束, 放弃, 花费, 流传, 趋于"
-    }
    ],
-   "phrases": [
-    {
-     "text": "(be) on the go",
-     "meaning": "忙个不停"
-    },
-    {
-     "text": "go about",
-     "meaning": "从事；忙于；开始做"
-    },
-    {
-     "text": "go after",
-     "meaning": "追赶；追求；谋求"
-    }
-   ]
-  },
-  {
-   "word": "get",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "得到, 获得, 变成, 使得, 收获, 接通, 抓住, 染上"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "get sth. done",
-     "meaning": "让某事被做"
-    },
-    {
-     "text": "get sb. to do sth",
-     "meaning": "使（要）某人做某事"
-    },
-    {
-     "text": "get sb. doing sth",
-     "meaning": "使某人做某事"
-    }
-   ]
+   "forms": {
+    "past": "said",
+    "past_participle": "said"
+   }
   },
   {
    "word": "make",
@@ -78775,53 +78139,11 @@
      "text": "be made from / of",
      "meaning": "由…制造；用…为原料制取"
     }
-   ]
-  },
-  {
-   "word": "know",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "知道, 了解, 认识, 确信"
-    }
    ],
-   "phrases": [
-    {
-     "text": "be known as",
-     "meaning": "以…而出名；被称作；被认为"
-    },
-    {
-     "text": "be known for",
-     "meaning": "因…而闻名 (be famous for)"
-    },
-    {
-     "text": "be known to",
-     "meaning": "为…所熟知"
-    }
-   ]
-  },
-  {
-   "word": "think",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "想, 考虑, 想起, 想像, 打算, 认为"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "think about",
-     "meaning": "思考；考虑"
-    },
-    {
-     "text": "think highly of",
-     "meaning": "对…高度评价"
-    },
-    {
-     "text": "think of ... as ",
-     "meaning": "把…看作…；认为…是…"
-    }
-   ]
+   "forms": {
+    "past": "made",
+    "past_participle": "made"
+   }
   },
   {
    "word": "take",
@@ -78866,29 +78188,6 @@
     {
      "text": "let me see / let’s see",
      "meaning": "让我 (们) 看看；让我 (们) 想想"
-    }
-   ]
-  },
-  {
-   "word": "come",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "过来, 来, 到达, 出现, 开始"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "come about",
-     "meaning": "(尤指未经计划地) 发生；产生"
-    },
-    {
-     "text": "come along",
-     "meaning": "一起来；出现；（非正式用语）进展"
-    },
-    {
-     "text": "come and go",
-     "meaning": "来来去去；时有时无"
     }
    ]
   },
@@ -78943,30 +78242,7 @@
     },
     {
      "text": "many a",
-     "meaning": "[正式用语] [接可数名词单数作主语时，谓语动词用单数] 许多的；非常多的"
-    }
-   ]
-  },
-  {
-   "word": "tell",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "告诉, 说, 吩咐, 断定, 知道"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "tell sb. to do sth",
-     "meaning": "告诉某人做某事"
-    },
-    {
-     "text": "tell sb. sth. = tell sth. to sb",
-     "meaning": "告诉某人某事"
-    },
-    {
-     "text": "tell ... apart",
-     "meaning": "区分开"
+     "meaning": "[正式用语] [接可数名词单数作主语时"
     }
    ]
   },
@@ -79055,7 +78331,11 @@
      "text": "feel at home",
      "meaning": "感觉自在；无拘束"
     }
-   ]
+   ],
+   "forms": {
+    "past": "felt",
+    "past_participle": "felt"
+   }
   },
   {
    "word": "much",
@@ -79101,7 +78381,11 @@
      "text": "leave room for",
      "meaning": "为…留有余地"
     }
-   ]
+   ],
+   "forms": {
+    "past": "left",
+    "past_participle": "left"
+   }
   },
   {
    "word": "mean",
@@ -79124,7 +78408,11 @@
      "text": "be meant to be",
      "meaning": "被普遍认为是"
     }
-   ]
+   ],
+   "forms": {
+    "past": "meant",
+    "past_participle": "meant"
+   }
   },
   {
    "word": "keep",
@@ -79147,7 +78435,11 @@
      "text": "keep sb. doing sth",
      "meaning": "使某人不停地做某事"
     }
-   ]
+   ],
+   "forms": {
+    "past": "kept",
+    "past_participle": "kept"
+   }
   },
   {
    "word": "begin",
@@ -79165,29 +78457,6 @@
     {
      "text": "to begin with",
      "meaning": "[插入语] 首先；第一"
-    }
-   ]
-  },
-  {
-   "word": "hear",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "听到, 倾听, 听说, 审理"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "hear sb. doing sth",
-     "meaning": "听见某人正在做某事"
-    },
-    {
-     "text": "hear sb. do sth",
-     "meaning": "听见某人做某事"
-    },
-    {
-     "text": "hear about",
-     "meaning": "听说 (…的情况)"
     }
    ]
   },
@@ -79235,30 +78504,11 @@
      "text": "catch / get / take (a) hold of",
      "meaning": "抓住；拿着；握住"
     }
-   ]
-  },
-  {
-   "word": "bring",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "带来, 产生, 促使, 提出"
-    }
    ],
-   "phrases": [
-    {
-     "text": "bring sb. doing sth",
-     "meaning": "引起某人做某事"
-    },
-    {
-     "text": "bring sb. sth. = bring sth. to sb",
-     "meaning": "把某带给某人"
-    },
-    {
-     "text": "bring about",
-     "meaning": "引起； 造成"
-    }
-   ]
+   "forms": {
+    "past": "held",
+    "past_participle": "held"
+   }
   },
   {
    "word": "little",
@@ -79296,7 +78546,11 @@
      "text": "sit up",
      "meaning": "坐起来；坐直；熬夜"
     }
-   ]
+   ],
+   "forms": {
+    "past": "sat",
+    "past_participle": "sat"
+   }
   },
   {
    "word": "bad",
@@ -79326,7 +78580,11 @@
      "text": "lose oneself in",
      "meaning": "专心于；全神贯注于"
     }
-   ]
+   ],
+   "forms": {
+    "past": "lost",
+    "past_participle": "lost"
+   }
   },
   {
    "word": "meet",
@@ -79341,30 +78599,11 @@
      "text": "meet up",
      "meaning": "碰面；会面"
     }
-   ]
-  },
-  {
-   "word": "set",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "放, 安置, 放置, 设定, 使凝结, 点燃, 确定, 点缀, 使就位, 树立"
-    }
    ],
-   "phrases": [
-    {
-     "text": "set sb. doing sth",
-     "meaning": "使（引起）某人做某事"
-    },
-    {
-     "text": "set about",
-     "meaning": "开始；着手"
-    },
-    {
-     "text": "set aside",
-     "meaning": "留出；把…置于一旁"
-    }
-   ]
+   "forms": {
+    "past": "met",
+    "past_participle": "met"
+   }
   },
   {
    "word": "body",
@@ -79402,7 +78641,11 @@
      "text": "lead a ... life",
      "meaning": "过着……的生活"
     }
-   ]
+   ],
+   "forms": {
+    "past": "led",
+    "past_participle": "led"
+   }
   },
   {
    "word": "understand",
@@ -79421,7 +78664,11 @@
      "text": "make oneself understood",
      "meaning": "[尤指用另一种语 言] 把自己的意思说清楚"
     }
-   ]
+   ],
+   "forms": {
+    "past": "understood",
+    "past_participle": "understood"
+   }
   },
   {
    "word": "speak",
@@ -79463,7 +78710,11 @@
      "text": "spend time/money on sth",
      "meaning": "把时间或钱花在…上"
     }
-   ]
+   ],
+   "forms": {
+    "past": "spent",
+    "past_participle": "spent"
+   }
   },
   {
    "word": "grow",
@@ -79501,7 +78752,11 @@
      "text": "win ... back",
      "meaning": "赢回；重新获得"
     }
-   ]
+   ],
+   "forms": {
+    "past": "won",
+    "past_participle": "won"
+   }
   },
   {
    "word": "foot",
@@ -79543,7 +78798,11 @@
      "text": "buy up",
      "meaning": "迅速地囤积；大量买下"
     }
-   ]
+   ],
+   "forms": {
+    "past": "bought",
+    "past_participle": "bought"
+   }
   },
   {
    "word": "send",
@@ -79566,7 +78825,11 @@
      "text": "send away",
      "meaning": "解雇；把…打发走"
     }
-   ]
+   ],
+   "forms": {
+    "past": "sent",
+    "past_participle": "sent"
+   }
   },
   {
    "word": "build",
@@ -79585,7 +78848,11 @@
      "text": "build up",
      "meaning": "树立；逐步建立；增强"
     }
-   ]
+   ],
+   "forms": {
+    "past": "built",
+    "past_participle": "built"
+   }
   },
   {
    "word": "sell",
@@ -79608,7 +78875,11 @@
      "text": "sell oneself",
      "meaning": "自荐"
     }
-   ]
+   ],
+   "forms": {
+    "past": "sold",
+    "past_participle": "sold"
+   }
   },
   {
    "word": "drive",
@@ -79661,7 +78932,11 @@
      "text": "take a hit",
      "meaning": "遭到破坏；受到严重影响"
     }
-   ]
+   ],
+   "forms": {
+    "past": "hit",
+    "past_participle": "hit"
+   }
   },
   {
    "word": "eat",
@@ -79707,7 +78982,11 @@
      "text": "teach sb a lesson",
      "meaning": "给某人一个教训"
     }
-   ]
+   ],
+   "forms": {
+    "past": "taught",
+    "past_participle": "taught"
+   }
   },
   {
    "word": "phone",
@@ -79722,7 +79001,8 @@
      "text": "(be) on the phone",
      "meaning": "在打电话"
     }
-   ]
+   ],
+   "note": "也作 telephone"
   },
   {
    "word": "catch",
@@ -79745,7 +79025,11 @@
      "text": "catch sb’s eye",
      "meaning": "引起某人注意"
     }
-   ]
+   ],
+   "forms": {
+    "past": "caught",
+    "past_participle": "caught"
+   }
   },
   {
    "word": "draw",
@@ -79806,7 +79090,11 @@
      "text": "seek out",
      "meaning": "找出；找到"
     }
-   ]
+   ],
+   "forms": {
+    "past": "sought",
+    "past_participle": "sought"
+   }
   },
   {
    "word": "throw",
@@ -79823,7 +79111,7 @@
     },
     {
      "text": "throw away",
-     "meaning": "扔掉(throw out)；浪费 (金钱等)；放过 (机会等)"
+     "meaning": "扔掉(throw out)；浪费 (金钱等)"
     },
     {
      "text": "throw off",
@@ -79874,30 +79162,11 @@
      "text": "lay down",
      "meaning": "放下；停止使用 (put down)；规定"
     }
-   ]
-  },
-  {
-   "word": "hang",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "悬挂, 附着, 装饰, 垂下, 踌躇, 绞死, 使悬而未决"
-    }
    ],
-   "phrases": [
-    {
-     "text": "hang about / around",
-     "meaning": "(在…附近) 闲逛；晃悠"
-    },
-    {
-     "text": "hang about / around with sb",
-     "meaning": "与某人厮混；聚在一起"
-    },
-    {
-     "text": "hang on",
-     "meaning": "抓紧不放；[非正式用语] 不要挂断(hold on)"
-    }
-   ]
+   "forms": {
+    "past": "laid",
+    "past_participle": "laid"
+   }
   },
   {
    "word": "shake",
@@ -79930,29 +79199,6 @@
    ]
   },
   {
-   "word": "beat",
-   "senses": [
-    {
-     "pos": "v.",
-     "meaning": "打, 拍打, 打败"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "beat about / around the bush",
-     "meaning": "说话拐弯抹角"
-    },
-    {
-     "text": "beat sb down",
-     "meaning": "使某人沮丧"
-    },
-    {
-     "text": "beat out",
-     "meaning": "打败"
-    }
-   ]
-  },
-  {
    "word": "shot",
    "senses": [
     {
@@ -79974,7 +79220,11 @@
      "text": "it won’t / doesn’t hurt (sb) to do sth",
      "meaning": "(某人) 做某事也无妨"
     }
-   ]
+   ],
+   "forms": {
+    "past": "hurt",
+    "past_participle": "hurt"
+   }
   },
   {
    "word": "stick",
@@ -79997,7 +79247,11 @@
      "text": "stick out",
      "meaning": "伸出；突出"
     }
-   ]
+   ],
+   "forms": {
+    "past": "stuck",
+    "past_participle": "stuck"
+   }
   },
   {
    "word": "hide",
@@ -80038,7 +79292,7 @@
    "phrases": [
     {
      "text": "(be) fed up with",
-     "meaning": "(对…) 感到厌烦 (be bored with)"
+     "meaning": "(对…) 感到厌烦 (be bored"
     },
     {
      "text": "feed back (into / to)",
@@ -80048,7 +79302,11 @@
      "text": "feed into",
      "meaning": "对…的发展产生影响"
     }
-   ]
+   ],
+   "forms": {
+    "past": "fed",
+    "past_participle": "fed"
+   }
   },
   {
    "word": "photo",
@@ -80057,26 +79315,8 @@
      "pos": "v.",
      "meaning": "照相"
     }
-   ]
-  },
-  {
-   "word": "mistake",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "犯错, 误认"
-    }
    ],
-   "phrases": [
-    {
-     "text": "by mistake",
-     "meaning": "错误地；无意地 (accidentally)"
-    },
-    {
-     "text": "mistake ... for",
-     "meaning": "把…错当成…"
-    }
-   ]
+   "note": "也作 photograph"
   },
   {
    "word": "leaf",
@@ -80100,7 +79340,8 @@
      "pos": "n.",
      "meaning": "妈妈"
     }
-   ]
+   ],
+   "note": "也作 Mum"
   },
   {
    "word": "ring",
@@ -80141,25 +79382,6 @@
    ]
   },
   {
-   "word": "warn",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "警告, 提醒, 通知"
-    }
-   ],
-   "phrases": [
-    {
-     "text": "warn sb. to do sth",
-     "meaning": "警告某人做某事"
-    },
-    {
-     "text": "warn sb. of sth",
-     "meaning": "警告某人有某情况"
-    }
-   ]
-  },
-  {
    "word": "steal",
    "senses": [
     {
@@ -80185,7 +79407,8 @@
      "pos": "n.",
      "meaning": "爸爸, 爹爹"
     }
-   ]
+   ],
+   "note": "也作 daddy"
   },
   {
    "word": "tooth",
@@ -80203,7 +79426,8 @@
      "pos": "n.",
      "meaning": "自行车, 脚踏车"
     }
-   ]
+   ],
+   "note": "也作 bicycle"
   },
   {
    "word": "bend",
@@ -80218,7 +79442,11 @@
      "text": "bend to sb’s will",
      "meaning": "[正式用语] 屈服于某人的意愿"
     }
-   ]
+   ],
+   "forms": {
+    "past": "bent",
+    "past_participle": "bent"
+   }
   },
   {
    "word": "dig",
@@ -80241,7 +79469,11 @@
      "text": "dig up",
      "meaning": "掘起；开垦 (荒地)；搜集"
     }
-   ]
+   ],
+   "forms": {
+    "past": "dug",
+    "past_participle": "dug"
+   }
   },
   {
    "word": "grandmother",
@@ -80265,7 +79497,8 @@
      "text": "pop up",
      "meaning": "突然出现；冒出来"
     }
-   ]
+   ],
+   "note": "也作 popular"
   },
   {
    "word": "arise",
@@ -80289,7 +79522,11 @@
      "pos": "vt.",
      "meaning": "扫除, 掸去, 猛拉, 扫荡, 肃清, 冲走, 刮起, 环视, 掠过, 扫射"
     }
-   ]
+   ],
+   "forms": {
+    "past": "swept",
+    "past_participle": "swept"
+   }
   },
   {
    "word": "shelf",
@@ -80410,7 +79647,11 @@
      "text": "give / lend (sb) a hand",
      "meaning": "帮助 (某人)"
     }
-   ]
+   ],
+   "forms": {
+    "past": "lent",
+    "past_participle": "lent"
+   }
   },
   {
    "word": "gym",
@@ -80419,16 +79660,8 @@
      "pos": "n.",
      "meaning": "+体育馆, 体育训练, 体育课, 体操"
     }
-   ]
-  },
-  {
-   "word": "undertake",
-   "senses": [
-    {
-     "pos": "vt.",
-     "meaning": "试图, 从事, 保证, 承担, 同意, 接受"
-    }
-   ]
+   ],
+   "note": "也作 gymnasium"
   },
   {
    "word": "wolf",
@@ -80446,7 +79679,8 @@
      "pos": "n.",
      "meaning": "考试, 测验"
     }
-   ]
+   ],
+   "note": "也作 examination"
   },
   {
    "word": "mathematics",
@@ -80455,7 +79689,8 @@
      "pos": "n.",
      "meaning": "数学"
     }
-   ]
+   ],
+   "note": "也作 math / maths"
   },
   {
    "word": "ambassador",
@@ -80481,15 +79716,6 @@
     {
      "pos": "n.",
      "meaning": "祖父母"
-    }
-   ]
-  },
-  {
-   "word": "swell",
-   "senses": [
-    {
-     "pos": "vi.",
-     "meaning": "增大, 膨胀, 肿胀, 增强, 骄傲"
     }
    ]
   }
