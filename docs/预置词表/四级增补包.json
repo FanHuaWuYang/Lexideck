@@ -9,6 +9,16 @@
      "pos": "ad.",
      "meaning": "完全地；绝对地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "Absolutely!",
+     "meaning": "正是；当然"
+    },
+    {
+     "text": "Absolutely not!",
+     "meaning": "绝对不行；当然不"
+    }
    ]
   },
   {
@@ -27,6 +37,16 @@
      "pos": "a.",
      "meaning": "可接受/合意的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be acceptable to sb",
+     "meaning": "为某人所接受"
+    },
+    {
+     "text": "be acceptable for sth",
+     "meaning": "适合用于某事"
+    }
    ]
   },
   {
@@ -35,6 +55,20 @@
     {
      "pos": "n.",
      "meaning": "接受，验收；承认"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "acceptance of sth",
+     "meaning": "对…的接受"
+    },
+    {
+     "text": "acceptance by sb",
+     "meaning": "被某人接受"
+    },
+    {
+     "text": "acceptance into sth",
+     "meaning": "被接纳进入…"
     }
    ]
   },
@@ -62,6 +96,20 @@
     {
      "pos": "vt.",
      "meaning": "容纳;供应,供给"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "accommodate sb. with sth",
+     "meaning": "为某人提供…"
+    },
+    {
+     "text": "accommodate oneself to sth",
+     "meaning": "使自己适应"
+    },
+    {
+     "text": "accommodate to sth",
+     "meaning": "适应…"
     }
    ]
   },
@@ -99,6 +147,16 @@
      "pos": "a.",
      "meaning": "准确的，正确无误的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be accurate in sth",
+     "meaning": "在…上准确"
+    },
+    {
+     "text": "be accurate to sth",
+     "meaning": "精确到"
+    }
    ]
   },
   {
@@ -126,6 +184,12 @@
      "pos": "a.",
      "meaning": "附加的，追加的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be additional to sth",
+     "meaning": "附加于…之上"
+    }
    ]
   },
   {
@@ -143,6 +207,16 @@
     {
      "pos": "a.",
      "meaning": "先进的；高级的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be advanced in sth",
+     "meaning": "在某方面先进／年长"
+    },
+    {
+     "text": "be advanced to sth",
+     "meaning": "被提升到某一级别"
     }
    ]
   },
@@ -189,6 +263,16 @@
      "pos": "vt.",
      "meaning": "改变，变更；改做"
     }
+   ],
+   "phrases": [
+    {
+     "text": "alter sth. into sth",
+     "meaning": "把某物改成…"
+    },
+    {
+     "text": "alter sth. for sb",
+     "meaning": "为某人改动某物"
+    }
    ]
   },
   {
@@ -234,6 +318,12 @@
      "pos": "n.",
      "meaning": "天使，神差，安琪儿"
     }
+   ],
+   "phrases": [
+    {
+     "text": "angel of sth",
+     "meaning": "…的化身"
+    }
    ]
   },
   {
@@ -251,6 +341,16 @@
     {
      "pos": "vt.",
      "meaning": "预料，预期，期望"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "anticipate doing sth",
+     "meaning": "预计会做某事"
+    },
+    {
+     "text": "anticipate sth. from sb",
+     "meaning": "期待从某人处得到某物"
     }
    ]
   },
@@ -288,6 +388,16 @@
      "pos": "n.",
      "meaning": "赞成，同意；批准"
     }
+   ],
+   "phrases": [
+    {
+     "text": "approval of sth",
+     "meaning": "对…的批准"
+    },
+    {
+     "text": "approval for sth",
+     "meaning": "对…的认可"
+    }
    ]
   },
   {
@@ -314,6 +424,12 @@
     {
      "pos": "vi.",
      "meaning": "出现；由…引起"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "arise from / out of",
+     "meaning": "因…产生；由…引起"
     }
    ]
   },
@@ -342,6 +458,16 @@
      "pos": "vt.",
      "meaning": "集合，召集；装配"
     }
+   ],
+   "phrases": [
+    {
+     "text": "assemble sth into sth",
+     "meaning": "把…装配成"
+    },
+    {
+     "text": "assemble for sth",
+     "meaning": "为…集合"
+    }
    ]
   },
   {
@@ -350,6 +476,12 @@
     {
      "pos": "n.",
      "meaning": "集合；集会；装配"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "assembly of sth",
+     "meaning": "…的装配；集会"
     }
    ]
   },
@@ -360,6 +492,20 @@
      "pos": "vt.",
      "meaning": "指派；分配；指定"
     }
+   ],
+   "phrases": [
+    {
+     "text": "assign sth to sb",
+     "meaning": "把…分配给某人"
+    },
+    {
+     "text": "assign sb. to do sth",
+     "meaning": "派某人做某事"
+    },
+    {
+     "text": "assign sb. to sth",
+     "meaning": "派某人到"
+    }
    ]
   },
   {
@@ -369,6 +515,16 @@
      "pos": "n.",
      "meaning": "任务，指定的作业"
     }
+   ],
+   "phrases": [
+    {
+     "text": "assignment on sth",
+     "meaning": "关于某主题的作业"
+    },
+    {
+     "text": "assignment to sth",
+     "meaning": "被派往某处的工作"
+    }
    ]
   },
   {
@@ -377,6 +533,12 @@
     {
      "pos": "vt.",
      "meaning": "使确信；向…保证"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "assure sb. of sth",
+     "meaning": "向某人保证某事"
     }
    ]
   },
@@ -413,6 +575,12 @@
     {
      "pos": "vt.",
      "meaning": "把…归因于 n.属性"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "attribute sth. to sth",
+     "meaning": "把某事归因于…"
     }
    ]
   },
@@ -522,6 +690,12 @@
      "pos": "n.",
      "meaning": "细菌"
     }
+   ],
+   "phrases": [
+    {
+     "text": "bacteria in sth",
+     "meaning": "…中的细菌"
+    }
    ]
   },
   {
@@ -530,6 +704,12 @@
     {
      "pos": "a.",
      "meaning": "坏的，恶的；严重的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "from bad to worse",
+     "meaning": "每况愈下"
     }
    ]
   },
@@ -558,6 +738,12 @@
      "pos": "n.",
      "meaning": "桶；圆筒；枪管"
     }
+   ],
+   "phrases": [
+    {
+     "text": "barrel of sth",
+     "meaning": "一桶某物"
+    }
    ]
   },
   {
@@ -585,6 +771,20 @@
      "pos": "vt.",
      "meaning": "&vi.打，敲；打败"
     }
+   ],
+   "phrases": [
+    {
+     "text": "beat about / around the bush",
+     "meaning": "说话拐弯抹角"
+    },
+    {
+     "text": "beat sb down",
+     "meaning": "使某人沮丧"
+    },
+    {
+     "text": "beat out",
+     "meaning": "打败"
+    }
    ]
   },
   {
@@ -602,6 +802,16 @@
     {
      "pos": "vi.",
      "meaning": "开始 vt.开始"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "begin to do sth / begin doing sth",
+     "meaning": "开始做某事"
+    },
+    {
+     "text": "to begin with",
+     "meaning": "[插入语] 首先；第一"
     }
    ]
   },
@@ -621,6 +831,16 @@
      "pos": "n.",
      "meaning": "行为，举止，态度"
     }
+   ],
+   "phrases": [
+    {
+     "text": "behavior towards sb",
+     "meaning": "对某人的行为"
+    },
+    {
+     "text": "behavior of + sth",
+     "meaning": "…的行为"
+    }
    ]
   },
   {
@@ -639,6 +859,12 @@
      "pos": "vt.",
      "meaning": "使弯曲 vi.弯曲"
     }
+   ],
+   "phrases": [
+    {
+     "text": "bend to sb’s will",
+     "meaning": "[正式用语] 屈服于某人的意愿"
+    }
    ]
   },
   {
@@ -656,6 +882,12 @@
     {
      "pos": "vt.",
      "meaning": "&vi.&n.打赌"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "You bet!",
+     "meaning": "当然！一定！"
     }
    ]
   },
@@ -684,6 +916,20 @@
      "pos": "vt.",
      "meaning": "捆绑；包扎；装钉"
     }
+   ],
+   "phrases": [
+    {
+     "text": "bind sth to sth",
+     "meaning": "把…绑在…上"
+    },
+    {
+     "text": "bind sb. to do sth",
+     "meaning": "使某人有义务做"
+    },
+    {
+     "text": "bind sth together",
+     "meaning": "把…捆在一起"
+    }
    ]
   },
   {
@@ -692,6 +938,16 @@
     {
      "pos": "vt.",
      "meaning": "咬，叮，螫；剌穿"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "bite into sth",
+     "meaning": "咬进某物"
+    },
+    {
+     "text": "bite off sth",
+     "meaning": "咬下某物"
     }
    ]
   },
@@ -710,6 +966,12 @@
     {
      "pos": "n.",
      "meaning": "刀刃，刀片；叶片"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "blade of sth",
+     "meaning": "某物的叶片／刀片"
     }
    ]
   },
@@ -738,6 +1000,20 @@
      "pos": "vt.",
      "meaning": "&vi.&n.混和"
     }
+   ],
+   "phrases": [
+    {
+     "text": "blend sth with sth",
+     "meaning": "把…与…混合"
+    },
+    {
+     "text": "blend into sth",
+     "meaning": "融入…"
+    },
+    {
+     "text": "blend in with sth",
+     "meaning": "与…协调"
+    }
    ]
   },
   {
@@ -746,6 +1022,12 @@
     {
      "pos": "n.",
      "meaning": "花；开花，开花期"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "in (full) bloom",
+     "meaning": "(盛) 开着花"
     }
    ]
   },
@@ -774,6 +1056,16 @@
      "pos": "n.",
      "meaning": "身体；主体；尸体"
     }
+   ],
+   "phrases": [
+    {
+     "text": "body and soul",
+     "meaning": "全心全意"
+    },
+    {
+     "text": "keep body and soul together",
+     "meaning": "勉强糊口 (survive)"
+    }
    ]
   },
   {
@@ -782,6 +1074,12 @@
     {
      "pos": "a.",
      "meaning": "大胆的；冒失的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be bold in doing sth",
+     "meaning": "敢于做某事"
     }
    ]
   },
@@ -818,6 +1116,12 @@
     {
      "pos": "vt.",
      "meaning": "烦扰，迷惑 n.麻烦"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "bother to do sth / bother doing sth",
+     "meaning": "麻烦做某事"
     }
    ]
   },
@@ -899,6 +1203,20 @@
     {
      "pos": "vt.",
      "meaning": "带来；引出；促使"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "bring sb. doing sth",
+     "meaning": "引起某人做某事"
+    },
+    {
+     "text": "bring sb. sth. = bring sth. to sb",
+     "meaning": "把某带给某人"
+    },
+    {
+     "text": "bring about",
+     "meaning": "引起； 造成"
     }
    ]
   },
@@ -1008,6 +1326,16 @@
      "pos": "vt.",
      "meaning": "建筑；建立；创立"
     }
+   ],
+   "phrases": [
+    {
+     "text": "build on / upon",
+     "meaning": "在…基础上发展；把…作为… 的基础"
+    },
+    {
+     "text": "build up",
+     "meaning": "树立；逐步建立；增强"
+    }
    ]
   },
   {
@@ -1062,6 +1390,16 @@
      "pos": "n.",
      "meaning": "局，司，处；社，所"
     }
+   ],
+   "phrases": [
+    {
+     "text": "bureau of sth",
+     "meaning": "…局；…办事处"
+    },
+    {
+     "text": "bureau for sth",
+     "meaning": "负责…的办事处"
+    }
    ]
   },
   {
@@ -1071,6 +1409,16 @@
      "pos": "vt.",
      "meaning": "买，购买 vi.买"
     }
+   ],
+   "phrases": [
+    {
+     "text": "buy sb. sth. = buy sth. for sb",
+     "meaning": "为某人买某物"
+    },
+    {
+     "text": "buy up",
+     "meaning": "迅速地囤积；大量买下"
+    }
    ]
   },
   {
@@ -1079,6 +1427,12 @@
     {
      "pos": "n.",
      "meaning": "小屋；船舱，机舱"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "cabin of sth",
+     "meaning": "某物的舱室"
     }
    ]
   },
@@ -1161,6 +1515,12 @@
      "pos": "n.",
      "meaning": "粗帆布；一块油画布"
     }
+   ],
+   "phrases": [
+    {
+     "text": "canvas of sth",
+     "meaning": "…的画布"
+    }
    ]
   },
   {
@@ -1170,6 +1530,12 @@
      "pos": "a.",
      "meaning": "有能力的，有才能的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be capable of doing sth",
+     "meaning": "能够做某事"
+    }
    ]
   },
   {
@@ -1178,6 +1544,20 @@
     {
      "pos": "n.",
      "meaning": "容量；能力；能量"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "capacity for + sth",
+     "meaning": "…的能力"
+    },
+    {
+     "text": "capacity of + sth",
+     "meaning": "…的容量"
+    },
+    {
+     "text": "capacity to do sth",
+     "meaning": "做…的能力"
     }
    ]
   },
@@ -1197,6 +1577,16 @@
      "pos": "vt.",
      "meaning": "捕获，俘获；夺得"
     }
+   ],
+   "phrases": [
+    {
+     "text": "capture sth. on film",
+     "meaning": "把…拍摄下来"
+    },
+    {
+     "text": "capture the attention of sb",
+     "meaning": "吸引某人的注意"
+    }
    ]
   },
   {
@@ -1205,6 +1595,16 @@
     {
      "pos": "n.",
      "meaning": "生涯，职业，经历"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "career in + sth",
+     "meaning": "…方面的职业"
+    },
+    {
+     "text": "career as + sth",
+     "meaning": "作为…的职业生涯"
     }
    ]
   },
@@ -1242,6 +1642,20 @@
      "pos": "vt.",
      "meaning": "捉住；赶上；领会"
     }
+   ],
+   "phrases": [
+    {
+     "text": "catch sb. doing sth",
+     "meaning": "碰上（撞上）某人做某事"
+    },
+    {
+     "text": "catch on",
+     "meaning": "流行；［非正式用语］了解；理解"
+    },
+    {
+     "text": "catch sb’s eye",
+     "meaning": "引起某人注意"
+    }
    ]
   },
   {
@@ -1250,6 +1664,12 @@
     {
      "pos": "vi.",
      "meaning": "&vi.&n.停止，停息"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "cease to do sth / cease doing sth",
+     "meaning": "停止做某事"
     }
    ]
   },
@@ -1278,6 +1698,16 @@
      "pos": "n.",
      "meaning": "会议室；房间；腔"
     }
+   ],
+   "phrases": [
+    {
+     "text": "chamber of commerce",
+     "meaning": "商会"
+    },
+    {
+     "text": "chamber of sth",
+     "meaning": "…室；…院"
+    }
    ]
   },
   {
@@ -1286,6 +1716,16 @@
     {
      "pos": "n.",
      "meaning": "施舍；慈善事业"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "charity to sb",
+     "meaning": "对某人的施舍"
+    },
+    {
+     "text": "charity for sth",
+     "meaning": "为某事募捐的善款"
     }
    ]
   },
@@ -1304,6 +1744,12 @@
     {
      "pos": "n.",
      "meaning": "追逐，追赶，追求"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "chase after sth",
+     "meaning": "对某物的追逐"
     }
    ]
   },
@@ -1341,6 +1787,16 @@
      "pos": "n.",
      "meaning": "颏，下巴"
     }
+   ],
+   "phrases": [
+    {
+     "text": "chin up",
+     "meaning": "别气馁"
+    },
+    {
+     "text": "chin of sth",
+     "meaning": "…的下巴"
+    }
    ]
   },
   {
@@ -1350,6 +1806,20 @@
      "pos": "vt.",
      "meaning": "选择，挑选；情愿"
     }
+   ],
+   "phrases": [
+    {
+     "text": "choose to do sth",
+     "meaning": "决定做某事"
+    },
+    {
+     "text": "choose sb. sth. = choose sth. for sb",
+     "meaning": "为某人选某物"
+    },
+    {
+     "text": "cannot choose but (do)",
+     "meaning": "不得不；只好"
+    }
    ]
   },
   {
@@ -1358,6 +1828,12 @@
     {
      "pos": "vt.",
      "meaning": "砍，劈；切细 vi.砍"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "chop down",
+     "meaning": "砍倒；伐倒 (树木)"
     }
    ]
   },
@@ -1394,6 +1870,16 @@
     {
      "pos": "vt.",
      "meaning": "声称，主张；索取"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "claim to do sth",
+     "meaning": "声称做某事"
+    },
+    {
+     "text": "claim responsibility for sth",
+     "meaning": "声称对…负责"
     }
    ]
   },
@@ -1440,6 +1926,20 @@
      "pos": "ad.",
      "meaning": "紧密地，接近地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "closely related to sth",
+     "meaning": "与…密切相关"
+    },
+    {
+     "text": "closely linked to sth",
+     "meaning": "与…紧密相连"
+    },
+    {
+     "text": "closely involved in sth",
+     "meaning": "深入参与"
+    }
    ]
   },
   {
@@ -1457,6 +1957,16 @@
     {
      "pos": "n.",
      "meaning": "线索，暗示，提示"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "clue to sth",
+     "meaning": "某事的线索"
+    },
+    {
+     "text": "clue about sth",
+     "meaning": "关于某事的提示"
     }
    ]
   },
@@ -1476,6 +1986,16 @@
      "pos": "n.",
      "meaning": "准则；法典；代码"
     }
+   ],
+   "phrases": [
+    {
+     "text": "code of + sth",
+     "meaning": "…的准则"
+    },
+    {
+     "text": "code for + sth",
+     "meaning": "…的代码；法规"
+    }
    ]
   },
   {
@@ -1493,6 +2013,16 @@
     {
      "pos": "vi.",
      "meaning": "倒坍；崩溃，瓦解"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "collapse from sth",
+     "meaning": "因某事而倒下"
+    },
+    {
+     "text": "collapse under sth",
+     "meaning": "在某重压下崩溃"
     }
    ]
   },
@@ -1521,6 +2051,16 @@
      "pos": "n.",
      "meaning": "殖民地；侨居地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "colony of sth",
+     "meaning": "一群…"
+    },
+    {
+     "text": "colony on sth",
+     "meaning": "…上的群落"
+    }
    ]
   },
   {
@@ -1529,6 +2069,16 @@
     {
      "pos": "n.",
      "meaning": "柱，支柱，圆柱"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "column of sth",
+     "meaning": "一柱／一列…"
+    },
+    {
+     "text": "column in sth",
+     "meaning": "…中的专栏"
     }
    ]
   },
@@ -1539,6 +2089,16 @@
      "pos": "n.",
      "meaning": "结合,联合;化合"
     }
+   ],
+   "phrases": [
+    {
+     "text": "combination of + sth",
+     "meaning": "…的组合"
+    },
+    {
+     "text": "combination with + sth",
+     "meaning": "与…的结合"
+    }
    ]
   },
   {
@@ -1548,6 +2108,20 @@
      "pos": "vi.",
      "meaning": "来，来到；出现"
     }
+   ],
+   "phrases": [
+    {
+     "text": "come about",
+     "meaning": "(尤指未经计划地) 发生；产生"
+    },
+    {
+     "text": "come along",
+     "meaning": "一起来；出现；（非正式用语）进展"
+    },
+    {
+     "text": "come and go",
+     "meaning": "来来去去；时有时无"
+    }
    ]
   },
   {
@@ -1556,6 +2130,16 @@
     {
      "pos": "n.",
      "meaning": "司令官，指挥员"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "commander of sth",
+     "meaning": "…的指挥官"
+    },
+    {
+     "text": "commander in chief",
+     "meaning": "总司令"
     }
    ]
   },
@@ -1575,6 +2159,16 @@
      "pos": "n.",
      "meaning": "委任状；委员会"
     }
+   ],
+   "phrases": [
+    {
+     "text": "commission on sth",
+     "meaning": "关于…的委员会"
+    },
+    {
+     "text": "commission of sth",
+     "meaning": "…的实施"
+    }
    ]
   },
   {
@@ -1584,6 +2178,12 @@
      "pos": "ad.",
      "meaning": "普通地，一般地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "commonly known as",
+     "meaning": "通称为"
+    }
    ]
   },
   {
@@ -1592,6 +2192,16 @@
     {
      "pos": "n.",
      "meaning": "社区；社会；公社"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "community of + sth",
+     "meaning": "…群体；…共同体"
+    },
+    {
+     "text": "community in + sth",
+     "meaning": "…中的社区"
     }
    ]
   },
@@ -1610,6 +2220,12 @@
     {
      "pos": "n.",
      "meaning": "比较，对照；比似"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "comparison with sth",
+     "meaning": "与…相比"
     }
    ]
   },
@@ -1647,6 +2263,16 @@
      "pos": "vi.",
      "meaning": "抱怨，拆苦；控告"
     }
+   ],
+   "phrases": [
+    {
+     "text": "complain about sth",
+     "meaning": "抱怨…"
+    },
+    {
+     "text": "complain to sb. about sth",
+     "meaning": "向某人抱怨…"
+    }
    ]
   },
   {
@@ -1655,6 +2281,20 @@
     {
      "pos": "n.",
      "meaning": "抱怨；怨言；控告"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "complaint about sth",
+     "meaning": "对…的抱怨"
+    },
+    {
+     "text": "complaint against sb",
+     "meaning": "对某人的投诉"
+    },
+    {
+     "text": "complaint from sb",
+     "meaning": "来自某人的投诉"
     }
    ]
   },
@@ -1683,6 +2323,20 @@
      "pos": "a.",
      "meaning": "复杂的，难懂的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be complicated by sth",
+     "meaning": "因某事而变得复杂"
+    },
+    {
+     "text": "be complicated to do sth",
+     "meaning": "做某事很复杂"
+    },
+    {
+     "text": "be complicated for sb",
+     "meaning": "对某人而言很复杂"
+    }
    ]
   },
   {
@@ -1692,6 +2346,12 @@
      "pos": "vt.",
      "meaning": "组成，构成；创作"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be composed of",
+     "meaning": "由…组成 / 构成"
+    }
    ]
   },
   {
@@ -1700,6 +2360,16 @@
     {
      "pos": "n.",
      "meaning": "化合物；复合词"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "compound of sth",
+     "meaning": "某物的化合物"
+    },
+    {
+     "text": "compound with sth",
+     "meaning": "与某物形成的混合物"
     }
    ]
   },
@@ -1755,6 +2425,20 @@
      "pos": "n.",
      "meaning": "集中;专注;浓缩"
     }
+   ],
+   "phrases": [
+    {
+     "text": "concentration on sth",
+     "meaning": "对某事的专注"
+    },
+    {
+     "text": "concentration of sth",
+     "meaning": "某物的浓度"
+    },
+    {
+     "text": "concentration in sth",
+     "meaning": "在某方面的浓度"
+    }
    ]
   },
   {
@@ -1763,6 +2447,12 @@
     {
      "pos": "prep.",
      "meaning": "关于"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "concerning sb./sth",
+     "meaning": "关于某人／某事"
     }
    ]
   },
@@ -1782,6 +2472,20 @@
      "pos": "vt.",
      "meaning": "供认，承认；坦白"
     }
+   ],
+   "phrases": [
+    {
+     "text": "confess to sth",
+     "meaning": "承认…"
+    },
+    {
+     "text": "confess to doing sth",
+     "meaning": "承认做过某事"
+    },
+    {
+     "text": "confess sth to sb",
+     "meaning": "向某人坦白某事"
+    }
    ]
   },
   {
@@ -1790,6 +2494,12 @@
     {
      "pos": "n.",
      "meaning": "信任；信赖；信心"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "confidence in sb./sth",
+     "meaning": "对…的信心"
     }
    ]
   },
@@ -1809,6 +2519,16 @@
      "pos": "n.",
      "meaning": "混乱；骚乱；混淆"
     }
+   ],
+   "phrases": [
+    {
+     "text": "confusion about sth",
+     "meaning": "对某事的困惑"
+    },
+    {
+     "text": "confusion over sth",
+     "meaning": "对某事的混乱"
+    }
    ]
   },
   {
@@ -1817,6 +2537,12 @@
     {
      "pos": "n.",
      "meaning": "大会；国会，议会"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "congress on + sth",
+     "meaning": "关于…的代表大会"
     }
    ]
   },
@@ -1854,6 +2580,16 @@
      "pos": "a.",
      "meaning": "意识到的；有意的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be conscious of sth",
+     "meaning": "意识到…"
+    },
+    {
+     "text": "be conscious about sth",
+     "meaning": "对…在意"
+    }
    ]
   },
   {
@@ -1862,6 +2598,16 @@
     {
      "pos": "n.",
      "meaning": "意识,觉悟;知觉"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "consciousness of sth",
+     "meaning": "对某事的意识"
+    },
+    {
+     "text": "consciousness about sth",
+     "meaning": "对某事的觉悟"
     }
    ]
   },
@@ -1899,6 +2645,16 @@
      "pos": "n.",
      "meaning": "消耗量；消耗"
     }
+   ],
+   "phrases": [
+    {
+     "text": "consumption of sth",
+     "meaning": "某物的消耗量"
+    },
+    {
+     "text": "consumption by sb",
+     "meaning": "某人的消费"
+    }
    ]
   },
   {
@@ -1907,6 +2663,16 @@
     {
      "pos": "vt.",
      "meaning": "使接触；与…联系"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "contact sb. about sth",
+     "meaning": "就…联系某人"
+    },
+    {
+     "text": "contact sb. by email",
+     "meaning": "通过邮件联系某人"
     }
    ]
   },
@@ -1926,6 +2692,16 @@
      "pos": "vt.",
      "meaning": "争夺，争取；辩驳"
     }
+   ],
+   "phrases": [
+    {
+     "text": "contest for sth",
+     "meaning": "争夺某物"
+    },
+    {
+     "text": "contest sth. with sb",
+     "meaning": "与某人争夺某物"
+    }
    ]
   },
   {
@@ -1944,6 +2720,12 @@
      "pos": "a.",
      "meaning": "连续不断的，持续的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be continuous with sth",
+     "meaning": "与某物相连不断"
+    }
    ]
   },
   {
@@ -1952,6 +2734,16 @@
     {
      "pos": "n.",
      "meaning": "契约，合同；婚约"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "contract with sb",
+     "meaning": "与某人的合同"
+    },
+    {
+     "text": "contract for + sth",
+     "meaning": "…的合同"
     }
    ]
   },
@@ -1971,6 +2763,20 @@
      "pos": "n.",
      "meaning": "对比，对照，悬殊"
     }
+   ],
+   "phrases": [
+    {
+     "text": "by / in contrast",
+     "meaning": "相比之下"
+    },
+    {
+     "text": "in contrast with / to",
+     "meaning": "与…对比；与…相反"
+    },
+    {
+     "text": "make a contrast with",
+     "meaning": "与…形成对比"
+    }
    ]
   },
   {
@@ -1979,6 +2785,16 @@
     {
      "pos": "n.",
      "meaning": "习俗，惯例；公约"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "convention of sth",
+     "meaning": "…的惯例"
+    },
+    {
+     "text": "convention on sth",
+     "meaning": "关于…的公约"
     }
    ]
   },
@@ -2007,6 +2823,16 @@
      "pos": "vt.",
      "meaning": "使转变；使改变"
     }
+   ],
+   "phrases": [
+    {
+     "text": "convert sth. into sth",
+     "meaning": "把某物转换成…"
+    },
+    {
+     "text": "convert sb. to sth",
+     "meaning": "使某人改信某事物"
+    }
    ]
   },
   {
@@ -2033,6 +2859,16 @@
     {
      "pos": "vi.",
      "meaning": "对付，应付"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "cope with sth",
+     "meaning": "应付某事"
+    },
+    {
+     "text": "cope with doing sth",
+     "meaning": "应付做某事"
     }
    ]
   },
@@ -2070,6 +2906,12 @@
      "pos": "n.",
      "meaning": "果实的心，核心"
     }
+   ],
+   "phrases": [
+    {
+     "text": "core of sth",
+     "meaning": "…的核心"
+    }
    ]
   },
   {
@@ -2078,6 +2920,16 @@
     {
      "pos": "n.",
      "meaning": "通信者;通讯员"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "correspondent for sth",
+     "meaning": "某报／某领域的记者"
+    },
+    {
+     "text": "correspondent of sth",
+     "meaning": "某机构的通讯员"
     }
    ]
   },
@@ -2096,6 +2948,16 @@
     {
      "pos": "n.",
      "meaning": "走廊，回廊，通路"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "corridor of sth",
+     "meaning": "…的走廊"
+    },
+    {
+     "text": "corridor of power",
+     "meaning": "权力中心"
     }
    ]
   },
@@ -2124,6 +2986,16 @@
      "pos": "n.",
      "meaning": "理事会，委员会"
     }
+   ],
+   "phrases": [
+    {
+     "text": "council of sth",
+     "meaning": "…委员会"
+    },
+    {
+     "text": "council on sth",
+     "meaning": "关于…的理事会"
+    }
    ]
   },
   {
@@ -2132,6 +3004,16 @@
     {
      "pos": "n.",
      "meaning": "英国的郡，美国的县"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "county in + sth",
+     "meaning": "…的县；郡"
+    },
+    {
+     "text": "county of + sth",
+     "meaning": "…郡"
     }
    ]
   },
@@ -2151,6 +3033,16 @@
      "pos": "n.",
      "meaning": "裂缝，裂纹 vi.爆裂"
     }
+   ],
+   "phrases": [
+    {
+     "text": "crack in sth",
+     "meaning": "某物上的裂缝"
+    },
+    {
+     "text": "crack of sth",
+     "meaning": "某物的爆裂声"
+    }
    ]
   },
   {
@@ -2159,6 +3051,16 @@
     {
      "pos": "n.",
      "meaning": "工艺；手艺，行业"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "craft of sth",
+     "meaning": "某技艺的门道"
+    },
+    {
+     "text": "craft of doing sth",
+     "meaning": "做某事的技艺"
     }
    ]
   },
@@ -2178,6 +3080,20 @@
      "pos": "vi.",
      "meaning": "爬，爬行"
     }
+   ],
+   "phrases": [
+    {
+     "text": "crawl along sth",
+     "meaning": "沿…爬行"
+    },
+    {
+     "text": "crawl into sth",
+     "meaning": "爬进…"
+    },
+    {
+     "text": "crawl with sth",
+     "meaning": "爬满…"
+    }
    ]
   },
   {
@@ -2186,6 +3102,16 @@
     {
      "pos": "a.",
      "meaning": "创造性的，创作的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be creative in sth",
+     "meaning": "在…上有创意"
+    },
+    {
+     "text": "be creative with sth",
+     "meaning": "巧妙利用某物"
     }
    ]
   },
@@ -2223,6 +3149,20 @@
      "pos": "n.",
      "meaning": "危机；存亡之际"
     }
+   ],
+   "phrases": [
+    {
+     "text": "crisis in + sth",
+     "meaning": "…的危机"
+    },
+    {
+     "text": "crisis of + sth",
+     "meaning": "…的危机"
+    },
+    {
+     "text": "crisis over + sth",
+     "meaning": "围绕…的危机"
+    }
    ]
   },
   {
@@ -2231,6 +3171,16 @@
     {
      "pos": "n.",
      "meaning": "批评家，爱挑剔的人"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "critic of + sth",
+     "meaning": "…的批评者"
+    },
+    {
+     "text": "critic for + sth",
+     "meaning": "…的评论员"
     }
    ]
   },
@@ -2241,6 +3191,16 @@
      "pos": "a.",
      "meaning": "决定性的；批评的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be critical of sb",
+     "meaning": "对某人挑剔；批评"
+    },
+    {
+     "text": "be critical to sth",
+     "meaning": "对…至关重要"
+    }
    ]
   },
   {
@@ -2250,6 +3210,16 @@
      "pos": "n.",
      "meaning": "批评；批判；评论"
     }
+   ],
+   "phrases": [
+    {
+     "text": "criticism of sth",
+     "meaning": "对…的批评"
+    },
+    {
+     "text": "criticism from sb",
+     "meaning": "来自某人的批评"
+    }
    ]
   },
   {
@@ -2258,6 +3228,12 @@
     {
      "pos": "vt.",
      "meaning": "批评；评论；非难"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "criticize sb. for doing sth",
+     "meaning": "批评某人做某事"
     }
    ]
   },
@@ -2313,6 +3289,12 @@
      "pos": "n.",
      "meaning": "水晶，结晶体；晶粒"
     }
+   ],
+   "phrases": [
+    {
+     "text": "crystal of sth",
+     "meaning": "一块…晶体"
+    }
    ]
   },
   {
@@ -2367,6 +3349,12 @@
      "pos": "a.",
      "meaning": "当前的；通用的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be current with sth",
+     "meaning": "掌握…的最新情况"
+    }
    ]
   },
   {
@@ -2384,6 +3372,16 @@
     {
      "pos": "n.",
      "meaning": "曲线；弯 vt.弄弯"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "curve of sth",
+     "meaning": "…的曲线"
+    },
+    {
+     "text": "curve in the road",
+     "meaning": "道路的弯道"
     }
    ]
   },
@@ -2421,6 +3419,12 @@
      "pos": "a.",
      "meaning": "致命的，死一般的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be deadly to sth",
+     "meaning": "对…致命"
+    }
    ]
   },
   {
@@ -2457,6 +3461,16 @@
      "pos": "a.",
      "meaning": "正派的；体面的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be decent to sb",
+     "meaning": "对某人厚道"
+    },
+    {
+     "text": "decent standard of living",
+     "meaning": "体面的生活水平"
+    }
    ]
   },
   {
@@ -2465,6 +3479,12 @@
     {
      "pos": "n.",
      "meaning": "甲板；舱面；层面"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "deck of sth",
+     "meaning": "一副／一层某物"
     }
    ]
   },
@@ -2511,6 +3531,16 @@
      "pos": "vt.",
      "meaning": "给…下定义；限定"
     }
+   ],
+   "phrases": [
+    {
+     "text": "define sth. as sth",
+     "meaning": "把…定义为…"
+    },
+    {
+     "text": "define sth. in terms of sth",
+     "meaning": "用…来定义…"
+    }
    ]
   },
   {
@@ -2529,6 +3559,12 @@
      "pos": "ad.",
      "meaning": "一定地，明确地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "definitely worth doing",
+     "meaning": "绝对值得做"
+    }
    ]
   },
   {
@@ -2537,6 +3573,12 @@
     {
      "pos": "n.",
      "meaning": "定义，释义；定界"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "definition of sth",
+     "meaning": "…的定义"
     }
    ]
   },
@@ -2556,6 +3598,16 @@
      "pos": "n.",
      "meaning": "投递；交付；分娩"
     }
+   ],
+   "phrases": [
+    {
+     "text": "delivery of sth",
+     "meaning": "某物的递送"
+    },
+    {
+     "text": "delivery to sb",
+     "meaning": "送交给某人"
+    }
    ]
   },
   {
@@ -2564,6 +3616,12 @@
     {
      "pos": "n.",
      "meaning": "民主，民主制"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "democracy in + sth",
+     "meaning": "…中的民主"
     }
    ]
   },
@@ -2582,6 +3640,16 @@
     {
      "pos": "vt.",
      "meaning": "说明;论证;表露"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "demonstrate sth. to sb",
+     "meaning": "向某人演示某事"
+    },
+    {
+     "text": "demonstrate against sth",
+     "meaning": "示威反对…"
     }
    ]
   },
@@ -2610,6 +3678,12 @@
      "pos": "vt.",
      "meaning": "否定；拒绝相信"
     }
+   ],
+   "phrases": [
+    {
+     "text": "deny doing sth",
+     "meaning": "否认做某事"
+    }
    ]
   },
   {
@@ -2628,6 +3702,16 @@
      "pos": "a.",
      "meaning": "依靠的，依赖的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be dependent on sb./sth",
+     "meaning": "依赖某人／某物"
+    },
+    {
+     "text": "be dependent upon sth",
+     "meaning": "取决于某物"
+    }
    ]
   },
   {
@@ -2645,6 +3729,16 @@
     {
      "pos": "vt.",
      "meaning": "取得 vi.起源"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "derive sth. from sth",
+     "meaning": "从…中得到某物"
+    },
+    {
+     "text": "be derived from sth",
+     "meaning": "源自某物"
     }
    ]
   },
@@ -2673,6 +3767,12 @@
      "pos": "n.",
      "meaning": "绝望 vi.绝望"
     }
+   ],
+   "phrases": [
+    {
+     "text": "in despair",
+     "meaning": "绝望地"
+    }
    ]
   },
   {
@@ -2691,6 +3791,12 @@
      "pos": "prep.",
      "meaning": "不管，不顾"
     }
+   ],
+   "phrases": [
+    {
+     "text": "despite + sth./doing",
+     "meaning": "尽管…"
+    }
    ]
   },
   {
@@ -2699,6 +3805,16 @@
     {
      "pos": "n.",
      "meaning": "破坏，毁灭，消灭"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "destruction of sth",
+     "meaning": "对…的破坏"
+    },
+    {
+     "text": "destruction by sth",
+     "meaning": "被…摧毁"
     }
    ]
   },
@@ -2709,6 +3825,16 @@
      "pos": "n.",
      "meaning": "细节；枝节；零件"
     }
+   ],
+   "phrases": [
+    {
+     "text": "in detail",
+     "meaning": "详细地"
+    },
+    {
+     "text": "go into detail(s)",
+     "meaning": "详细叙述；逐一说明"
+    }
    ]
   },
   {
@@ -2717,6 +3843,16 @@
     {
      "pos": "vt.",
      "meaning": "察觉，发觉；侦察"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "detect sb. doing sth",
+     "meaning": "察觉某人做某事"
+    },
+    {
+     "text": "detect sth. in sth",
+     "meaning": "在…中检测到某物"
     }
    ]
   },
@@ -2735,6 +3871,16 @@
     {
      "pos": "n.",
      "meaning": "器械，装置；设计"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "device for + sth",
+     "meaning": "用于…的装置"
+    },
+    {
+     "text": "device to do sth",
+     "meaning": "做…的装置"
     }
    ]
   },
@@ -2799,6 +3945,20 @@
      "pos": "vt.",
      "meaning": "掘，挖；采掘"
     }
+   ],
+   "phrases": [
+    {
+     "text": "dig (...) into",
+     "meaning": "插入；戳进；探究"
+    },
+    {
+     "text": "dig out",
+     "meaning": "挖出；找出；发现"
+    },
+    {
+     "text": "dig up",
+     "meaning": "掘起；开垦 (荒地)；搜集"
+    }
    ]
   },
   {
@@ -2844,6 +4004,12 @@
      "pos": "n.",
      "meaning": "圆盘，唱片；磁盘"
     }
+   ],
+   "phrases": [
+    {
+     "text": "disk of sth",
+     "meaning": "一块…圆盘"
+    }
    ]
   },
   {
@@ -2870,6 +4036,16 @@
     {
      "pos": "n.",
      "meaning": "纪律；训练 vt.训练"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "discipline in sth",
+     "meaning": "…方面的纪律"
+    },
+    {
+     "text": "discipline of sth",
+     "meaning": "…学科"
     }
    ]
   },
@@ -2916,6 +4092,16 @@
      "pos": "n.",
      "meaning": "混乱，杂乱；骚乱"
     }
+   ],
+   "phrases": [
+    {
+     "text": "disorder of sth",
+     "meaning": "…的紊乱"
+    },
+    {
+     "text": "disorder in sth",
+     "meaning": "…方面的失调"
+    }
    ]
   },
   {
@@ -2924,6 +4110,12 @@
     {
      "pos": "vt.",
      "meaning": "陈列，展览；显示"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "on display",
+     "meaning": "展出 (on show)"
     }
    ]
   },
@@ -2961,6 +4153,20 @@
      "pos": "vi.",
      "meaning": "争论，争执 n.争论"
     }
+   ],
+   "phrases": [
+    {
+     "text": "dispute over sth",
+     "meaning": "关于…的争执"
+    },
+    {
+     "text": "dispute with sb",
+     "meaning": "与某人的争执"
+    },
+    {
+     "text": "dispute about sth",
+     "meaning": "关于…的争论"
+    }
    ]
   },
   {
@@ -2969,6 +4175,12 @@
     {
      "pos": "vi.",
      "meaning": "使不满，使不平"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "dissatisfy sb. with sth",
+     "meaning": "使某人对…不满"
     }
    ]
   },
@@ -2988,6 +4200,16 @@
      "pos": "a.",
      "meaning": "与其他不同的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be distinct from sth",
+     "meaning": "与某物不同"
+    },
+    {
+     "text": "be distinct in sth",
+     "meaning": "在某方面明显"
+    }
    ]
   },
   {
@@ -3005,6 +4227,16 @@
     {
      "pos": "n.",
      "meaning": "分发/配；分布"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "distribution of sth",
+     "meaning": "…的分配"
+    },
+    {
+     "text": "distribution to sb",
+     "meaning": "分配给某人"
     }
    ]
   },
@@ -3060,6 +4292,16 @@
      "pos": "n.",
      "meaning": "剂量，用量；一剂"
     }
+   ],
+   "phrases": [
+    {
+     "text": "dose of sth",
+     "meaning": "一剂…；一次…"
+    },
+    {
+     "text": "dose of medicine",
+     "meaning": "一剂药"
+    }
    ]
   },
   {
@@ -3096,6 +4338,12 @@
      "pos": "vt.",
      "meaning": "排去；放水 n.耗竭"
     }
+   ],
+   "phrases": [
+    {
+     "text": "drain sth from sth",
+     "meaning": "把…从…排出"
+    }
    ]
   },
   {
@@ -3104,6 +4352,12 @@
     {
      "pos": "n.",
      "meaning": "一出戏剧，剧本"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "drama about sth",
+     "meaning": "关于…的戏剧"
     }
    ]
   },
@@ -3114,6 +4368,16 @@
      "pos": "a.",
      "meaning": "引人注目的，戏剧的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "dramatic change in sth",
+     "meaning": "…的急剧变化"
+    },
+    {
+     "text": "dramatic increase in sth",
+     "meaning": "…的急剧增加"
+    }
    ]
   },
   {
@@ -3122,6 +4386,20 @@
     {
      "pos": "vt.",
      "meaning": "画，划；拖；拨出"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "draw sb. sth. = draw sth. for sb",
+     "meaning": "为某人画某物"
+    },
+    {
+     "text": "draw in",
+     "meaning": "(火车等) 进站"
+    },
+    {
+     "text": "draw near / closer",
+     "meaning": "接近；靠近"
     }
    ]
   },
@@ -3141,6 +4419,16 @@
      "pos": "vi.",
      "meaning": "漂流，漂泊 n.漂流"
     }
+   ],
+   "phrases": [
+    {
+     "text": "drift from sth",
+     "meaning": "偏离…"
+    },
+    {
+     "text": "drift into sth",
+     "meaning": "不知不觉陷入"
+    }
    ]
   },
   {
@@ -3158,6 +4446,16 @@
     {
      "pos": "vt.",
      "meaning": "驾驶；打入；驱"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "drive sb. to do sth",
+     "meaning": "驱使某人做某事"
+    },
+    {
+     "text": "drive away",
+     "meaning": "驱车离开；赶跑"
     }
    ]
   },
@@ -3185,6 +4483,12 @@
     {
      "pos": "vt.",
      "meaning": "倾卸，倾倒；倾销"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "dump sth into sth",
+     "meaning": "把…倾倒进"
     }
    ]
   },
@@ -3231,6 +4535,20 @@
      "pos": "a.",
      "meaning": "垂死的；临终的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "(be) dying to",
+     "meaning": "[口语] 渴望做某事"
+    },
+    {
+     "text": "be dying for sth",
+     "meaning": "[口语] 极想要某物"
+    },
+    {
+     "text": "be dying to do sth",
+     "meaning": "[口语] 渴望做某事"
+    }
    ]
   },
   {
@@ -3249,6 +4567,20 @@
      "pos": "vt.",
      "meaning": "吃，喝 vi.吃饭"
     }
+   ],
+   "phrases": [
+    {
+     "text": "eat one's words",
+     "meaning": "收回前言；承认错误"
+    },
+    {
+     "text": "eat out",
+     "meaning": "外出就餐"
+    },
+    {
+     "text": "eat up",
+     "meaning": "吃完；耗尽"
+    }
    ]
   },
   {
@@ -3257,6 +4589,16 @@
     {
      "pos": "n.",
      "meaning": "回声，反响 vi.重复"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "echo of sth",
+     "meaning": "某事物的回声／反响"
+    },
+    {
+     "text": "echo from sth",
+     "meaning": "来自某处的回声"
     }
    ]
   },
@@ -3285,6 +4627,12 @@
      "pos": "n.",
      "meaning": "经济；节约，节省"
     }
+   ],
+   "phrases": [
+    {
+     "text": "economy of + sth",
+     "meaning": "…的经济"
+    }
    ]
   },
   {
@@ -3293,6 +4641,16 @@
     {
      "pos": "a.",
      "meaning": "有效的；有影响的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be effective in doing sth",
+     "meaning": "在做…上有效"
+    },
+    {
+     "text": "be effective against sth",
+     "meaning": "对…有效"
     }
    ]
   },
@@ -3303,6 +4661,16 @@
      "pos": "n.",
      "meaning": "效率；功效，效能"
     }
+   ],
+   "phrases": [
+    {
+     "text": "efficiency of sth",
+     "meaning": "某物的效率"
+    },
+    {
+     "text": "efficiency in sth",
+     "meaning": "在某方面的效率"
+    }
    ]
   },
   {
@@ -3311,6 +4679,16 @@
     {
      "pos": "a.",
      "meaning": "效率高的，有能力的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be efficient at sth",
+     "meaning": "擅长做某事"
+    },
+    {
+     "text": "be efficient in doing sth",
+     "meaning": "做某事效率高"
     }
    ]
   },
@@ -3339,6 +4717,12 @@
      "pos": "n.",
      "meaning": "肘，肘部；弯管"
     }
+   ],
+   "phrases": [
+    {
+     "text": "elbow one's way through sth",
+     "meaning": "挤过…"
+    }
    ]
   },
   {
@@ -3347,6 +4731,20 @@
     {
      "pos": "n.",
      "meaning": "选举，选择权；当选"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "election to + sth",
+     "meaning": "…的选举；当选"
+    },
+    {
+     "text": "election for + sth",
+     "meaning": "…的选举"
+    },
+    {
+     "text": "election of + sth",
+     "meaning": "…的选举"
     }
    ]
   },
@@ -3375,6 +4773,16 @@
      "pos": "n.",
      "meaning": "成分；要素；元素"
     }
+   ],
+   "phrases": [
+    {
+     "text": "element of + sth",
+     "meaning": "…的成分；因素"
+    },
+    {
+     "text": "element in + sth",
+     "meaning": "…中的要素"
+    }
    ]
   },
   {
@@ -3384,6 +4792,12 @@
      "pos": "a.",
      "meaning": "基本的；初级的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "elementary knowledge of sth",
+     "meaning": "…的基础知识"
+    }
    ]
   },
   {
@@ -3392,6 +4806,16 @@
     {
      "pos": "n.",
      "meaning": "电梯；升降机"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "elevator to sth",
+     "meaning": "通往…的电梯"
+    },
+    {
+     "text": "elevator in sth",
+     "meaning": "…中的电梯"
     }
    ]
   },
@@ -3411,6 +4835,16 @@
      "pos": "vt.",
      "meaning": "消灭，消除，排除"
     }
+   ],
+   "phrases": [
+    {
+     "text": "eliminate sth. from sth",
+     "meaning": "从…中消除…"
+    },
+    {
+     "text": "eliminate the need for sth",
+     "meaning": "消除对…的需要"
+    }
    ]
   },
   {
@@ -3429,6 +4863,16 @@
      "pos": "ad.",
      "meaning": "在别处，向别处"
     }
+   ],
+   "phrases": [
+    {
+     "text": "elsewhere in sth",
+     "meaning": "在…的其他地方"
+    },
+    {
+     "text": "elsewhere in the world",
+     "meaning": "世界其他地方"
+    }
    ]
   },
   {
@@ -3438,6 +4882,12 @@
      "pos": "vt.",
      "meaning": "拥抱；包括；包围"
     }
+   ],
+   "phrases": [
+    {
+     "text": "embrace the idea of doing sth",
+     "meaning": "接受做…的想法"
+    }
    ]
   },
   {
@@ -3446,6 +4896,16 @@
     {
      "pos": "vi.",
      "meaning": "出现，涌现；冒出"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "emerge from sth",
+     "meaning": "从…中出现"
+    },
+    {
+     "text": "emerge as sth",
+     "meaning": "成为…"
     }
    ]
   },
@@ -3465,6 +4925,16 @@
      "pos": "n.",
      "meaning": "情感，感情；激动"
     }
+   ],
+   "phrases": [
+    {
+     "text": "emotion towards sb",
+     "meaning": "对某人的情感"
+    },
+    {
+     "text": "emotions about sth",
+     "meaning": "对…的复杂感受"
+    }
    ]
   },
   {
@@ -3473,6 +4943,16 @@
     {
      "pos": "a.",
      "meaning": "感情的，情绪的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be emotional about sth",
+     "meaning": "对…情绪化"
+    },
+    {
+     "text": "be emotional over sth",
+     "meaning": "因…激动"
     }
    ]
   },
@@ -3483,6 +4963,12 @@
      "pos": "n.",
      "meaning": "强调，重点，重要性"
     }
+   ],
+   "phrases": [
+    {
+     "text": "emphasis on sth",
+     "meaning": "对…的强调"
+    }
    ]
   },
   {
@@ -3492,6 +4978,16 @@
      "pos": "vt.",
      "meaning": "强调，着重"
     }
+   ],
+   "phrases": [
+    {
+     "text": "emphasize sth to sb",
+     "meaning": "向某人强调某事"
+    },
+    {
+     "text": "emphasize the importance of sth",
+     "meaning": "强调…的重要性"
+    }
    ]
   },
   {
@@ -3500,6 +4996,16 @@
     {
      "pos": "n.",
      "meaning": "受雇者，雇员，雇工"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "employee of + sth",
+     "meaning": "…的员工"
+    },
+    {
+     "text": "employee at + sth",
+     "meaning": "…的雇员"
     }
    ]
   },
@@ -3519,6 +5025,16 @@
      "pos": "n.",
      "meaning": "工业；雇/使用"
     }
+   ],
+   "phrases": [
+    {
+     "text": "employment in sth",
+     "meaning": "在…就业"
+    },
+    {
+     "text": "employment of sb",
+     "meaning": "对某人的雇用"
+    }
    ]
   },
   {
@@ -3527,6 +5043,16 @@
     {
      "pos": "vt.",
      "meaning": "使能够，使可能"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "enable sb. to do sth",
+     "meaning": "使某人能够做"
+    },
+    {
+     "text": "enable sth to happen",
+     "meaning": "使…得以发生"
     }
    ]
   },
@@ -3546,6 +5072,16 @@
      "pos": "vt.",
      "meaning": "遭遇，遇到 n.遭遇"
     }
+   ],
+   "phrases": [
+    {
+     "text": "encounter problems with sth",
+     "meaning": "遇到…的问题"
+    },
+    {
+     "text": "encounter resistance from sb",
+     "meaning": "遭到某人的阻力"
+    }
    ]
   },
   {
@@ -3554,6 +5090,12 @@
     {
      "pos": "vt.",
      "meaning": "忍受；容忍"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "endure to the end",
+     "meaning": "坚持到底"
     }
    ]
   },
@@ -3564,6 +5106,12 @@
      "pos": "vt.",
      "meaning": "实施，执行；强制"
     }
+   ],
+   "phrases": [
+    {
+     "text": "enforce sth on sb",
+     "meaning": "强制某人遵守"
+    }
    ]
   },
   {
@@ -3572,6 +5120,20 @@
     {
      "pos": "vt.",
      "meaning": "使从事于；聘用"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "engage in sth",
+     "meaning": "从事…"
+    },
+    {
+     "text": "engage sb. in sth",
+     "meaning": "使某人参与…"
+    },
+    {
+     "text": "engage with sb",
+     "meaning": "与某人互动"
     }
    ]
   },
@@ -3600,6 +5162,16 @@
      "pos": "a.",
      "meaning": "巨大的，庞大的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "enormous impact on sth",
+     "meaning": "对…的巨大影响"
+    },
+    {
+     "text": "enormous pressure on sb",
+     "meaning": "对某人的巨大压力"
+    }
    ]
   },
   {
@@ -3608,6 +5180,12 @@
     {
      "pos": "vt.",
      "meaning": "保证；保护；赋予"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "ensure compliance with sth",
+     "meaning": "确保遵守…"
     }
    ]
   },
@@ -3627,6 +5205,16 @@
      "pos": "n.",
      "meaning": "热情/心，热忱"
     }
+   ],
+   "phrases": [
+    {
+     "text": "enthusiasm for sth",
+     "meaning": "对…的热情"
+    },
+    {
+     "text": "enthusiasm about sth",
+     "meaning": "对…的热衷"
+    }
    ]
   },
   {
@@ -3636,6 +5224,20 @@
      "pos": "vt.",
      "meaning": "给…权利(或资格)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "entitle sb. to do sth",
+     "meaning": "使某人有权做某事"
+    },
+    {
+     "text": "be entitled to sth",
+     "meaning": "有权享有…"
+    },
+    {
+     "text": "entitle sth",
+     "meaning": "给…命名"
+    }
    ]
   },
   {
@@ -3644,6 +5246,20 @@
     {
      "pos": "n.",
      "meaning": "方程(式)；等式"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "equation of sth",
+     "meaning": "…的方程"
+    },
+    {
+     "text": "equation between sth",
+     "meaning": "两者之间的平衡"
+    },
+    {
+     "text": "equation for sth",
+     "meaning": "用于…的方程"
     }
    ]
   },
@@ -3663,6 +5279,16 @@
      "pos": "n.",
      "meaning": "时代，年代；纪元"
     }
+   ],
+   "phrases": [
+    {
+     "text": "era of + sth",
+     "meaning": "…的时代"
+    },
+    {
+     "text": "era in + sth",
+     "meaning": "…中的时代"
+    }
    ]
   },
   {
@@ -3681,6 +5307,20 @@
      "pos": "a.",
      "meaning": "必要的，本质的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be essential to sth",
+     "meaning": "对…必不可少"
+    },
+    {
+     "text": "be essential for doing sth",
+     "meaning": "做…所必需"
+    },
+    {
+     "text": "be essential to doing sth",
+     "meaning": "对做…至关重要"
+    }
    ]
   },
   {
@@ -3689,6 +5329,16 @@
     {
      "pos": "vt.",
      "meaning": "建立，设立；确立"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "establish contact with sb",
+     "meaning": "与某人建立联系"
+    },
+    {
+     "text": "establish oneself in + sth",
+     "meaning": "在…立足"
     }
    ]
   },
@@ -3699,6 +5349,16 @@
      "pos": "n.",
      "meaning": "建立,设/确立"
     }
+   ],
+   "phrases": [
+    {
+     "text": "establishment of sth",
+     "meaning": "某事物的建立"
+    },
+    {
+     "text": "establishment in sth",
+     "meaning": "在某领域的设立"
+    }
    ]
   },
   {
@@ -3707,6 +5367,16 @@
     {
      "pos": "vt.",
      "meaning": "估计，评价 n.估计"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "estimate sth. at sth",
+     "meaning": "估计为…"
+    },
+    {
+     "text": "estimate sth. from sth",
+     "meaning": "根据…估算"
     }
    ]
   },
@@ -3735,6 +5405,12 @@
      "pos": "n.",
      "meaning": "邪恶；祸害 a.坏的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "evil of sth",
+     "meaning": "…的邪恶"
+    }
    ]
   },
   {
@@ -3743,6 +5419,16 @@
     {
      "pos": "vt.",
      "meaning": "使进化；使发展"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "evolve into sth",
+     "meaning": "演变成某物"
+    },
+    {
+     "text": "evolve from sth",
+     "meaning": "由某物进化而来"
     }
    ]
   },
@@ -3771,6 +5457,12 @@
      "pos": "n.",
      "meaning": "考试；检/细查"
     }
+   ],
+   "phrases": [
+    {
+     "text": "examination of sth",
+     "meaning": "对…的检查"
+    }
    ]
   },
   {
@@ -3779,6 +5471,16 @@
     {
      "pos": "vt.",
      "meaning": "超过，胜过；超出"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "exceed sth. in sth",
+     "meaning": "在某方面超过某物"
+    },
+    {
+     "text": "exceed sth. by + 数量",
+     "meaning": "超出某数量"
     }
    ]
   },
@@ -3797,6 +5499,12 @@
     {
      "pos": "n.",
      "meaning": "例外，除外"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "exception to sth",
+     "meaning": "…的例外"
     }
    ]
   },
@@ -3843,6 +5551,16 @@
      "pos": "vt.",
      "meaning": "把…排除在外"
     }
+   ],
+   "phrases": [
+    {
+     "text": "exclude sb. from sth",
+     "meaning": "把某人排除在外"
+    },
+    {
+     "text": "exclude the possibility of sth",
+     "meaning": "排除…的可能"
+    }
    ]
   },
   {
@@ -3869,6 +5587,12 @@
     {
      "pos": "vt.",
      "meaning": "将…处死；实施"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "execute sb. for sth",
+     "meaning": "因…处死某人"
     }
    ]
   },
@@ -3906,6 +5630,16 @@
      "pos": "vt.",
      "meaning": "显示；陈列，展览"
     }
+   ],
+   "phrases": [
+    {
+     "text": "exhibit sth. to sb",
+     "meaning": "向某人展示某物"
+    },
+    {
+     "text": "exhibit sth. at sth",
+     "meaning": "在某处展出某物"
+    }
    ]
   },
   {
@@ -3914,6 +5648,16 @@
     {
      "pos": "n.",
      "meaning": "扩大，扩充；扩张"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "expansion of sth",
+     "meaning": "…的扩张"
+    },
+    {
+     "text": "expansion into sth",
+     "meaning": "向…扩展"
     }
    ]
   },
@@ -3924,6 +5668,16 @@
      "pos": "a.",
      "meaning": "实/试验的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be experimental in nature",
+     "meaning": "属实验性质"
+    },
+    {
+     "text": "experimental evidence for sth",
+     "meaning": "支持…的实验证据"
+    }
    ]
   },
   {
@@ -3932,6 +5686,16 @@
     {
      "pos": "n.",
      "meaning": "爆炸，爆发，炸裂"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "explosion of sth",
+     "meaning": "某物的激增"
+    },
+    {
+     "text": "explosion in sth",
+     "meaning": "在某方面的爆炸"
     }
    ]
   },
@@ -3951,6 +5715,16 @@
      "pos": "n.",
      "meaning": "暴露；揭露；曝光"
     }
+   ],
+   "phrases": [
+    {
+     "text": "exposure to sth",
+     "meaning": "接触；暴露于"
+    },
+    {
+     "text": "exposure of sth",
+     "meaning": "…的揭露"
+    }
    ]
   },
   {
@@ -3959,6 +5733,20 @@
     {
      "pos": "vt.",
      "meaning": "延长；扩大；致"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "extend sth. to sth",
+     "meaning": "把…扩展到…"
+    },
+    {
+     "text": "extend from A to B",
+     "meaning": "从…延伸到…"
+    },
+    {
+     "text": "extend an invitation to sb",
+     "meaning": "向某人发出邀请"
     }
    ]
   },
@@ -3978,6 +5766,12 @@
      "pos": "n.",
      "meaning": "广度；范围；程度"
     }
+   ],
+   "phrases": [
+    {
+     "text": "to … extent",
+     "meaning": "在…程度上"
+    }
    ]
   },
   {
@@ -3995,6 +5789,12 @@
     {
      "pos": "a.",
      "meaning": "外部的，外面的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be external to sth",
+     "meaning": "外在于某物"
     }
    ]
   },
@@ -4014,6 +5814,12 @@
      "pos": "n.",
      "meaning": "织物，纺织品；结构"
     }
+   ],
+   "phrases": [
+    {
+     "text": "fabric of sth",
+     "meaning": "某事物的结构"
+    }
    ]
   },
   {
@@ -4022,6 +5828,12 @@
     {
      "pos": "n.",
      "meaning": "设备；容易；便利"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "facility for + sth",
+     "meaning": "…的设施；能力"
     }
    ]
   },
@@ -4032,6 +5844,16 @@
      "pos": "n.",
      "meaning": "因素；因子，系数"
     }
+   ],
+   "phrases": [
+    {
+     "text": "factor in + sth",
+     "meaning": "…中的因素"
+    },
+    {
+     "text": "factor behind + sth",
+     "meaning": "…背后的因素"
+    }
    ]
   },
   {
@@ -4040,6 +5862,12 @@
     {
      "pos": "n.",
      "meaning": "才能，能力；系，科"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "faculty of sth",
+     "meaning": "…的能力"
     }
    ]
   },
@@ -4113,6 +5941,12 @@
      "pos": "n.",
      "meaning": "样子，方式；风尚"
     }
+   ],
+   "phrases": [
+    {
+     "text": "in (a) … fashion",
+     "meaning": "以…的方式"
+    }
    ]
   },
   {
@@ -4139,6 +5973,12 @@
     {
      "pos": "n.",
      "meaning": "命运，天数"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "fate of sb./sth",
+     "meaning": "某人／某物的命运"
     }
    ]
   },
@@ -4203,6 +6043,16 @@
      "pos": "n.",
      "meaning": "特征，特色；面貌"
     }
+   ],
+   "phrases": [
+    {
+     "text": "feature of + sth",
+     "meaning": "…的特征"
+    },
+    {
+     "text": "feature in + sth",
+     "meaning": "…中的特色"
+    }
    ]
   },
   {
@@ -4221,6 +6071,20 @@
      "pos": "vt.",
      "meaning": "喂(养) vi.吃饲料"
     }
+   ],
+   "phrases": [
+    {
+     "text": "(be) fed up with",
+     "meaning": "(对…) 感到厌烦 (be bored with)"
+    },
+    {
+     "text": "feed back (into / to)",
+     "meaning": "反馈；反过来对…起作用"
+    },
+    {
+     "text": "feed into",
+     "meaning": "对…的发展产生影响"
+    }
    ]
   },
   {
@@ -4230,6 +6094,16 @@
      "pos": "n.",
      "meaning": "回授，反馈，反应"
     }
+   ],
+   "phrases": [
+    {
+     "text": "feedback on sth",
+     "meaning": "对…的反馈"
+    },
+    {
+     "text": "feedback from sb",
+     "meaning": "来自某人的反馈"
+    }
    ]
   },
   {
@@ -4238,6 +6112,20 @@
     {
      "pos": "vi.",
      "meaning": "有知觉 vt.触，摸"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "feel like doing sth",
+     "meaning": "想要做某事"
+    },
+    {
+     "text": "feel sb. doing sth",
+     "meaning": "感觉某人做某事"
+    },
+    {
+     "text": "feel sb. do sth",
+     "meaning": "感觉某人做了某事"
     }
    ]
   },
@@ -4293,6 +6181,16 @@
      "pos": "n.",
      "meaning": "发现；调查的结果"
     }
+   ],
+   "phrases": [
+    {
+     "text": "finding of + sth",
+     "meaning": "…的发现"
+    },
+    {
+     "text": "findings from + sth",
+     "meaning": "来自…的结果"
+    }
    ]
   },
   {
@@ -4319,6 +6217,12 @@
     {
      "pos": "n.",
      "meaning": "味，味道；风味"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "flavour of sth",
+     "meaning": "…的味道"
     }
    ]
   },
@@ -4356,6 +6260,16 @@
      "pos": "n.",
      "meaning": "流体，液体"
     }
+   ],
+   "phrases": [
+    {
+     "text": "fluid in sth",
+     "meaning": "…中的液体"
+    },
+    {
+     "text": "fluid from sth",
+     "meaning": "来自…的液体"
+    }
    ]
   },
   {
@@ -4373,6 +6287,20 @@
     {
      "pos": "n.",
      "meaning": "脚；最下部；英尺"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "on foot",
+     "meaning": "步行"
+    },
+    {
+     "text": "on one's feet",
+     "meaning": "痊愈；(困境后) 恢复"
+    },
+    {
+     "text": "set foot in / on",
+     "meaning": "进入；访问；参观"
     }
    ]
   },
@@ -4401,6 +6329,12 @@
      "pos": "a.",
      "meaning": "正式的；礼仪上的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be formal with sb",
+     "meaning": "对某人拘谨"
+    }
    ]
   },
   {
@@ -4409,6 +6343,12 @@
     {
      "pos": "n.",
      "meaning": "形成；构成；形成物"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "formation of sth",
+     "meaning": "某事物的形成"
     }
    ]
   },
@@ -4419,6 +6359,12 @@
      "pos": "n.",
      "meaning": "公式，式"
     }
+   ],
+   "phrases": [
+    {
+     "text": "formula for sth",
+     "meaning": "某事物的公式／方案"
+    }
    ]
   },
   {
@@ -4427,6 +6373,12 @@
     {
      "pos": "ad.",
      "meaning": "向前；向外，往外"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "and so forth / and so on (and so forth)",
+     "meaning": "等等"
     }
    ]
   },
@@ -4445,6 +6397,16 @@
     {
      "pos": "n.",
      "meaning": "基础；地基；基金"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "foundation of sth",
+     "meaning": "…的基础"
+    },
+    {
+     "text": "foundation for sth",
+     "meaning": "为…打下的基础"
     }
    ]
   },
@@ -4472,6 +6434,16 @@
     {
      "pos": "n.",
      "meaning": "框架，框子；构架"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "frame of + sth",
+     "meaning": "…的框架"
+    },
+    {
+     "text": "frame for + sth",
+     "meaning": "…的框架"
     }
    ]
   },
@@ -4508,6 +6480,16 @@
     {
      "pos": "n.",
      "meaning": "屡次；次数；频率"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "frequency of sth",
+     "meaning": "某事发生的频率"
+    },
+    {
+     "text": "frequency in sth",
+     "meaning": "在某方面的频率"
     }
    ]
   },
@@ -4563,6 +6545,16 @@
      "pos": "n.",
      "meaning": "资金；基金；存款"
     }
+   ],
+   "phrases": [
+    {
+     "text": "fund for + sth",
+     "meaning": "…的基金"
+    },
+    {
+     "text": "fund of + sth",
+     "meaning": "…的储备"
+    }
    ]
   },
   {
@@ -4617,6 +6609,12 @@
      "pos": "n.",
      "meaning": "一帮，一伙"
     }
+   ],
+   "phrases": [
+    {
+     "text": "gang of sth",
+     "meaning": "一帮…"
+    }
    ]
   },
   {
@@ -4625,6 +6623,12 @@
     {
      "pos": "n.",
      "meaning": "缺口；间隔；差距"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "gap in sth",
+     "meaning": "…中的缺口"
     }
    ]
   },
@@ -4680,6 +6684,16 @@
      "pos": "vi.",
      "meaning": "凝视，盯，注视"
     }
+   ],
+   "phrases": [
+    {
+     "text": "gaze at sth",
+     "meaning": "凝视某物"
+    },
+    {
+     "text": "gaze into sth",
+     "meaning": "凝望某处"
+    }
    ]
   },
   {
@@ -4689,6 +6703,12 @@
      "pos": "ad.",
      "meaning": "一般地；通常地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "generally speaking",
+     "meaning": "一般说来"
+    }
    ]
   },
   {
@@ -4697,6 +6717,16 @@
     {
      "pos": "vt.",
      "meaning": "发生；引起；生殖"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "generate sth. from sth",
+     "meaning": "从…中产生…"
+    },
+    {
+     "text": "generate interest in sth",
+     "meaning": "引起对…的兴趣"
     }
    ]
   },
@@ -4734,6 +6764,16 @@
      "pos": "a.",
      "meaning": "真的；真正的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be genuine about sth",
+     "meaning": "对…真心实意"
+    },
+    {
+     "text": "genuine concern for sth",
+     "meaning": "对…的真诚关心"
+    }
    ]
   },
   {
@@ -4752,6 +6792,20 @@
      "pos": "vi.",
      "meaning": "变得，成为；到达"
     }
+   ],
+   "phrases": [
+    {
+     "text": "get sth. done",
+     "meaning": "让某事被做"
+    },
+    {
+     "text": "get sb. to do sth",
+     "meaning": "使（要）某人做某事"
+    },
+    {
+     "text": "get sb. doing sth",
+     "meaning": "使某人做某事"
+    }
    ]
   },
   {
@@ -4760,6 +6814,12 @@
     {
      "pos": "n.",
      "meaning": "鬼，灵魂；鬼魂"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "ghost of sth",
+     "meaning": "某事物的幽灵／影子"
     }
    ]
   },
@@ -4770,6 +6830,16 @@
      "pos": "n.",
      "meaning": "巨人；巨物"
     }
+   ],
+   "phrases": [
+    {
+     "text": "giant of sth",
+     "meaning": "…的巨头"
+    },
+    {
+     "text": "giant in sth",
+     "meaning": "…领域的巨头"
+    }
    ]
   },
   {
@@ -4778,6 +6848,20 @@
     {
      "pos": "vt.",
      "meaning": "做，作；送给"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "give up doing sth",
+     "meaning": "放弃做某事"
+    },
+    {
+     "text": "give back",
+     "meaning": "(归) 还；使返回；恢复"
+    },
+    {
+     "text": "give off",
+     "meaning": "发出 (气味、光、热等)"
     }
    ]
   },
@@ -4842,6 +6926,20 @@
      "pos": "vi.",
      "meaning": "去；走；变为"
     }
+   ],
+   "phrases": [
+    {
+     "text": "go on to do sth",
+     "meaning": "做完某事后接着做另一事"
+    },
+    {
+     "text": "go on doing sth",
+     "meaning": "继续做一直在做的事"
+    },
+    {
+     "text": "(be) on the go",
+     "meaning": "忙个不停"
+    }
    ]
   },
   {
@@ -4850,6 +6948,20 @@
     {
      "pos": "a.",
      "meaning": "好的；有本事的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be no good",
+     "meaning": "没有用处"
+    },
+    {
+     "text": "do good (to)",
+     "meaning": "(对…) 有益"
+    },
+    {
+     "text": "do sb good",
+     "meaning": "对某人有好处"
     }
    ]
   },
@@ -4877,6 +6989,12 @@
     {
      "pos": "n.",
      "meaning": "州长；主管人员"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "governor of + sth",
+     "meaning": "…的州长"
     }
    ]
   },
@@ -4959,6 +7077,12 @@
      "pos": "n.",
      "meaning": "授给物 vt.授予"
     }
+   ],
+   "phrases": [
+    {
+     "text": "take ... for granted (that)",
+     "meaning": "认为…理所当然"
+    }
    ]
   },
   {
@@ -4977,6 +7101,12 @@
      "pos": "n.",
      "meaning": "坟墓 a.严重的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "grave of sb",
+     "meaning": "某人的坟墓"
+    }
    ]
   },
   {
@@ -4986,6 +7116,12 @@
      "pos": "a.",
      "meaning": "灰色的 n.灰色"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be gray with sth",
+     "meaning": "因…而灰白"
+    }
    ]
   },
   {
@@ -4994,6 +7130,20 @@
     {
      "pos": "ad.",
      "meaning": "大大地，非常"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "greatly improve sth",
+     "meaning": "大大提高"
+    },
+    {
+     "text": "greatly increase sth",
+     "meaning": "大幅增加"
+    },
+    {
+     "text": "greatly affect sth",
+     "meaning": "严重影响"
     }
    ]
   },
@@ -5040,6 +7190,16 @@
      "pos": "vt.",
      "meaning": "握紧，抓牢 n.紧握"
     }
+   ],
+   "phrases": [
+    {
+     "text": "grip on sth",
+     "meaning": "对…的控制"
+    },
+    {
+     "text": "grip sth tightly",
+     "meaning": "紧握…"
+    }
    ]
   },
   {
@@ -5075,6 +7235,20 @@
     {
      "pos": "vi.",
      "meaning": "生长；变得；增长"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "grow into",
+     "meaning": "变成；发展成"
+    },
+    {
+     "text": "grow out of",
+     "meaning": "产生于；长大得与…不再相称"
+    },
+    {
+     "text": "grow up",
+     "meaning": "成熟；长成；形成；发展"
     }
    ]
   },
@@ -5139,6 +7313,20 @@
      "pos": "vt.",
      "meaning": "挂，悬；吊死"
     }
+   ],
+   "phrases": [
+    {
+     "text": "hang about / around",
+     "meaning": "(在…附近) 闲逛；晃悠"
+    },
+    {
+     "text": "hang about / around with sb",
+     "meaning": "与某人厮混；聚在一起"
+    },
+    {
+     "text": "hang on",
+     "meaning": "抓紧不放；[非正式用语] 不要挂断(hold on)"
+    }
    ]
   },
   {
@@ -5183,6 +7371,16 @@
     {
      "pos": "a.",
      "meaning": "严厉的；刺耳的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be harsh on sb",
+     "meaning": "对某人苛刻"
+    },
+    {
+     "text": "be harsh to sb",
+     "meaning": "对某人严厉"
     }
    ]
   },
@@ -5238,6 +7436,20 @@
      "pos": "v.aux.",
      "meaning": "已经 vt.有；吃"
     }
+   ],
+   "phrases": [
+    {
+     "text": "have sth. done",
+     "meaning": "让某事被做"
+    },
+    {
+     "text": "have sb. doing sth",
+     "meaning": "使某人做某事"
+    },
+    {
+     "text": "have sb. do sth",
+     "meaning": "使某人做某事"
+    }
    ]
   },
   {
@@ -5265,6 +7477,16 @@
      "pos": "n.",
      "meaning": "司令部；总部"
     }
+   ],
+   "phrases": [
+    {
+     "text": "headquarters of sth",
+     "meaning": "某机构的总部"
+    },
+    {
+     "text": "headquarters in sp",
+     "meaning": "总部设在某地"
+    }
    ]
   },
   {
@@ -5274,6 +7496,12 @@
      "pos": "vt.",
      "meaning": "治愈；使和解"
     }
+   ],
+   "phrases": [
+    {
+     "text": "heal over / up",
+     "meaning": "愈合；痊愈"
+    }
    ]
   },
   {
@@ -5282,6 +7510,20 @@
     {
      "pos": "vt.",
      "meaning": "听见；审讯；听说"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "hear sb. doing sth",
+     "meaning": "听见某人正在做某事"
+    },
+    {
+     "text": "hear sb. do sth",
+     "meaning": "听见某人做某事"
+    },
+    {
+     "text": "hear about",
+     "meaning": "听说 (…的情况)"
     }
    ]
   },
@@ -5319,6 +7561,12 @@
      "pos": "n.",
      "meaning": "地狱；极大的痛苦"
     }
+   ],
+   "phrases": [
+    {
+     "text": "hell of a + sth",
+     "meaning": "了不得的…"
+    }
    ]
   },
   {
@@ -5336,6 +7584,12 @@
     {
      "pos": "ad.",
      "meaning": "因此，所以；今后"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "hence the need for sth",
+     "meaning": "因此需要…"
     }
    ]
   },
@@ -5364,6 +7618,20 @@
      "pos": "vi.",
      "meaning": "犹豫，踌躇；含糊"
     }
+   ],
+   "phrases": [
+    {
+     "text": "hesitate to do sth",
+     "meaning": "犹豫做某事"
+    },
+    {
+     "text": "hesitate about sth",
+     "meaning": "对…犹豫不决"
+    },
+    {
+     "text": "hesitate over sth",
+     "meaning": "对…迟疑"
+    }
    ]
   },
   {
@@ -5372,6 +7640,16 @@
     {
      "pos": "vt.",
      "meaning": "把…藏起来；隐瞒"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "hide sth. from sb",
+     "meaning": "把某事瞒着某人"
+    },
+    {
+     "text": "hide from sb",
+     "meaning": "躲避某人"
     }
    ]
   },
@@ -5391,6 +7669,20 @@
      "pos": "n.",
      "meaning": "暗示，示意；建议"
     }
+   ],
+   "phrases": [
+    {
+     "text": "hint of sth",
+     "meaning": "一丝…"
+    },
+    {
+     "text": "hint about sth",
+     "meaning": "关于…的暗示"
+    },
+    {
+     "text": "hint at sth",
+     "meaning": "暗示…"
+    }
    ]
   },
   {
@@ -5409,6 +7701,16 @@
      "pos": "vt.",
      "meaning": "打；碰撞 n.击"
     }
+   ],
+   "phrases": [
+    {
+     "text": "hit on / upon",
+     "meaning": "突然想到 (come up with)"
+    },
+    {
+     "text": "take a hit",
+     "meaning": "遭到破坏；受到严重影响"
+    }
    ]
   },
   {
@@ -5417,6 +7719,20 @@
     {
      "pos": "vt.",
      "meaning": "拿住；掌握；拥有"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "hold on to / onto",
+     "meaning": "守住；保住 (不送 / 不卖)"
+    },
+    {
+     "text": "hold the line",
+     "meaning": "别挂断；等会儿"
+    },
+    {
+     "text": "catch / get / take (a) hold of",
+     "meaning": "抓住；拿着；握住"
     }
    ]
   },
@@ -5435,6 +7751,12 @@
     {
      "pos": "n.",
      "meaning": "诚实，正直"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "in all honesty",
+     "meaning": "说实话；其实"
     }
    ]
   },
@@ -5481,6 +7803,16 @@
      "pos": "n.",
      "meaning": "号角；警报器；角"
     }
+   ],
+   "phrases": [
+    {
+     "text": "horn of sth",
+     "meaning": "…的角；喇叭"
+    },
+    {
+     "text": "horn in on sth",
+     "meaning": "插手干预"
+    }
    ]
   },
   {
@@ -5489,6 +7821,12 @@
     {
      "pos": "n.",
      "meaning": "恐怖；战栗；憎恶"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "to sb's horror / to the horror of sb",
+     "meaning": "使某人感到惊恐的是"
     }
    ]
   },
@@ -5517,6 +7855,12 @@
      "pos": "n.",
      "meaning": "家庭，户；家务"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be a household name / word",
+     "meaning": "家喻户晓的名字 / 词"
+    }
    ]
   },
   {
@@ -5544,6 +7888,12 @@
      "pos": "vt.",
      "meaning": "使受伤；使痛心"
     }
+   ],
+   "phrases": [
+    {
+     "text": "it won’t / doesn’t hurt (sb) to do sth",
+     "meaning": "(某人) 做某事也无妨"
+    }
    ]
   },
   {
@@ -5562,6 +7912,16 @@
      "pos": "a.",
      "meaning": "理想的；观念的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be ideal for sb./sth",
+     "meaning": "对…极为合适"
+    },
+    {
+     "text": "be ideal for doing sth",
+     "meaning": "非常适合做某事"
+    }
    ]
   },
   {
@@ -5571,6 +7931,12 @@
      "pos": "a.",
      "meaning": "完全相同的；同一的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "(be) identical to",
+     "meaning": "与……一样；与……一致"
+    }
    ]
   },
   {
@@ -5579,6 +7945,16 @@
     {
      "pos": "vt.",
      "meaning": "认出，识别，鉴定"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "identify sb / sth with sth",
+     "meaning": "认为某人 / 某物等同于某物"
+    },
+    {
+     "text": "identify with sb / sth",
+     "meaning": "认同某人 / 某物；与某人 / 某物有同感"
     }
    ]
   },
@@ -5616,6 +7992,16 @@
      "pos": "vt.",
      "meaning": "(用图等)说明"
     }
+   ],
+   "phrases": [
+    {
+     "text": "illustrate sth with sth",
+     "meaning": "用…说明某事"
+    },
+    {
+     "text": "illustrate how to do sth",
+     "meaning": "说明如何做"
+    }
    ]
   },
   {
@@ -5633,6 +8019,16 @@
     {
      "pos": "n.",
      "meaning": "像；形象；映象"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "image of + sth",
+     "meaning": "…的形象"
+    },
+    {
+     "text": "image as + sth",
+     "meaning": "作为…的形象"
     }
    ]
   },
@@ -5679,6 +8075,16 @@
      "pos": "n.",
      "meaning": "移民 a.移民的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "immigrant from sth",
+     "meaning": "来自…的移民"
+    },
+    {
+     "text": "immigrant to sth",
+     "meaning": "移居…的移民"
+    }
    ]
   },
   {
@@ -5687,6 +8093,16 @@
     {
      "pos": "n.",
      "meaning": "影响，作用；冲击"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "impact on sb./sth",
+     "meaning": "对…的影响"
+    },
+    {
+     "text": "impact of + sth",
+     "meaning": "…的影响"
     }
    ]
   },
@@ -5706,6 +8122,16 @@
      "pos": "n.",
      "meaning": "含义，暗示，暗指"
     }
+   ],
+   "phrases": [
+    {
+     "text": "implication for sth",
+     "meaning": "对…的影响"
+    },
+    {
+     "text": "implication of sth",
+     "meaning": "…的含义"
+    }
    ]
   },
   {
@@ -5714,6 +8140,16 @@
     {
      "pos": "vt.",
      "meaning": "暗示，意指"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "imply sth. about sb./sth",
+     "meaning": "暗示关于…的情况"
+    },
+    {
+     "text": "imply sth. by sth",
+     "meaning": "通过某事暗示另一事"
     }
    ]
   },
@@ -5724,6 +8160,20 @@
      "pos": "vt.",
      "meaning": "把…强加；征(税)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "impose sth on sb",
+     "meaning": "把…强加于某人"
+    },
+    {
+     "text": "impose on sb",
+     "meaning": "打扰某人"
+    },
+    {
+     "text": "impose a ban on sth",
+     "meaning": "对…实施禁令"
+    }
    ]
   },
   {
@@ -5732,6 +8182,16 @@
     {
      "pos": "a.",
      "meaning": "给人印象深刻的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be impressive in sth",
+     "meaning": "在某方面令人印象深刻"
+    },
+    {
+     "text": "be impressive to sb",
+     "meaning": "给某人留下深刻印象"
     }
    ]
   },
@@ -5750,6 +8210,20 @@
     {
      "pos": "n.",
      "meaning": "改进，改善；改进处"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "improvement in sth",
+     "meaning": "在某方面的改进"
+    },
+    {
+     "text": "improvement on sth",
+     "meaning": "比…更好的改进"
+    },
+    {
+     "text": "improvement of sth",
+     "meaning": "…的改善"
     }
    ]
   },
@@ -5787,6 +8261,16 @@
      "pos": "n.",
      "meaning": "索引；指数；指标"
     }
+   ],
+   "phrases": [
+    {
+     "text": "index of sth",
+     "meaning": "…的指数；…的标志"
+    },
+    {
+     "text": "index to sth",
+     "meaning": "…的索引"
+    }
    ]
   },
   {
@@ -5795,6 +8279,12 @@
     {
      "pos": "n.",
      "meaning": "指示;表示；表明"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "indication of sth",
+     "meaning": "某事的迹象"
     }
    ]
   },
@@ -5885,6 +8375,16 @@
     {
      "pos": "a.",
      "meaning": "不可避免的，必然的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be inevitable in the long run",
+     "meaning": "长远看不可避免"
+    },
+    {
+     "text": "be inevitable for sb",
+     "meaning": "对某人不可避免"
     }
    ]
   },
@@ -6021,6 +8521,16 @@
      "pos": "n.",
      "meaning": "询问，打听；调查"
     }
+   ],
+   "phrases": [
+    {
+     "text": "inquiry into sth",
+     "meaning": "对某事的调查"
+    },
+    {
+     "text": "inquiry about sth",
+     "meaning": "关于某事的询问"
+    }
    ]
   },
   {
@@ -6030,6 +8540,16 @@
      "pos": "n.",
      "meaning": "检查，审查；检阅"
     }
+   ],
+   "phrases": [
+    {
+     "text": "inspection of sth",
+     "meaning": "对…的检查"
+    },
+    {
+     "text": "inspection by sb",
+     "meaning": "由某人检查"
+    }
    ]
   },
   {
@@ -6038,6 +8558,20 @@
     {
      "pos": "vt.",
      "meaning": "安装，设置"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "install sth in sth",
+     "meaning": "在…安装某物"
+    },
+    {
+     "text": "install sth on sth",
+     "meaning": "在…上安装某物"
+    },
+    {
+     "text": "install sb. as sth",
+     "meaning": "任命某人为"
     }
    ]
   },
@@ -6056,6 +8590,12 @@
     {
      "pos": "n.",
      "meaning": "例子，实例，事例"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "instance of sth",
+     "meaning": "某事的实例"
     }
    ]
   },
@@ -6111,6 +8651,16 @@
      "pos": "a.",
      "meaning": "聪明的；理智的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be intelligent enough to do sth",
+     "meaning": "足够聪明做某事"
+    },
+    {
+     "text": "be intelligent in sth",
+     "meaning": "在…方面聪慧"
+    }
    ]
   },
   {
@@ -6128,6 +8678,12 @@
     {
      "pos": "n.",
      "meaning": "强烈，剧烈；强度"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "intensity of sth",
+     "meaning": "某事物的强度"
     }
    ]
   },
@@ -6156,6 +8712,16 @@
      "pos": "n.",
      "meaning": "相互作用；干扰"
     }
+   ],
+   "phrases": [
+    {
+     "text": "interaction with sb",
+     "meaning": "与某人的互动"
+    },
+    {
+     "text": "interaction among sb",
+     "meaning": "某人之间的互动"
+    }
    ]
   },
   {
@@ -6183,6 +8749,16 @@
      "pos": "a.",
      "meaning": "内的；内地的 n.内部"
     }
+   ],
+   "phrases": [
+    {
+     "text": "interior of sth",
+     "meaning": "…的内部"
+    },
+    {
+     "text": "interior to sth",
+     "meaning": "位于…内部"
+    }
    ]
   },
   {
@@ -6201,6 +8777,12 @@
      "pos": "a.",
      "meaning": "内的；国内的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be internal to sth",
+     "meaning": "属于…内部"
+    }
    ]
   },
   {
@@ -6210,6 +8792,20 @@
      "pos": "vt.",
      "meaning": "解释，说明；口译"
     }
+   ],
+   "phrases": [
+    {
+     "text": "interpret sth. as sth",
+     "meaning": "把某物理解为…"
+    },
+    {
+     "text": "interpret for sb",
+     "meaning": "为某人翻译"
+    },
+    {
+     "text": "interpret sth. into sth",
+     "meaning": "把某物口译成另一语言"
+    }
    ]
   },
   {
@@ -6218,6 +8814,16 @@
     {
      "pos": "n.",
      "meaning": "解释；口译"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "interpretation of sth",
+     "meaning": "对…的解释"
+    },
+    {
+     "text": "interpretation by sb",
+     "meaning": "某人的解读"
     }
    ]
   },
@@ -6255,6 +8861,12 @@
      "pos": "n.",
      "meaning": "入侵，侵略；侵犯"
     }
+   ],
+   "phrases": [
+    {
+     "text": "invasion of sth",
+     "meaning": "对某地的入侵"
+    }
    ]
   },
   {
@@ -6263,6 +8875,16 @@
     {
      "pos": "vt.",
      "meaning": "投资；投入"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "invest in sth",
+     "meaning": "投资于"
+    },
+    {
+     "text": "invest sth in doing sth",
+     "meaning": "把…投入做某事"
     }
    ]
   },
@@ -6273,6 +8895,12 @@
      "pos": "vt.",
      "meaning": "&vi.调查"
     }
+   ],
+   "phrases": [
+    {
+     "text": "investigate the cause of sth",
+     "meaning": "调查…的原因"
+    }
    ]
   },
   {
@@ -6281,6 +8909,16 @@
     {
      "pos": "n.",
      "meaning": "调查，调查研究"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "investigation into sth",
+     "meaning": "对…的调查"
+    },
+    {
+     "text": "investigation of + sth",
+     "meaning": "…的调查"
     }
    ]
   },
@@ -6291,6 +8929,16 @@
      "pos": "n.",
      "meaning": "投资(额)，投入"
     }
+   ],
+   "phrases": [
+    {
+     "text": "investment in + sth",
+     "meaning": "对…的投资"
+    },
+    {
+     "text": "investment of + sth",
+     "meaning": "…的投资额"
+    }
    ]
   },
   {
@@ -6300,6 +8948,16 @@
      "pos": "a.",
      "meaning": "看不见的，无形的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be invisible to sb",
+     "meaning": "对某人不可见"
+    },
+    {
+     "text": "be invisible from sth",
+     "meaning": "从…看不见"
+    }
    ]
   },
   {
@@ -6308,6 +8966,20 @@
     {
      "pos": "vt.",
      "meaning": "使卷入；牵涉"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "involve doing sth",
+     "meaning": "需要做某事"
+    },
+    {
+     "text": "involve oneself in sth",
+     "meaning": "使自己参与…"
+    },
+    {
+     "text": "involve sb. in sth",
+     "meaning": "使某人参与…"
     }
    ]
   },
@@ -6336,6 +9008,16 @@
      "pos": "vt.",
      "meaning": "使隔离，使孤立"
     }
+   ],
+   "phrases": [
+    {
+     "text": "isolate sb. from sth",
+     "meaning": "使某人隔离于"
+    },
+    {
+     "text": "be isolated from sth",
+     "meaning": "与…隔绝"
+    }
    ]
   },
   {
@@ -6344,6 +9026,16 @@
     {
      "pos": "n.",
      "meaning": "问题；发行 vt.发行"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "issue of sth",
+     "meaning": "…的问题；期号"
+    },
+    {
+     "text": "issue with sth",
+     "meaning": "对…的异议"
     }
    ]
   },
@@ -6354,6 +9046,16 @@
      "pos": "n.",
      "meaning": "条，条款；一条"
     }
+   ],
+   "phrases": [
+    {
+     "text": "item on + sth",
+     "meaning": "…上的一项"
+    },
+    {
+     "text": "item of + sth",
+     "meaning": "一件…"
+    }
    ]
   },
   {
@@ -6362,6 +9064,12 @@
     {
      "pos": "n.",
      "meaning": "监狱 vi.监禁"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "jail for sth",
+     "meaning": "因…入狱"
     }
    ]
   },
@@ -6408,6 +9116,16 @@
      "pos": "n.",
      "meaning": "日报，杂志；日志"
     }
+   ],
+   "phrases": [
+    {
+     "text": "journal of sth",
+     "meaning": "某学科的期刊"
+    },
+    {
+     "text": "journal on sth",
+     "meaning": "关于某领域的期刊"
+    }
    ]
   },
   {
@@ -6426,6 +9144,12 @@
      "pos": "n.",
      "meaning": "陪审团；评奖团"
     }
+   ],
+   "phrases": [
+    {
+     "text": "jury in + sth",
+     "meaning": "…案的陪审团"
+    }
    ]
   },
   {
@@ -6434,6 +9158,16 @@
     {
      "pos": "vt.",
      "meaning": "证明…是正当的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "justify sth. to sb",
+     "meaning": "向某人证明某事正当"
+    },
+    {
+     "text": "justify doing sth",
+     "meaning": "为做某事辩解"
     }
    ]
   },
@@ -6452,6 +9186,20 @@
     {
      "pos": "vi.",
      "meaning": "保持；坚持"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "keep sb. from doing sth",
+     "meaning": "阻止某人做某事"
+    },
+    {
+     "text": "keep doing sth",
+     "meaning": "保持做某事"
+    },
+    {
+     "text": "keep sb. doing sth",
+     "meaning": "使某人不停地做某事"
     }
    ]
   },
@@ -6507,6 +9255,20 @@
      "pos": "vt.",
      "meaning": "知道；认识；通晓"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be known as",
+     "meaning": "以…而出名；被称作；被认为"
+    },
+    {
+     "text": "be known for",
+     "meaning": "因…而闻名 (be famous for)"
+    },
+    {
+     "text": "be known to",
+     "meaning": "为…所熟知"
+    }
    ]
   },
   {
@@ -6515,6 +9277,16 @@
     {
      "pos": "n.",
      "meaning": "标签；标记，符号"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "label on sth",
+     "meaning": "…上的标签"
+    },
+    {
+     "text": "label for sth",
+     "meaning": "给…贴的标签"
     }
    ]
   },
@@ -6552,6 +9324,16 @@
      "pos": "n.",
      "meaning": "上岸，登陆，着陆"
     }
+   ],
+   "phrases": [
+    {
+     "text": "landing on sth",
+     "meaning": "在…着陆"
+    },
+    {
+     "text": "landing of sth",
+     "meaning": "…的着陆"
+    }
    ]
   },
   {
@@ -6588,6 +9370,12 @@
      "pos": "ad.",
      "meaning": "大部分；大量地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "largely due to sth",
+     "meaning": "主要由于…"
+    }
    ]
   },
   {
@@ -6605,6 +9393,16 @@
     {
      "pos": "vt.",
      "meaning": "发射，投射；发动"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "launch an attack on sb",
+     "meaning": "对…发动攻击"
+    },
+    {
+     "text": "launch a campaign against sth",
+     "meaning": "发起反对…的运动"
     }
    ]
   },
@@ -6624,6 +9422,12 @@
      "pos": "vt.",
      "meaning": "置放；铺设；设置"
     }
+   ],
+   "phrases": [
+    {
+     "text": "lay down",
+     "meaning": "放下；停止使用 (put down)；规定"
+    }
    ]
   },
   {
@@ -6632,6 +9436,16 @@
     {
      "pos": "n.",
      "meaning": "层，层次；铺设者"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "layer of sth",
+     "meaning": "一层…"
+    },
+    {
+     "text": "layers of sth",
+     "meaning": "层层…"
     }
    ]
   },
@@ -6651,6 +9465,16 @@
      "pos": "vt.",
      "meaning": "为…带路；领导"
     }
+   ],
+   "phrases": [
+    {
+     "text": "lead up to",
+     "meaning": "是…的先导；是导致…的原因"
+    },
+    {
+     "text": "lead a ... life",
+     "meaning": "过着……的生活"
+    }
    ]
   },
   {
@@ -6659,6 +9483,16 @@
     {
      "pos": "n.",
      "meaning": "领导"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "leadership of + sth",
+     "meaning": "对…的领导"
+    },
+    {
+     "text": "leadership in + sth",
+     "meaning": "在…方面的领导地位"
     }
    ]
   },
@@ -6669,6 +9503,12 @@
      "pos": "n.",
      "meaning": "叶，叶子"
     }
+   ],
+   "phrases": [
+    {
+     "text": "leaf through sth",
+     "meaning": "翻阅某物"
+    }
    ]
   },
   {
@@ -6677,6 +9517,20 @@
     {
      "pos": "vi.",
      "meaning": "倾斜，屈身；靠"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "lean against sth",
+     "meaning": "靠在…上"
+    },
+    {
+     "text": "lean towards sth",
+     "meaning": "倾向于…"
+    },
+    {
+     "text": "lean out of sth",
+     "meaning": "探身出…"
     }
    ]
   },
@@ -6687,6 +9541,20 @@
      "pos": "vi.",
      "meaning": "跳，跃 n.跳跃"
     }
+   ],
+   "phrases": [
+    {
+     "text": "leap at sth",
+     "meaning": "迫不及待地接受"
+    },
+    {
+     "text": "leap to conclusions",
+     "meaning": "草率下结论"
+    },
+    {
+     "text": "leap over sth",
+     "meaning": "跳过…"
+    }
    ]
   },
   {
@@ -6695,6 +9563,16 @@
     {
      "pos": "n.",
      "meaning": "学习；学问，知识"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "learning of + sth",
+     "meaning": "对…的学习"
+    },
+    {
+     "text": "learning through + sth",
+     "meaning": "通过…学习"
     }
    ]
   },
@@ -6705,6 +9583,20 @@
      "pos": "vi.",
      "meaning": "离去 vt.离开"
     }
+   ],
+   "phrases": [
+    {
+     "text": "leave sb. to do sth",
+     "meaning": "留下某人做某事"
+    },
+    {
+     "text": "(be) left over",
+     "meaning": "被剩下；被留下"
+    },
+    {
+     "text": "leave room for",
+     "meaning": "为…留有余地"
+    }
    ]
   },
   {
@@ -6713,6 +9605,12 @@
     {
      "pos": "n.",
      "meaning": "传说，传奇"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "legend of sth",
+     "meaning": "关于某事物的传说"
     }
    ]
   },
@@ -6732,6 +9630,16 @@
      "pos": "vt.",
      "meaning": "把…借给，贷(款)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "lend sb. sth. = lend sth. to sb",
+     "meaning": "把某物借给"
+    },
+    {
+     "text": "give / lend (sb) a hand",
+     "meaning": "帮助 (某人)"
+    }
    ]
   },
   {
@@ -6740,6 +9648,16 @@
     {
      "pos": "n.",
      "meaning": "透镜，镜片；镜头"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "lens of sth",
+     "meaning": "…的镜头"
+    },
+    {
+     "text": "lens for sth",
+     "meaning": "用于…的镜头"
     }
    ]
   },
@@ -6795,6 +9713,16 @@
      "pos": "a.",
      "meaning": "心胸宽大的；慷慨的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be liberal with sth",
+     "meaning": "对…大方"
+    },
+    {
+     "text": "be liberal in sth",
+     "meaning": "在…上开明"
+    }
    ]
   },
   {
@@ -6813,6 +9741,12 @@
      "pos": "vi.",
      "meaning": "躺，平放；位于"
     }
+   ],
+   "phrases": [
+    {
+     "text": "lie down",
+     "meaning": "躺下；屈服；顺从"
+    }
    ]
   },
   {
@@ -6830,6 +9764,20 @@
     {
      "pos": "n.",
      "meaning": "生命；一生；寿命"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "all one's life",
+     "meaning": "终生；一辈子"
+    },
+    {
+     "text": "bring … to life",
+     "meaning": "使苏醒过来；使更生动"
+    },
+    {
+     "text": "come to life",
+     "meaning": "苏醒过来；变得活跃 (come alive)"
     }
    ]
   },
@@ -6867,6 +9815,16 @@
      "pos": "n.",
      "meaning": "肢，臂，翼；树枝"
     }
+   ],
+   "phrases": [
+    {
+     "text": "limb of sth",
+     "meaning": "…的分支"
+    },
+    {
+     "text": "limb of a tree",
+     "meaning": "树枝"
+    }
    ]
   },
   {
@@ -6885,6 +9843,16 @@
      "pos": "n.",
      "meaning": "限制；限度，局限"
     }
+   ],
+   "phrases": [
+    {
+     "text": "limitation on sth",
+     "meaning": "对某事的限制"
+    },
+    {
+     "text": "limitation of sth",
+     "meaning": "某事物的局限"
+    }
    ]
   },
   {
@@ -6893,6 +9861,16 @@
     {
      "pos": "a.",
      "meaning": "有限的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be limited to sth",
+     "meaning": "局限于"
+    },
+    {
+     "text": "be limited in sth",
+     "meaning": "在…方面有限"
     }
    ]
   },
@@ -6939,6 +9917,20 @@
      "pos": "a.",
      "meaning": "小的；少；幼小的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "a little",
+     "meaning": "[表示肯定含义] 少量；有点儿 (a bit)"
+    },
+    {
+     "text": "little by little",
+     "meaning": "逐渐地；一点点地"
+    },
+    {
+     "text": "not a little",
+     "meaning": "相当多 (much)"
+    }
    ]
   },
   {
@@ -6966,6 +9958,16 @@
      "pos": "n.",
      "meaning": "贷款；暂借 vt.借出"
     }
+   ],
+   "phrases": [
+    {
+     "text": "loan from + sth",
+     "meaning": "来自…的贷款"
+    },
+    {
+     "text": "loan to sb",
+     "meaning": "给某人的贷款"
+    }
    ]
   },
   {
@@ -6975,6 +9977,16 @@
      "pos": "vt.",
      "meaning": "探明，找出，查出"
     }
+   ],
+   "phrases": [
+    {
+     "text": "locate the source of sth",
+     "meaning": "找出…的来源"
+    },
+    {
+     "text": "locate sth. in sth",
+     "meaning": "把…设在…"
+    }
    ]
   },
   {
@@ -6983,6 +9995,16 @@
     {
      "pos": "n.",
      "meaning": "位置，场所"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "location of + sth",
+     "meaning": "…的位置"
+    },
+    {
+     "text": "location for + sth",
+     "meaning": "…的选址"
     }
    ]
   },
@@ -7011,6 +10033,12 @@
      "pos": "n.",
      "meaning": "原木，木料"
     }
+   ],
+   "phrases": [
+    {
+     "text": "log in / on",
+     "meaning": "使注册；使登录"
+    }
    ]
   },
   {
@@ -7019,6 +10047,20 @@
     {
      "pos": "n.",
      "meaning": "逻辑，推理；逻辑性"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "logic of sth",
+     "meaning": "…的逻辑"
+    },
+    {
+     "text": "logic behind sth",
+     "meaning": "…背后的逻辑"
+    },
+    {
+     "text": "logic in doing sth",
+     "meaning": "做…的道理"
     }
    ]
   },
@@ -7065,6 +10107,12 @@
      "pos": "vt.",
      "meaning": "失去；迷失；输掉"
     }
+   ],
+   "phrases": [
+    {
+     "text": "lose oneself in",
+     "meaning": "专心于；全神贯注于"
+    }
    ]
   },
   {
@@ -7074,6 +10122,16 @@
      "pos": "n.",
      "meaning": "爱好者；情人；情侣"
     }
+   ],
+   "phrases": [
+    {
+     "text": "lover of sth",
+     "meaning": "某事物的爱好者"
+    },
+    {
+     "text": "lover of doing sth",
+     "meaning": "喜欢做某事的人"
+    }
    ]
   },
   {
@@ -7082,6 +10140,12 @@
     {
      "pos": "a.",
      "meaning": "较低的 vt.放下"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be lower than sth",
+     "meaning": "低于…"
     }
    ]
   },
@@ -7173,6 +10237,16 @@
      "pos": "ad.",
      "meaning": "主要地，大体上"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mainly because of sth",
+     "meaning": "主要因为某事"
+    },
+    {
+     "text": "mainly due to sth",
+     "meaning": "主要由于某事"
+    }
    ]
   },
   {
@@ -7181,6 +10255,12 @@
     {
      "pos": "vt.",
      "meaning": "维持；赡养；维修"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "maintain contact with sb",
+     "meaning": "与某人保持联系"
     }
    ]
   },
@@ -7191,6 +10271,16 @@
      "pos": "n.",
      "meaning": "维持，保持；维修"
     }
+   ],
+   "phrases": [
+    {
+     "text": "maintenance of sth",
+     "meaning": "某物的维护"
+    },
+    {
+     "text": "maintenance on sth",
+     "meaning": "对某物的保养"
+    }
    ]
   },
   {
@@ -7199,6 +10289,20 @@
     {
      "pos": "vt.",
      "meaning": "使；做，制造"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "make sb. do sth",
+     "meaning": "使某人做某事"
+    },
+    {
+     "text": "make sb. sth. = make sth. for sb",
+     "meaning": "为某人做某物"
+    },
+    {
+     "text": "be made from / of",
+     "meaning": "由…制造；用…为原料制取"
     }
    ]
   },
@@ -7217,6 +10321,16 @@
     {
      "pos": "n.",
      "meaning": "管理；经营，处理"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "management of + sth",
+     "meaning": "对…的管理"
+    },
+    {
+     "text": "management in + sth",
+     "meaning": "…中的管理层"
     }
    ]
   },
@@ -7254,6 +10368,12 @@
      "pos": "n.",
      "meaning": "制造商/厂"
     }
+   ],
+   "phrases": [
+    {
+     "text": "manufacturer of sth",
+     "meaning": "…的制造商"
+    }
    ]
   },
   {
@@ -7263,6 +10383,20 @@
      "pos": "a.",
      "meaning": "许多的 pron.许多人"
     }
+   ],
+   "phrases": [
+    {
+     "text": "a good / great many",
+     "meaning": "很多 / 极多"
+    },
+    {
+     "text": "as many as",
+     "meaning": "多达"
+    },
+    {
+     "text": "many a",
+     "meaning": "[正式用语] [接可数名词单数作主语时，谓语动词用单数] 许多的；非常多的"
+    }
    ]
   },
   {
@@ -7271,6 +10405,16 @@
     {
      "pos": "n.",
      "meaning": "页边的空白；边缘"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "margin of sth",
+     "meaning": "某事物的差额／余地"
+    },
+    {
+     "text": "margin for sth",
+     "meaning": "为某事留的余地"
     }
    ]
   },
@@ -7371,6 +10515,12 @@
      "pos": "n.",
      "meaning": "市长"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mayor of sth",
+     "meaning": "…的市长"
+    }
    ]
   },
   {
@@ -7389,6 +10539,20 @@
      "pos": "vt.",
      "meaning": "作…解释；意指"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mean sb. to do sth",
+     "meaning": "打算要某人做某事"
+    },
+    {
+     "text": "mean to do sth",
+     "meaning": "打算做某事"
+    },
+    {
+     "text": "mean doing sth",
+     "meaning": "意味着做某事"
+    }
    ]
   },
   {
@@ -7397,6 +10561,12 @@
     {
      "pos": "n.",
      "meaning": "其时/间 ad.当时"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "in the meantime",
+     "meaning": "在此期间；与此同时"
     }
    ]
   },
@@ -7415,6 +10585,12 @@
     {
      "pos": "n.",
      "meaning": "衡量,测量；尺寸"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "measurement of sth",
+     "meaning": "对某物的测量"
     }
    ]
   },
@@ -7452,6 +10628,12 @@
      "pos": "n.",
      "meaning": "力学；技术性细节"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mechanics of sth",
+     "meaning": "…的力学；机制"
+    }
    ]
   },
   {
@@ -7470,6 +10652,12 @@
      "pos": "vt.",
      "meaning": "遇见 vi.相遇"
     }
+   ],
+   "phrases": [
+    {
+     "text": "meet up",
+     "meaning": "碰面；会面"
+    }
    ]
   },
   {
@@ -7478,6 +10666,16 @@
     {
      "pos": "vi.",
      "meaning": "融化 vt.使融化"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "melt in one's mouth",
+     "meaning": "入口即化"
+    },
+    {
+     "text": "melt into sth",
+     "meaning": "化为…"
     }
    ]
   },
@@ -7578,6 +10776,12 @@
      "pos": "a.",
      "meaning": "较小的；较次要的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "minor role in sth",
+     "meaning": "在…中的次要作用"
+    }
    ]
   },
   {
@@ -7586,6 +10790,12 @@
     {
      "pos": "n.",
      "meaning": "奇迹，令人惊奇的人"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "miracle of sth",
+     "meaning": "某事物的奇迹"
     }
    ]
   },
@@ -7614,6 +10824,16 @@
      "pos": "a.",
      "meaning": "缺掉的，失去的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be missing from sth",
+     "meaning": "在…中缺失"
+    },
+    {
+     "text": "be missing in sth",
+     "meaning": "在…中不见"
+    }
    ]
   },
   {
@@ -7623,6 +10843,16 @@
      "pos": "n.",
      "meaning": "使命，任务；使团"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mission to + sth",
+     "meaning": "前往…的任务"
+    },
+    {
+     "text": "mission of + sth",
+     "meaning": "…的使命"
+    }
    ]
   },
   {
@@ -7631,6 +10861,16 @@
     {
      "pos": "n.",
      "meaning": "错误 vi.误解，弄错"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "by mistake",
+     "meaning": "错误地；无意地 (accidentally)"
+    },
+    {
+     "text": "mistake ... for",
+     "meaning": "把…错当成…"
     }
    ]
   },
@@ -7668,6 +10908,16 @@
      "pos": "n.",
      "meaning": "方式，样式"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mode of sth",
+     "meaning": "某事物的方式"
+    },
+    {
+     "text": "mode of doing sth",
+     "meaning": "做某事的方式"
+    }
    ]
   },
   {
@@ -7677,6 +10927,12 @@
      "pos": "a.",
      "meaning": "温和的；有节制的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be moderate in sth",
+     "meaning": "在某方面适度"
+    }
    ]
   },
   {
@@ -7685,6 +10941,12 @@
     {
      "pos": "vt.",
      "meaning": "更改，修改；修饰"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "modify sth to do sth",
+     "meaning": "改造…以做"
     }
    ]
   },
@@ -7731,6 +10993,16 @@
      "pos": "n.",
      "meaning": "心情，情绪；语气"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mood for doing sth",
+     "meaning": "做…的心情"
+    },
+    {
+     "text": "mood of sth",
+     "meaning": "…的气氛"
+    }
    ]
   },
   {
@@ -7767,6 +11039,16 @@
      "pos": "n.",
      "meaning": "运动；手势；提议"
     }
+   ],
+   "phrases": [
+    {
+     "text": "motion of + sth",
+     "meaning": "…的运动"
+    },
+    {
+     "text": "motion to do sth",
+     "meaning": "提议做…的动议"
+    }
    ]
   },
   {
@@ -7776,6 +11058,16 @@
      "pos": "vt.",
      "meaning": "促动；激励，激发"
     }
+   ],
+   "phrases": [
+    {
+     "text": "motivate sb. to do sth",
+     "meaning": "激励某人做某事"
+    },
+    {
+     "text": "be motivated by sth",
+     "meaning": "受…驱动"
+    }
    ]
   },
   {
@@ -7784,6 +11076,16 @@
     {
      "pos": "n.",
      "meaning": "动机，目的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "motive for sth",
+     "meaning": "做…的动机"
+    },
+    {
+     "text": "motive behind sth",
+     "meaning": "…背后的动机"
     }
    ]
   },
@@ -7803,6 +11105,16 @@
      "pos": "vt.",
      "meaning": "登上，爬上 n.…山"
     }
+   ],
+   "phrases": [
+    {
+     "text": "mount sth. on sth",
+     "meaning": "把某物安装到…上"
+    },
+    {
+     "text": "mount up to sth",
+     "meaning": "增加到某一数量"
+    }
    ]
   },
   {
@@ -7820,6 +11132,20 @@
     {
      "pos": "ad.",
      "meaning": "非常，很 a.许多的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "as much",
+     "meaning": "同样数量；同样的事"
+    },
+    {
+     "text": "as much as",
+     "meaning": "像…那么多；多达"
+    },
+    {
+     "text": "as much … as",
+     "meaning": "和…同样多的；和…一样"
     }
    ]
   },
@@ -7866,6 +11192,12 @@
      "pos": "v.aux.",
      "meaning": "必须；必然要"
     }
+   ],
+   "phrases": [
+    {
+     "text": "if you must (do sth)",
+     "meaning": "如果你一定要(做某事)"
+    }
    ]
   },
   {
@@ -7910,6 +11242,16 @@
     {
      "pos": "n.",
      "meaning": "神秘；神秘的事物"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "mystery of sth",
+     "meaning": "…之谜"
+    },
+    {
+     "text": "mystery to sb",
+     "meaning": "对某人是个谜"
     }
    ]
   },
@@ -7992,6 +11334,16 @@
      "pos": "ad.",
      "meaning": "必然，必定"
     }
+   ],
+   "phrases": [
+    {
+     "text": "necessarily mean sth",
+     "meaning": "必然意味着"
+    },
+    {
+     "text": "necessarily lead to sth",
+     "meaning": "必然导致"
+    }
    ]
   },
   {
@@ -8000,6 +11352,16 @@
     {
      "pos": "n.",
      "meaning": "必要性；必然性"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "necessity of sth",
+     "meaning": "…的必要性"
+    },
+    {
+     "text": "necessity for sth",
+     "meaning": "对…的需要"
     }
    ]
   },
@@ -8018,6 +11380,16 @@
     {
      "pos": "a.",
      "meaning": "否定的；消极的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be negative about sth",
+     "meaning": "对…消极"
+    },
+    {
+     "text": "be negative towards sb",
+     "meaning": "对某人持否定态度"
     }
    ]
   },
@@ -8045,6 +11417,12 @@
     {
      "pos": "n.",
      "meaning": "神经；勇敢，胆量"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "get on sb’s nerves",
+     "meaning": "令某人焦躁"
     }
    ]
   },
@@ -8145,6 +11523,12 @@
      "pos": "a.",
      "meaning": "为数众多的；许多"
     }
+   ],
+   "phrases": [
+    {
+     "text": "numerous examples of sth",
+     "meaning": "…的众多例子"
+    }
    ]
   },
   {
@@ -8181,6 +11565,16 @@
      "pos": "a.",
      "meaning": "客观的；无偏见的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be objective about sth",
+     "meaning": "对…客观"
+    },
+    {
+     "text": "be objective in sth",
+     "meaning": "在…上客观"
+    }
    ]
   },
   {
@@ -8189,6 +11583,12 @@
     {
      "pos": "vt.",
      "meaning": "迫使；施恩惠于"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "oblige sb. to do sth",
+     "meaning": "迫使某人做某事"
     }
    ]
   },
@@ -8199,6 +11599,16 @@
      "pos": "n.",
      "meaning": "注意；观察(力)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "observation of sth",
+     "meaning": "对…的观察"
+    },
+    {
+     "text": "observation on sth",
+     "meaning": "关于…的评论"
+    }
    ]
   },
   {
@@ -8208,6 +11618,16 @@
      "pos": "n.",
      "meaning": "观察员，观测者"
     }
+   ],
+   "phrases": [
+    {
+     "text": "observer of sth",
+     "meaning": "…的观察者"
+    },
+    {
+     "text": "observer at sth",
+     "meaning": "…的观察员"
+    }
    ]
   },
   {
@@ -8216,6 +11636,16 @@
     {
      "pos": "n.",
      "meaning": "障碍，障碍物，妨害"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "obstacle to sth",
+     "meaning": "对…的障碍"
+    },
+    {
+     "text": "obstacle in doing sth",
+     "meaning": "做…的障碍"
     }
    ]
   },
@@ -8235,6 +11665,16 @@
      "pos": "n.",
      "meaning": "场合，时刻；时机"
     }
+   ],
+   "phrases": [
+    {
+     "text": "on occasion(s)",
+     "meaning": "有时；偶尔"
+    },
+    {
+     "text": "on the occasion of",
+     "meaning": "在…之际"
+    }
    ]
   },
   {
@@ -8243,6 +11683,12 @@
     {
      "pos": "a.",
      "meaning": "偶然的；临时的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "occasional visit to sth",
+     "meaning": "偶尔造访"
     }
    ]
   },
@@ -8261,6 +11707,16 @@
     {
      "pos": "vt.",
      "meaning": "占领；占，占有"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "occupy oneself with sth",
+     "meaning": "忙于某事"
+    },
+    {
+     "text": "occupy oneself in doing sth",
+     "meaning": "忙于做某事"
     }
    ]
   },
@@ -8289,6 +11745,12 @@
      "pos": "n.",
      "meaning": "气味，香气；味道"
     }
+   ],
+   "phrases": [
+    {
+     "text": "odour of sth",
+     "meaning": "…的气味"
+    }
    ]
   },
   {
@@ -8306,6 +11768,12 @@
     {
      "pos": "",
      "meaning": "(缩作 OK)a.&ad.对，好"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be okay with sth",
+     "meaning": "对…没意见；可以接受"
     }
    ]
   },
@@ -8334,6 +11802,16 @@
      "pos": "n.",
      "meaning": "对手,敌手;对抗者"
     }
+   ],
+   "phrases": [
+    {
+     "text": "opponent of sth",
+     "meaning": "…的反对者"
+    },
+    {
+     "text": "opponent in sth",
+     "meaning": "…中的对手"
+    }
    ]
   },
   {
@@ -8342,6 +11820,20 @@
     {
      "pos": "n.",
      "meaning": "机会，良机"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "opportunity to do sth",
+     "meaning": "做…的机会"
+    },
+    {
+     "text": "opportunity for + sth",
+     "meaning": "…的机会"
+    },
+    {
+     "text": "opportunity of doing sth",
+     "meaning": "做…的机会"
     }
    ]
   },
@@ -8369,6 +11861,20 @@
     {
      "pos": "n.",
      "meaning": "选择，选择权"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "option of doing sth",
+     "meaning": "做…的选择"
+    },
+    {
+     "text": "option for + sth",
+     "meaning": "…的选择"
+    },
+    {
+     "text": "option to do sth",
+     "meaning": "做…的选择"
     }
    ]
   },
@@ -8433,6 +11939,12 @@
      "pos": "a.",
      "meaning": "最初的；新颖的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be original in + sth",
+     "meaning": "在…上有独创性"
+    }
    ]
   },
   {
@@ -8459,6 +11971,12 @@
     {
      "pos": "n.",
      "meaning": "盎司，英两"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "ounce of sth",
+     "meaning": "一丁点…"
     }
    ]
   },
@@ -8504,6 +12022,12 @@
     {
      "pos": "n.",
      "meaning": "外边，郊区"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "outskirts of sth",
+     "meaning": "…的郊区"
     }
    ]
   },
@@ -8595,6 +12119,16 @@
      "pos": "n.",
      "meaning": "垫；本子 vt.填塞"
     }
+   ],
+   "phrases": [
+    {
+     "text": "pad of paper",
+     "meaning": "一叠纸"
+    },
+    {
+     "text": "pad with sth",
+     "meaning": "用…填塞"
+    }
    ]
   },
   {
@@ -8612,6 +12146,12 @@
     {
      "pos": "n.",
      "meaning": "手掌，手心；掌状物"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "palm of one's hand",
+     "meaning": "某人的掌心"
     }
    ]
   },
@@ -8631,6 +12171,16 @@
      "pos": "n.",
      "meaning": "专门小组；面，板"
     }
+   ],
+   "phrases": [
+    {
+     "text": "panel of + sth",
+     "meaning": "…小组"
+    },
+    {
+     "text": "panel on + sth",
+     "meaning": "关于…的专题小组"
+    }
    ]
   },
   {
@@ -8648,6 +12198,16 @@
     {
      "pos": "n.",
      "meaning": "游行；检阅 vi.游行"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "parade of sth",
+     "meaning": "一连串…"
+    },
+    {
+     "text": "parade through sth",
+     "meaning": "游行穿过…"
     }
    ]
   },
@@ -8694,6 +12254,16 @@
      "pos": "n.",
      "meaning": "粒子，微粒"
     }
+   ],
+   "phrases": [
+    {
+     "text": "particle of sth",
+     "meaning": "一点…；一粒…"
+    },
+    {
+     "text": "particle in sth",
+     "meaning": "…中的微粒"
+    }
    ]
   },
   {
@@ -8711,6 +12281,16 @@
     {
      "pos": "n.",
      "meaning": "激情，热情；爱好"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "passion for sth",
+     "meaning": "对…的热爱"
+    },
+    {
+     "text": "passion for doing sth",
+     "meaning": "热爱做某事"
     }
    ]
   },
@@ -8748,6 +12328,16 @@
      "pos": "n.",
      "meaning": "补钉；碎片 vt.补缀"
     }
+   ],
+   "phrases": [
+    {
+     "text": "patch of sth",
+     "meaning": "一块某物"
+    },
+    {
+     "text": "patch on sth",
+     "meaning": "某物上的补丁"
+    }
    ]
   },
   {
@@ -8784,6 +12374,20 @@
      "pos": "n.",
      "meaning": "支付，支付的款项"
     }
+   ],
+   "phrases": [
+    {
+     "text": "payment for sth",
+     "meaning": "为…付款"
+    },
+    {
+     "text": "payment in cash",
+     "meaning": "现金支付"
+    },
+    {
+     "text": "payment of sth",
+     "meaning": "…的支付"
+    }
    ]
   },
   {
@@ -8792,6 +12396,12 @@
     {
      "pos": "n.",
      "meaning": "山顶，巅 a.最高的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "peak of sth",
+     "meaning": "…的顶峰"
     }
    ]
   },
@@ -8829,6 +12439,12 @@
      "pos": "vt.",
      "meaning": "剥(皮)，削(皮)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "peel sth off sth",
+     "meaning": "把…剥下来"
+    }
    ]
   },
   {
@@ -8865,6 +12481,16 @@
      "pos": "vt.",
      "meaning": "察觉，发觉；理解"
     }
+   ],
+   "phrases": [
+    {
+     "text": "perceive sth as sth",
+     "meaning": "把…看作"
+    },
+    {
+     "text": "perceive sb. doing sth",
+     "meaning": "察觉某人正在做"
+    }
    ]
   },
   {
@@ -8873,6 +12499,12 @@
     {
      "pos": "ad.",
      "meaning": "很，完全"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "perfectly match sth",
+     "meaning": "与…完全匹配"
     }
    ]
   },
@@ -8901,6 +12533,16 @@
      "pos": "n.",
      "meaning": "透视;远景;观点"
     }
+   ],
+   "phrases": [
+    {
+     "text": "perspective on sth",
+     "meaning": "对…的看法"
+    },
+    {
+     "text": "perspective of + sth",
+     "meaning": "…的视角"
+    }
    ]
   },
   {
@@ -8928,6 +12570,16 @@
      "pos": "n.",
      "meaning": "阶段；方面；相位"
     }
+   ],
+   "phrases": [
+    {
+     "text": "phase of sth",
+     "meaning": "…的阶段"
+    },
+    {
+     "text": "phase in sth",
+     "meaning": "逐步引入"
+    }
    ]
   },
   {
@@ -8946,6 +12598,20 @@
      "pos": "n.",
      "meaning": "哲学；哲理；人生观"
     }
+   ],
+   "phrases": [
+    {
+     "text": "philosophy of sth",
+     "meaning": "…的哲学"
+    },
+    {
+     "text": "philosophy behind sth",
+     "meaning": "…背后的理念"
+    },
+    {
+     "text": "philosophy of life",
+     "meaning": "人生哲学"
+    }
    ]
   },
   {
@@ -8954,6 +12620,12 @@
     {
      "pos": "n.",
      "meaning": "电话，电话机；耳机"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "(be) on the phone",
+     "meaning": "在打电话"
     }
    ]
   },
@@ -9027,6 +12699,16 @@
      "pos": "n.",
      "meaning": "坑，地坑；煤矿"
     }
+   ],
+   "phrases": [
+    {
+     "text": "pit of sth",
+     "meaning": "…的坑；心窝"
+    },
+    {
+     "text": "pit in sth",
+     "meaning": "…中的坑"
+    }
    ]
   },
   {
@@ -9035,6 +12717,12 @@
     {
      "pos": "n.",
      "meaning": "沥青"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "pitch of sth",
+     "meaning": "某事物的音高／程度"
     }
    ]
   },
@@ -9117,6 +12805,12 @@
      "pos": "n.",
      "meaning": "流行音乐，流行歌曲"
     }
+   ],
+   "phrases": [
+    {
+     "text": "pop up",
+     "meaning": "突然出现；冒出来"
+    }
    ]
   },
   {
@@ -9125,6 +12819,12 @@
     {
      "pos": "n.",
      "meaning": "门廊，入口处"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "porch of sth",
+     "meaning": "某建筑的门廊"
     }
    ]
   },
@@ -9135,6 +12835,16 @@
      "pos": "n.",
      "meaning": "一部分；一分"
     }
+   ],
+   "phrases": [
+    {
+     "text": "portion of sth",
+     "meaning": "…的一部分"
+    },
+    {
+     "text": "portion out sth",
+     "meaning": "分配某物"
+    }
    ]
   },
   {
@@ -9143,6 +12853,12 @@
     {
      "pos": "n.",
      "meaning": "消像，画像"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "portrait of sb",
+     "meaning": "某人的画像"
     }
    ]
   },
@@ -9162,6 +12878,16 @@
      "pos": "a.",
      "meaning": "确定的；积极的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be positive about sth",
+     "meaning": "对…乐观"
+    },
+    {
+     "text": "be positive towards sb",
+     "meaning": "对某人持积极态度"
+    }
    ]
   },
   {
@@ -9170,6 +12896,16 @@
     {
      "pos": "n.",
      "meaning": "贫穷，贫困"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "poverty of sth",
+     "meaning": "…的缺乏"
+    },
+    {
+     "text": "poverty in sth",
+     "meaning": "…的贫困"
     }
    ]
   },
@@ -9270,6 +13006,12 @@
      "pos": "n.",
      "meaning": "出席，到场；在"
     }
+   ],
+   "phrases": [
+    {
+     "text": "in the presence of sb / in sb’s presence",
+     "meaning": "当着某人的面"
+    }
    ]
   },
   {
@@ -9297,6 +13039,12 @@
      "pos": "a.",
      "meaning": "先的；前的 ad.在前"
     }
+   ],
+   "phrases": [
+    {
+     "text": "previous to",
+     "meaning": "[正式用语] 在…之前"
+    }
    ]
   },
   {
@@ -9323,6 +13071,16 @@
     {
      "pos": "ad.",
      "meaning": "首先；主要地"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "primarily concerned with sth",
+     "meaning": "主要关注"
+    },
+    {
+     "text": "primarily aimed at sth",
+     "meaning": "主要针对"
     }
    ]
   },
@@ -9369,6 +13127,12 @@
      "pos": "a.",
      "meaning": "在先的；优先的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "prior to",
+     "meaning": "在…之前"
+    }
    ]
   },
   {
@@ -9386,6 +13150,20 @@
     {
      "pos": "vi.",
      "meaning": "进行；继续进行"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "proceed to do sth",
+     "meaning": "接着做某事"
+    },
+    {
+     "text": "proceed with sth",
+     "meaning": "继续进行"
+    },
+    {
+     "text": "proceed from sth",
+     "meaning": "出自"
     }
    ]
   },
@@ -9414,6 +13192,16 @@
      "pos": "a.",
      "meaning": "生产的；丰饶的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be productive of sth",
+     "meaning": "产生…"
+    },
+    {
+     "text": "be productive in sth",
+     "meaning": "在…方面高效"
+    }
    ]
   },
   {
@@ -9431,6 +13219,12 @@
     {
      "pos": "n.",
      "meaning": "节目单；大纲；程序"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "program for sth",
+     "meaning": "…的计划；节目"
     }
    ]
   },
@@ -9450,6 +13244,16 @@
      "pos": "a.",
      "meaning": "实起的；突出的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be prominent in sth",
+     "meaning": "在某方面突出"
+    },
+    {
+     "text": "be prominent among sb",
+     "meaning": "在某人之中显眼"
+    }
    ]
   },
   {
@@ -9459,6 +13263,12 @@
      "pos": "a.",
      "meaning": "有希望的；有前途的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be promising for sth",
+     "meaning": "对…有前景"
+    }
    ]
   },
   {
@@ -9467,6 +13277,16 @@
     {
      "pos": "a.",
      "meaning": "及时的 vt.敦促"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be prompt in doing sth",
+     "meaning": "做某事及时"
+    },
+    {
+     "text": "be prompt to do sth",
+     "meaning": "迅速做某事"
     }
    ]
   },
@@ -9486,6 +13306,16 @@
      "pos": "n.",
      "meaning": "证据；证明；校样"
     }
+   ],
+   "phrases": [
+    {
+     "text": "proof of sth",
+     "meaning": "某事的证据"
+    },
+    {
+     "text": "proof against sth",
+     "meaning": "防…的／抗…的"
+    }
    ]
   },
   {
@@ -9495,6 +13325,16 @@
      "pos": "n.",
      "meaning": "财产，资产；性质"
     }
+   ],
+   "phrases": [
+    {
+     "text": "property of + sth",
+     "meaning": "…的特性；财产"
+    },
+    {
+     "text": "property in + sth",
+     "meaning": "…方面的财产"
+    }
    ]
   },
   {
@@ -9503,6 +13343,12 @@
     {
      "pos": "n.",
      "meaning": "比，比率，部分"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "out of proportion to",
+     "meaning": "与…不成比例；和…不相称"
     }
    ]
   },
@@ -9522,6 +13368,16 @@
      "pos": "n.",
      "meaning": "提议，建议；求婚"
     }
+   ],
+   "phrases": [
+    {
+     "text": "proposal for + sth",
+     "meaning": "…的提议"
+    },
+    {
+     "text": "proposal to do sth",
+     "meaning": "做…的提议"
+    }
    ]
   },
   {
@@ -9531,6 +13387,20 @@
      "pos": "vt.",
      "meaning": "提议 vi.求婚"
     }
+   ],
+   "phrases": [
+    {
+     "text": "propose doing sth",
+     "meaning": "提议做某事"
+    },
+    {
+     "text": "propose sth. to sb",
+     "meaning": "向某人提议某事"
+    },
+    {
+     "text": "propose to sb",
+     "meaning": "向某人求婚"
+    }
    ]
   },
   {
@@ -9539,6 +13409,16 @@
     {
      "pos": "n.",
      "meaning": "展望；前景，前程"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "prospect of doing sth",
+     "meaning": "做…的前景"
+    },
+    {
+     "text": "prospects for sth",
+     "meaning": "…的前途"
     }
    ]
   },
@@ -9576,6 +13456,12 @@
      "pos": "n.",
      "meaning": "蛋白质，朊"
     }
+   ],
+   "phrases": [
+    {
+     "text": "protein in sth",
+     "meaning": "…中的蛋白质"
+    }
    ]
   },
   {
@@ -9584,6 +13470,16 @@
     {
      "pos": "vt.",
      "meaning": "&vi.&n.抗议"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "protest against sth",
+     "meaning": "抗议某事"
+    },
+    {
+     "text": "protest about sth",
+     "meaning": "对某事提出抗议"
     }
    ]
   },
@@ -9594,6 +13490,12 @@
      "pos": "conj.",
      "meaning": "以…为条件"
     }
+   ],
+   "phrases": [
+    {
+     "text": "provided sth. is done",
+     "meaning": "只要做到某事"
+    }
    ]
   },
   {
@@ -9602,6 +13504,20 @@
     {
      "pos": "n.",
      "meaning": "供应；预备；存粮"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "provision of sth",
+     "meaning": "…的提供"
+    },
+    {
+     "text": "provision for sth",
+     "meaning": "为…做准备"
+    },
+    {
+     "text": "provision against sth",
+     "meaning": "防备…"
     }
    ]
   },
@@ -9612,6 +13528,12 @@
      "pos": "a.",
      "meaning": "心理(学)的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "psychological impact on sb",
+     "meaning": "对某人的心理影响"
+    }
    ]
   },
   {
@@ -9620,6 +13542,16 @@
     {
      "pos": "n.",
      "meaning": "公布；出版(物)"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "publication of sth",
+     "meaning": "…的出版"
+    },
+    {
+     "text": "publication in sth",
+     "meaning": "在…上发表"
     }
    ]
   },
@@ -9693,6 +13625,16 @@
      "pos": "vt.",
      "meaning": "追赶，追踪；进行"
     }
+   ],
+   "phrases": [
+    {
+     "text": "pursue a career in + sth",
+     "meaning": "从事…职业"
+    },
+    {
+     "text": "pursue sb. for sth",
+     "meaning": "追着某人要…"
+    }
    ]
   },
   {
@@ -9702,6 +13644,16 @@
      "pos": "n.",
      "meaning": "追赶；追求；事务"
     }
+   ],
+   "phrases": [
+    {
+     "text": "pursuit of sth",
+     "meaning": "对…的追求"
+    },
+    {
+     "text": "pursuit for sth",
+     "meaning": "对…的追逐"
+    }
    ]
   },
   {
@@ -9710,6 +13662,20 @@
     {
      "pos": "vt.",
      "meaning": "使具有资格"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "qualify sb. for sth",
+     "meaning": "使某人有资格做某事"
+    },
+    {
+     "text": "qualify as sth",
+     "meaning": "取得…的资格"
+    },
+    {
+     "text": "qualify sb. to do sth",
+     "meaning": "使某人有权做某事"
     }
    ]
   },
@@ -9773,6 +13739,16 @@
     {
      "pos": "vt.",
      "meaning": "引用，引证；报价"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "quote from sth",
+     "meaning": "引自…"
+    },
+    {
+     "text": "quote sb. as saying sth",
+     "meaning": "引用某人说的话"
     }
    ]
   },
@@ -9846,6 +13822,16 @@
      "pos": "n.",
      "meaning": "(一阵)狂怒，盛怒"
     }
+   ],
+   "phrases": [
+    {
+     "text": "rage for sth",
+     "meaning": "对…的狂热"
+    },
+    {
+     "text": "rage against sth",
+     "meaning": "对…的愤怒"
+    }
    ]
   },
   {
@@ -9863,6 +13849,16 @@
     {
      "pos": "n.",
      "meaning": "铁路 vi.由铁路运输"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "railroad sb. into doing sth",
+     "meaning": "强迫某人做"
+    },
+    {
+     "text": "railroad through sth",
+     "meaning": "强行通过…"
     }
    ]
   },
@@ -9900,6 +13896,12 @@
      "pos": "n.",
      "meaning": "比，比率"
     }
+   ],
+   "phrases": [
+    {
+     "text": "ratio of A to B",
+     "meaning": "A与B的比率"
+    }
    ]
   },
   {
@@ -9918,6 +13920,20 @@
      "pos": "n.",
      "meaning": "反应；反作用"
     }
+   ],
+   "phrases": [
+    {
+     "text": "reaction to sth",
+     "meaning": "对…的反应"
+    },
+    {
+     "text": "reaction against sth",
+     "meaning": "对…的反对"
+    },
+    {
+     "text": "reaction of + sth",
+     "meaning": "…的反应"
+    }
    ]
   },
   {
@@ -9926,6 +13942,16 @@
     {
      "pos": "n.",
      "meaning": "读者；读物，读本"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "reader of + sth",
+     "meaning": "…的读者"
+    },
+    {
+     "text": "reader in + sth",
+     "meaning": "…领域的读者"
     }
    ]
   },
@@ -9944,6 +13970,16 @@
     {
      "pos": "n.",
      "meaning": "王国，国土；领域"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "realm of sth",
+     "meaning": "…领域"
+    },
+    {
+     "text": "realm of science",
+     "meaning": "科学领域"
     }
    ]
   },
@@ -9972,6 +14008,16 @@
      "pos": "vi.",
      "meaning": "造反 n.造反者"
     }
+   ],
+   "phrases": [
+    {
+     "text": "rebel against sth",
+     "meaning": "反抗…"
+    },
+    {
+     "text": "rebel at sth",
+     "meaning": "对…反感"
+    }
    ]
   },
   {
@@ -9989,6 +14035,12 @@
     {
      "pos": "vt.",
      "meaning": "回想；叫回；收回"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "recall doing sth",
+     "meaning": "回忆起做过某事"
     }
    ]
   },
@@ -10008,6 +14060,16 @@
      "pos": "n.",
      "meaning": "认出，识别；承认"
     }
+   ],
+   "phrases": [
+    {
+     "text": "recognition of sth",
+     "meaning": "对…的承认"
+    },
+    {
+     "text": "recognition for sth",
+     "meaning": "因…而受表彰"
+    }
    ]
   },
   {
@@ -10026,6 +14088,20 @@
      "pos": "n.",
      "meaning": "推荐，介绍；劝告"
     }
+   ],
+   "phrases": [
+    {
+     "text": "recommendation for sth",
+     "meaning": "对某事的建议"
+    },
+    {
+     "text": "recommendation on sth",
+     "meaning": "关于某事的推荐"
+    },
+    {
+     "text": "recommendation to sb",
+     "meaning": "向某人提出的建议"
+    }
    ]
   },
   {
@@ -10035,6 +14111,16 @@
      "pos": "n.",
      "meaning": "重获；痊愈，恢复"
     }
+   ],
+   "phrases": [
+    {
+     "text": "recovery from sth",
+     "meaning": "从…中恢复"
+    },
+    {
+     "text": "recovery of sth",
+     "meaning": "…的找回"
+    }
    ]
   },
   {
@@ -10043,6 +14129,20 @@
     {
      "pos": "n.",
      "meaning": "减少，减小，缩减"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "reduction in sth",
+     "meaning": "…的减少"
+    },
+    {
+     "text": "reduction of sth",
+     "meaning": "…的削减"
+    },
+    {
+     "text": "reduction from A to B",
+     "meaning": "从甲降到乙"
     }
    ]
   },
@@ -10080,6 +14180,16 @@
      "pos": "n.",
      "meaning": "反射；映象；反映"
     }
+   ],
+   "phrases": [
+    {
+     "text": "reflection on sth",
+     "meaning": "对某事的反思"
+    },
+    {
+     "text": "reflection of sth",
+     "meaning": "某事物的反映"
+    }
    ]
   },
   {
@@ -10088,6 +14198,12 @@
     {
      "pos": "n.",
      "meaning": "反射；映象；反映"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "reflexion on sth",
+     "meaning": "对…的反思"
     }
    ]
   },
@@ -10125,6 +14241,16 @@
      "pos": "prep.",
      "meaning": "关于"
     }
+   ],
+   "phrases": [
+    {
+     "text": "regarding sth",
+     "meaning": "关于某事"
+    },
+    {
+     "text": "regarding the issue of sth",
+     "meaning": "关于…的问题"
+    }
    ]
   },
   {
@@ -10133,6 +14259,16 @@
     {
      "pos": "n.",
      "meaning": "地区，地带；领域"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "region of + sth",
+     "meaning": "…地区"
+    },
+    {
+     "text": "region in + sth",
+     "meaning": "…内的地区"
     }
    ]
   },
@@ -10151,6 +14287,16 @@
     {
      "pos": "vt.",
      "meaning": "管理，控制；调整"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be regulated by sth",
+     "meaning": "受某事物管制"
+    },
+    {
+     "text": "regulate sth. in sth",
+     "meaning": "在某方面规范某事"
     }
    ]
   },
@@ -10188,6 +14334,12 @@
      "pos": "vt.",
      "meaning": "增援，支援；加强"
     }
+   ],
+   "phrases": [
+    {
+     "text": "reinforce sth. with sth",
+     "meaning": "用某物加固另一物"
+    }
    ]
   },
   {
@@ -10224,6 +14376,16 @@
      "pos": "vt.",
      "meaning": "释放；放松；发表"
     }
+   ],
+   "phrases": [
+    {
+     "text": "release sb. from sth",
+     "meaning": "把某人从…中释放"
+    },
+    {
+     "text": "release sth. to sb",
+     "meaning": "向某人发布某事"
+    }
    ]
   },
   {
@@ -10251,6 +14413,12 @@
      "pos": "vt.",
      "meaning": "减轻，解除；救济"
     }
+   ],
+   "phrases": [
+    {
+     "text": "relieve sb. of sth",
+     "meaning": "解除某人的…"
+    }
    ]
   },
   {
@@ -10259,6 +14427,16 @@
     {
      "pos": "a.",
      "meaning": "不愿的，勉强的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be reluctant to do sth",
+     "meaning": "不愿做某事"
+    },
+    {
+     "text": "be reluctant about sth",
+     "meaning": "对…不情愿"
     }
    ]
   },
@@ -10277,6 +14455,16 @@
     {
      "pos": "a.",
      "meaning": "异常的，非凡的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be remarkable for sth",
+     "meaning": "因…而突出"
+    },
+    {
+     "text": "remarkable progress in sth",
+     "meaning": "…的显著进步"
     }
    ]
   },
@@ -10304,6 +14492,20 @@
     {
      "pos": "vt.",
      "meaning": "表示，给予；使得"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "render sb. helpless",
+     "meaning": "使某人无助"
+    },
+    {
+     "text": "render sth useless",
+     "meaning": "使…变得无用"
+    },
+    {
+     "text": "render service to sb",
+     "meaning": "为某人服务"
     }
    ]
   },
@@ -10377,6 +14579,16 @@
      "pos": "n.",
      "meaning": "调查者；探究者"
     }
+   ],
+   "phrases": [
+    {
+     "text": "researcher at + sth",
+     "meaning": "…的研究员"
+    },
+    {
+     "text": "researcher in + sth",
+     "meaning": "…领域的研究者"
+    }
    ]
   },
   {
@@ -10395,6 +14607,16 @@
      "pos": "n.",
      "meaning": "居住；驻扎；住处"
     }
+   ],
+   "phrases": [
+    {
+     "text": "residence in sth",
+     "meaning": "居住在…"
+    },
+    {
+     "text": "residence of sb",
+     "meaning": "某人的住所"
+    }
    ]
   },
   {
@@ -10403,6 +14625,16 @@
     {
      "pos": "a.",
      "meaning": "居住的 n.居民"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be resident in + sth",
+     "meaning": "居住在…"
+    },
+    {
+     "text": "be resident at + sth",
+     "meaning": "住在…（机构）"
     }
    ]
   },
@@ -10422,6 +14654,16 @@
      "pos": "n.",
      "meaning": "抵抗/制；抵抗力"
     }
+   ],
+   "phrases": [
+    {
+     "text": "resistance to sth",
+     "meaning": "对…的抵抗"
+    },
+    {
+     "text": "resistance from sb",
+     "meaning": "来自某人的阻力"
+    }
    ]
   },
   {
@@ -10440,6 +14682,20 @@
      "pos": "n.",
      "meaning": "坚决/定；决定"
     }
+   ],
+   "phrases": [
+    {
+     "text": "resolution to do sth",
+     "meaning": "做…的决心"
+    },
+    {
+     "text": "resolution of sth",
+     "meaning": "…的解决"
+    },
+    {
+     "text": "resolution to sth",
+     "meaning": "关于…的决议"
+    }
    ]
   },
   {
@@ -10448,6 +14704,16 @@
     {
      "pos": "vt.",
      "meaning": "解决；决心 n.决心"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "resolve to do sth",
+     "meaning": "决心做某事"
+    },
+    {
+     "text": "resolve sth by doing sth",
+     "meaning": "通过…解决某事"
     }
    ]
   },
@@ -10458,6 +14724,16 @@
      "pos": "vi.",
      "meaning": "&n.求助，凭借"
     }
+   ],
+   "phrases": [
+    {
+     "text": "resort to sth",
+     "meaning": "诉诸"
+    },
+    {
+     "text": "resort to doing sth",
+     "meaning": "采取…手段"
+    }
    ]
   },
   {
@@ -10466,6 +14742,16 @@
     {
      "pos": "n.",
      "meaning": "资源，物力；办法"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "resource for + sth",
+     "meaning": "…的资源"
+    },
+    {
+     "text": "resources for doing sth",
+     "meaning": "用于做…的资源"
     }
    ]
   },
@@ -10503,6 +14789,12 @@
      "pos": "n.",
      "meaning": "作答，回答；响应"
     }
+   ],
+   "phrases": [
+    {
+     "text": "in response (to)",
+     "meaning": "作为 (对…的) 回答 / 反应"
+    }
    ]
   },
   {
@@ -10511,6 +14803,12 @@
     {
      "pos": "a.",
      "meaning": "有责任的；尽责的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be responsible for",
+     "meaning": "对……负责"
     }
    ]
   },
@@ -10529,6 +14827,16 @@
     {
      "pos": "vt.",
      "meaning": "恢复；归还；修补"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "restore sth to sth",
+     "meaning": "把…恢复到"
+    },
+    {
+     "text": "restore sb. to health",
+     "meaning": "使某人康复"
     }
    ]
   },
@@ -10557,6 +14865,12 @@
      "pos": "vt.",
      "meaning": "恢复；重新开始"
     }
+   ],
+   "phrases": [
+    {
+     "text": "resume doing sth",
+     "meaning": "继续做某事"
+    }
    ]
   },
   {
@@ -10565,6 +14879,16 @@
     {
      "pos": "vt.",
      "meaning": "保持，保留，保有"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "retain control over sth",
+     "meaning": "保持对…的控制"
+    },
+    {
+     "text": "retain the right to do sth",
+     "meaning": "保留做…的权利"
     }
    ]
   },
@@ -10584,6 +14908,16 @@
      "pos": "vt.",
      "meaning": "展现；揭示，揭露"
     }
+   ],
+   "phrases": [
+    {
+     "text": "reveal sth. to sb",
+     "meaning": "向某人透露某事"
+    },
+    {
+     "text": "reveal a secret to sb",
+     "meaning": "向某人泄露秘密"
+    }
    ]
   },
   {
@@ -10601,6 +14935,12 @@
     {
      "pos": "vt.",
      "meaning": "颠倒，翻转 n.背面"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "reverse into sth",
+     "meaning": "倒车进入…"
     }
    ]
   },
@@ -10638,6 +14978,16 @@
      "pos": "n.",
      "meaning": "韵律，格律；节奏"
     }
+   ],
+   "phrases": [
+    {
+     "text": "rhythm of sth",
+     "meaning": "某事物的节奏"
+    },
+    {
+     "text": "rhythm in sth",
+     "meaning": "在某方面的节奏"
+    }
    ]
   },
   {
@@ -10674,6 +15024,16 @@
      "pos": "n.",
      "meaning": "骑马的人；乘车的人"
     }
+   ],
+   "phrases": [
+    {
+     "text": "rider on sth",
+     "meaning": "骑…的人"
+    },
+    {
+     "text": "rider to sth",
+     "meaning": "…的附加条款"
+    }
    ]
   },
   {
@@ -10701,6 +15061,16 @@
      "pos": "n.",
      "meaning": "环形物(如圈、环等)"
     }
+   ],
+   "phrases": [
+    {
+     "text": "ring off",
+     "meaning": "挂断电话"
+    },
+    {
+     "text": "ring up",
+     "meaning": "打电话 (给)"
+    }
    ]
   },
   {
@@ -10709,6 +15079,12 @@
     {
      "pos": "vi.",
      "meaning": "起立；升起；上涨"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "give rise to",
+     "meaning": "[正式用语] 引起；导致 (尤指坏事)"
     }
    ]
   },
@@ -10782,6 +15158,12 @@
      "pos": "a.",
      "meaning": "浪漫的；传奇的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be romantic about sth",
+     "meaning": "对某事抱浪漫想法"
+    }
    ]
   },
   {
@@ -10827,6 +15209,16 @@
      "pos": "ad.",
      "meaning": "粗糙地，粗略地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "roughly equal to sth",
+     "meaning": "大致等于"
+    },
+    {
+     "text": "roughly the same as",
+     "meaning": "大致与…相同"
+    }
    ]
   },
   {
@@ -10845,6 +15237,16 @@
      "pos": "n.",
      "meaning": "路，路线，路程"
     }
+   ],
+   "phrases": [
+    {
+     "text": "route to sth",
+     "meaning": "通往…的路线"
+    },
+    {
+     "text": "route from A to B",
+     "meaning": "从甲到乙的路线"
+    }
    ]
   },
   {
@@ -10853,6 +15255,20 @@
     {
      "pos": "vt.",
      "meaning": "摩擦，擦 vi.摩擦"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "rub sth. into sth",
+     "meaning": "把某物揉进…"
+    },
+    {
+     "text": "rub sth. on sth",
+     "meaning": "把某物涂在…上"
+    },
+    {
+     "text": "rub against sth",
+     "meaning": "摩擦某物"
     }
    ]
   },
@@ -10872,6 +15288,16 @@
      "pos": "n.",
      "meaning": "谣言，谣传，传闻"
     }
+   ],
+   "phrases": [
+    {
+     "text": "rumour of sth",
+     "meaning": "关于…的传言"
+    },
+    {
+     "text": "rumour about sth",
+     "meaning": "有关…的谣言"
+    }
    ]
   },
   {
@@ -10880,6 +15306,20 @@
     {
      "pos": "vi.",
      "meaning": "跑，奔；行驶；流"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "run across",
+     "meaning": "跑着穿过；偶然碰见"
+    },
+    {
+     "text": "run after",
+     "meaning": "追赶；追求"
+    },
+    {
+     "text": "run away (from)",
+     "meaning": "逃走；逃避"
     }
    ]
   },
@@ -10962,6 +15402,12 @@
      "pos": "n.",
      "meaning": "缘故，理由"
     }
+   ],
+   "phrases": [
+    {
+     "text": "for the sake of sb / sth",
+     "meaning": "为了某人 / 某事物的缘故 (for sb’s / sth’s sake)"
+    }
    ]
   },
   {
@@ -10970,6 +15416,16 @@
     {
      "pos": "n.",
      "meaning": "样品；实例，标本"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "sample of + sth",
+     "meaning": "…的样本"
+    },
+    {
+     "text": "sample from + sth",
+     "meaning": "来自…的样本"
     }
    ]
   },
@@ -10998,6 +15454,16 @@
      "pos": "n.",
      "meaning": "搭救；节约；存款"
     }
+   ],
+   "phrases": [
+    {
+     "text": "saving on sth",
+     "meaning": "在…上的节省"
+    },
+    {
+     "text": "saving in sth",
+     "meaning": "在…方面的节约"
+    }
    ]
   },
   {
@@ -11016,6 +15482,20 @@
      "pos": "vt.",
      "meaning": "说；说明；比如说"
     }
+   ],
+   "phrases": [
+    {
+     "text": "I say",
+     "meaning": "[引起话头或表示惊奇、反悔] 喂；啊；哎"
+    },
+    {
+     "text": "it is said that ",
+     "meaning": "据说…"
+    },
+    {
+     "text": "that is to say",
+     "meaning": "也就是说"
+    }
    ]
   },
   {
@@ -11024,6 +15504,12 @@
     {
      "pos": "n.",
      "meaning": "天平，磅秤，秤"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "scale of + sth",
+     "meaning": "…的规模"
     }
    ]
   },
@@ -11052,6 +15538,16 @@
      "pos": "vt.",
      "meaning": "使消散；撒；散播"
     }
+   ],
+   "phrases": [
+    {
+     "text": "scatter sth over sth",
+     "meaning": "把…撒在…上"
+    },
+    {
+     "text": "be scattered across sth",
+     "meaning": "散布于…"
+    }
    ]
   },
   {
@@ -11070,6 +15566,16 @@
      "pos": "n.",
      "meaning": "计划，规划；诡计"
     }
+   ],
+   "phrases": [
+    {
+     "text": "scheme for sth",
+     "meaning": "为某事制定的方案"
+    },
+    {
+     "text": "scheme to do sth",
+     "meaning": "做某事的计划"
+    }
    ]
   },
   {
@@ -11078,6 +15584,16 @@
     {
      "pos": "n.",
      "meaning": "范围；余地，机会"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "scope for sth",
+     "meaning": "做某事的余地"
+    },
+    {
+     "text": "scope of sth",
+     "meaning": "某事物的范围"
     }
    ]
   },
@@ -11133,6 +15649,16 @@
      "pos": "a.",
      "meaning": "第二的；次要的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be secondary to sth",
+     "meaning": "次于…；较次要"
+    },
+    {
+     "text": "be secondary in importance",
+     "meaning": "重要性居次"
+    }
    ]
   },
   {
@@ -11151,6 +15677,20 @@
      "pos": "vt.",
      "meaning": "看见；遇见；看出"
     }
+   ],
+   "phrases": [
+    {
+     "text": "see sb. doing sth",
+     "meaning": "看见某人做某事"
+    },
+    {
+     "text": "see sb. do sth",
+     "meaning": "看见某人做了某事"
+    },
+    {
+     "text": "let me see / let’s see",
+     "meaning": "让我 (们) 看看；让我 (们) 想想"
+    }
    ]
   },
   {
@@ -11159,6 +15699,12 @@
     {
      "pos": "vt.",
      "meaning": "寻找，探索；试图"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "seek out",
+     "meaning": "找出；找到"
     }
    ]
   },
@@ -11169,6 +15715,16 @@
      "pos": "n.",
      "meaning": "选择，挑选；精选物"
     }
+   ],
+   "phrases": [
+    {
+     "text": "selection of sth",
+     "meaning": "…的挑选"
+    },
+    {
+     "text": "selection from sth",
+     "meaning": "从…中选出"
+    }
    ]
   },
   {
@@ -11177,6 +15733,20 @@
     {
      "pos": "vt.",
      "meaning": "&vi.卖，销售"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "sell sb. sth. = sell sth. to sb",
+     "meaning": "把某物卖给某人"
+    },
+    {
+     "text": "sell off",
+     "meaning": "廉价出售 (存货)"
+    },
+    {
+     "text": "sell oneself",
+     "meaning": "自荐"
     }
    ]
   },
@@ -11223,6 +15793,20 @@
      "pos": "vt.",
      "meaning": "送，寄发；派遣"
     }
+   ],
+   "phrases": [
+    {
+     "text": "send sb. doing sth",
+     "meaning": "使某人（突然）做某事"
+    },
+    {
+     "text": "send sb. sth. = send sth. to sb",
+     "meaning": "把某物送给某人"
+    },
+    {
+     "text": "send away",
+     "meaning": "解雇；把…打发走"
+    }
    ]
   },
   {
@@ -11241,6 +15825,12 @@
      "pos": "n.",
      "meaning": "连续，继续；次序"
     }
+   ],
+   "phrases": [
+    {
+     "text": "sequence of sth",
+     "meaning": "某事物的一系列"
+    }
    ]
   },
   {
@@ -11249,6 +15839,12 @@
     {
      "pos": "n.",
      "meaning": "连续，系列；丛书"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "a series of",
+     "meaning": "一连串的；一系列的"
     }
    ]
   },
@@ -11259,6 +15855,12 @@
      "pos": "ad.",
      "meaning": "严肃地，认真地"
     }
+   ],
+   "phrases": [
+    {
+     "text": "take sb / sth seriously",
+     "meaning": "认真对待某人 / 某事"
+    }
    ]
   },
   {
@@ -11268,6 +15870,20 @@
      "pos": "vt.",
      "meaning": "放；安置 vi.落"
     }
+   ],
+   "phrases": [
+    {
+     "text": "set sb. doing sth",
+     "meaning": "使（引起）某人做某事"
+    },
+    {
+     "text": "set about",
+     "meaning": "开始；着手"
+    },
+    {
+     "text": "set aside",
+     "meaning": "留出；把…置于一旁"
+    }
    ]
   },
   {
@@ -11276,6 +15892,16 @@
     {
      "pos": "n.",
      "meaning": "安装，调整；环境"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "setting for + sth",
+     "meaning": "…的背景；场所"
+    },
+    {
+     "text": "setting of + sth",
+     "meaning": "…的设置"
     }
    ]
   },
@@ -11303,6 +15929,12 @@
     {
      "pos": "vt.",
      "meaning": "摇，使震动 n.摇动"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "shake off",
+     "meaning": "摆脱；甩掉"
     }
    ]
   },
@@ -11367,6 +15999,12 @@
      "pos": "n.",
      "meaning": "壳；贝壳；炮弹"
     }
+   ],
+   "phrases": [
+    {
+     "text": "shell of sth",
+     "meaning": "…的外壳"
+    }
    ]
   },
   {
@@ -11393,6 +16031,16 @@
     {
      "pos": "vt.",
      "meaning": "替换，转移 n.转换"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "shift from A to B",
+     "meaning": "从…转向…"
+    },
+    {
+     "text": "shift sth. onto sb",
+     "meaning": "把…推给某人"
     }
    ]
   },
@@ -11448,6 +16096,20 @@
      "pos": "n.",
      "meaning": "有意义/重要的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be significant to sb",
+     "meaning": "对某人重要"
+    },
+    {
+     "text": "be significant for + sth",
+     "meaning": "对…有重要意义"
+    },
+    {
+     "text": "be significant in + sth",
+     "meaning": "在…方面显著"
+    }
    ]
   },
   {
@@ -11456,6 +16118,12 @@
     {
      "pos": "ad.",
      "meaning": "类似地，相似地"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "similarly to sb./sth",
+     "meaning": "与某人／某物相似地"
     }
    ]
   },
@@ -11475,6 +16143,12 @@
      "pos": "n.",
      "meaning": "罪，罪孽 vi.犯罪"
     }
+   ],
+   "phrases": [
+    {
+     "text": "sin against sth",
+     "meaning": "违背某事物的罪过"
+    }
    ]
   },
   {
@@ -11492,6 +16166,12 @@
     {
      "pos": "vi.",
      "meaning": "&vt.唱，演唱"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "sing sb. sth. = sing sth. for sb",
+     "meaning": "为某人唱歌"
     }
    ]
   },
@@ -11511,6 +16191,12 @@
      "pos": "vi.",
      "meaning": "坐，就坐 vt.使坐"
     }
+   ],
+   "phrases": [
+    {
+     "text": "sit up",
+     "meaning": "坐起来；坐直；熬夜"
+    }
    ]
   },
   {
@@ -11519,6 +16205,16 @@
     {
      "pos": "n.",
      "meaning": "地点，地基；场所"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "site of + sth",
+     "meaning": "…的遗址；所在地"
+    },
+    {
+     "text": "site for + sth",
+     "meaning": "…的选址"
     }
    ]
   },
@@ -11546,6 +16242,16 @@
     {
      "pos": "vt.",
      "meaning": "使劲关，砰地放下"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "slam sth shut",
+     "meaning": "把…砰地关上"
+    },
+    {
+     "text": "slam into sth",
+     "meaning": "猛撞上…"
     }
    ]
   },
@@ -11609,6 +16315,20 @@
     {
      "pos": "n.",
      "meaning": "倾斜；斜面 vi.倾斜"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "slope of sth",
+     "meaning": "…的坡度"
+    },
+    {
+     "text": "slope in the road",
+     "meaning": "路上的斜坡"
+    },
+    {
+     "text": "slope down to sth",
+     "meaning": "向下倾斜至…"
     }
    ]
   },
@@ -11745,6 +16465,16 @@
      "pos": "n.",
      "meaning": "解决，解答；溶解"
     }
+   ],
+   "phrases": [
+    {
+     "text": "solution to + sth",
+     "meaning": "…的解决办法"
+    },
+    {
+     "text": "solution for + sth",
+     "meaning": "…的解决方案"
+    }
    ]
   },
   {
@@ -11753,6 +16483,12 @@
     {
      "pos": "vt.",
      "meaning": "解答，解释，解决"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "solve the problem of sth",
+     "meaning": "解决…的问题"
     }
    ]
   },
@@ -11808,6 +16544,16 @@
      "pos": "n.",
      "meaning": "河的源头；根源"
     }
+   ],
+   "phrases": [
+    {
+     "text": "source of + sth",
+     "meaning": "…的来源"
+    },
+    {
+     "text": "source for + sth",
+     "meaning": "…的资料来源"
+    }
    ]
   },
   {
@@ -11861,6 +16607,20 @@
     {
      "pos": "vi.",
      "meaning": "说话；发言 vt.说"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "speak for",
+     "meaning": "代表…讲话 / 发言"
+    },
+    {
+     "text": "speak highly of",
+     "meaning": "赞扬"
+    },
+    {
+     "text": "speak of",
+     "meaning": "谈到；提及"
     }
    ]
   },
@@ -11925,6 +16685,16 @@
      "pos": "vt.",
      "meaning": "用钱，花费；度过"
     }
+   ],
+   "phrases": [
+    {
+     "text": "spend time/money on sth",
+     "meaning": "把时间或钱花在…上"
+    },
+    {
+     "text": "spend time (in) doing sth",
+     "meaning": "花时间做某事"
+    }
    ]
   },
   {
@@ -11951,6 +16721,16 @@
     {
      "pos": "vt.",
      "meaning": "使溢出 vi.溢出"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "spill sth on sth",
+     "meaning": "把…洒在…上"
+    },
+    {
+     "text": "spill over",
+     "meaning": "溢出"
     }
    ]
   },
@@ -12042,6 +16822,16 @@
      "pos": "n.",
      "meaning": "稳定，稳定性，巩固"
     }
+   ],
+   "phrases": [
+    {
+     "text": "stability of sth",
+     "meaning": "某物的稳定性"
+    },
+    {
+     "text": "stability in sth",
+     "meaning": "在某方面的稳定"
+    }
    ]
   },
   {
@@ -12068,6 +16858,12 @@
     {
      "pos": "n.",
      "meaning": "桩；赌金；奖品"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "stake in sth",
+     "meaning": "在…中的利害关系"
     }
    ]
   },
@@ -12132,6 +16928,16 @@
      "pos": "vt.",
      "meaning": "偷，窍取"
     }
+   ],
+   "phrases": [
+    {
+     "text": "steal sb. sth. = steal sth. for sb",
+     "meaning": "为某人偷某物"
+    },
+    {
+     "text": "be a steal",
+     "meaning": "[非正式用语] 非常便宜"
+    }
    ]
   },
   {
@@ -12159,6 +16965,12 @@
      "pos": "n.",
      "meaning": "茎，(树)干 vi.起源"
     }
+   ],
+   "phrases": [
+    {
+     "text": "stem of sth",
+     "meaning": "某植物的茎"
+    }
    ]
   },
   {
@@ -12176,6 +16988,20 @@
     {
      "pos": "n.",
      "meaning": "棍，棒 vt.刺；粘贴"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be / get stuck in",
+     "meaning": "卡住；陷入"
+    },
+    {
+     "text": "stick around",
+     "meaning": "[非正式用语] 不走开；待在原地"
+    },
+    {
+     "text": "stick out",
+     "meaning": "伸出；突出"
     }
    ]
   },
@@ -12231,6 +17057,16 @@
      "pos": "vt.",
      "meaning": "动；拨动；激动"
     }
+   ],
+   "phrases": [
+    {
+     "text": "stir sth. into sth",
+     "meaning": "把…搅入…"
+    },
+    {
+     "text": "stir up sth",
+     "meaning": "激起…"
+    }
    ]
   },
   {
@@ -12248,6 +17084,16 @@
     {
      "pos": "n.",
      "meaning": "原料；库存品；股本"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "stock of + sth",
+     "meaning": "…的存货"
+    },
+    {
+     "text": "stock in + sth",
+     "meaning": "在…中的股份"
     }
    ]
   },
@@ -12303,6 +17149,16 @@
      "pos": "vt.",
      "meaning": "拉紧 vi.尽力"
     }
+   ],
+   "phrases": [
+    {
+     "text": "strain every nerve to do sth",
+     "meaning": "竭尽全力做"
+    },
+    {
+     "text": "strain sth to the limit",
+     "meaning": "使…到极限"
+    }
    ]
   },
   {
@@ -12321,6 +17177,16 @@
      "pos": "n.",
      "meaning": "战略；策略"
     }
+   ],
+   "phrases": [
+    {
+     "text": "strategy for + sth",
+     "meaning": "…的策略"
+    },
+    {
+     "text": "strategy of + sth",
+     "meaning": "…的战略"
+    }
    ]
   },
   {
@@ -12329,6 +17195,16 @@
     {
      "pos": "vt.",
      "meaning": "伸展 vi.伸 n.伸展"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "stretch from A to B",
+     "meaning": "从…延伸到…"
+    },
+    {
+     "text": "stretch to sth",
+     "meaning": "延伸到…"
     }
    ]
   },
@@ -12348,6 +17224,16 @@
      "pos": "vt.",
      "meaning": "剥；夺去 n.条带"
     }
+   ],
+   "phrases": [
+    {
+     "text": "strip sb. of sth",
+     "meaning": "剥夺某人某物"
+    },
+    {
+     "text": "strip sth. off sth",
+     "meaning": "把某物从…上剥下"
+    }
    ]
   },
   {
@@ -12366,6 +17252,16 @@
      "pos": "n.",
      "meaning": "打，击；鸣声；中风"
     }
+   ],
+   "phrases": [
+    {
+     "text": "stroke of sth",
+     "meaning": "某事物的一次（运气等）"
+    },
+    {
+     "text": "stroke of luck",
+     "meaning": "一次好运"
+    }
    ]
   },
   {
@@ -12374,6 +17270,16 @@
     {
      "pos": "ad.",
      "meaning": "强壮地，强烈地"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "strongly disagree with sb",
+     "meaning": "强烈反对某人"
+    },
+    {
+     "text": "strongly recommend doing sth",
+     "meaning": "强烈建议做某事"
     }
    ]
   },
@@ -12384,6 +17290,16 @@
      "pos": "a.",
      "meaning": "结构的，构造的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "structural changes in sth",
+     "meaning": "…的结构变化"
+    },
+    {
+     "text": "be structural in nature",
+     "meaning": "属结构性问题"
+    }
    ]
   },
   {
@@ -12393,6 +17309,16 @@
      "pos": "n.",
      "meaning": "结构；构造 vt.建造"
     }
+   ],
+   "phrases": [
+    {
+     "text": "structure of + sth",
+     "meaning": "…的结构"
+    },
+    {
+     "text": "structure in + sth",
+     "meaning": "…中的结构"
+    }
    ]
   },
   {
@@ -12401,6 +17327,12 @@
     {
      "pos": "n.",
      "meaning": "材料 vt.装，填，塞"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "stuff of + sth",
+     "meaning": "…的材料；素材"
     }
    ]
   },
@@ -12438,6 +17370,12 @@
      "pos": "a.",
      "meaning": "随后的，后来的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be subsequent to sth",
+     "meaning": "在…之后发生"
+    }
    ]
   },
   {
@@ -12447,6 +17385,16 @@
      "pos": "n.",
      "meaning": "物质；实质；本旨"
     }
+   ],
+   "phrases": [
+    {
+     "text": "substance of sth",
+     "meaning": "…的实质"
+    },
+    {
+     "text": "substance in sth",
+     "meaning": "…中的物质"
+    }
    ]
   },
   {
@@ -12455,6 +17403,16 @@
     {
      "pos": "a.",
      "meaning": "物质的；坚固的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be substantial in sth",
+     "meaning": "在…方面可观"
+    },
+    {
+     "text": "substantial increase in sth",
+     "meaning": "…的大幅增长"
     }
    ]
   },
@@ -12473,6 +17431,16 @@
     {
      "pos": "n.",
      "meaning": "郊区，郊外，近郊"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "suburb of sth",
+     "meaning": "…的郊区"
+    },
+    {
+     "text": "suburbs of sth",
+     "meaning": "…的郊区"
     }
    ]
   },
@@ -12519,6 +17487,16 @@
      "pos": "a.",
      "meaning": "足够的，充分的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be sufficient for sth",
+     "meaning": "对某事足够"
+    },
+    {
+     "text": "be sufficient to do sth",
+     "meaning": "足以做某事"
+    }
    ]
   },
   {
@@ -12545,6 +17523,12 @@
     {
      "pos": "n.",
      "meaning": "总数；金额 vi.共计"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "sum up",
+     "meaning": "总结；概括"
     }
    ]
   },
@@ -12591,6 +17575,16 @@
      "pos": "n.",
      "meaning": "外科，外科手术"
     }
+   ],
+   "phrases": [
+    {
+     "text": "surgery on + sth",
+     "meaning": "对…的手术"
+    },
+    {
+     "text": "surgery for + sth",
+     "meaning": "治…的手术"
+    }
    ]
   },
   {
@@ -12608,6 +17602,16 @@
     {
      "pos": "a.",
      "meaning": "惊人/出人意外的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be surprising to sb",
+     "meaning": "令某人惊讶"
+    },
+    {
+     "text": "be surprising for sb",
+     "meaning": "对某人来说意外"
     }
    ]
   },
@@ -12645,6 +17649,12 @@
      "pos": "vt.",
      "meaning": "俯瞰；检查；测量"
     }
+   ],
+   "phrases": [
+    {
+     "text": "survey sb. about sth",
+     "meaning": "就…调查某人"
+    }
    ]
   },
   {
@@ -12653,6 +17663,20 @@
     {
      "pos": "vt.",
      "meaning": "吊，悬；推迟"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "suspend sth from sth",
+     "meaning": "把…悬挂在…上"
+    },
+    {
+     "text": "suspend sb. from sth",
+     "meaning": "暂停某人职务"
+    },
+    {
+     "text": "be suspended for sth",
+     "meaning": "因…被停职"
     }
    ]
   },
@@ -12663,6 +17687,16 @@
      "pos": "n.",
      "meaning": "怀疑，疑心，猜疑"
     }
+   ],
+   "phrases": [
+    {
+     "text": "suspicion of sth",
+     "meaning": "对…的怀疑"
+    },
+    {
+     "text": "suspicion about sth",
+     "meaning": "对…的猜疑"
+    }
    ]
   },
   {
@@ -12671,6 +17705,16 @@
     {
      "pos": "vt.",
      "meaning": "支撑；供养；忍受"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "sustain sb. through sth",
+     "meaning": "支撑某人度过某事"
+    },
+    {
+     "text": "sustain sth. for + 时间",
+     "meaning": "使某物维持若干时间"
     }
    ]
   },
@@ -12716,6 +17760,20 @@
     {
      "pos": "vt.",
      "meaning": "宣(誓) vi.诅咒"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "swear to do sth",
+     "meaning": "发誓做某事"
+    },
+    {
+     "text": "swear at sb",
+     "meaning": "咒骂某人"
+    },
+    {
+     "text": "swear by sth",
+     "meaning": "极其信赖某物"
     }
    ]
   },
@@ -12780,6 +17838,20 @@
      "pos": "vt.",
      "meaning": "拿；抓；拿走；吃"
     }
+   ],
+   "phrases": [
+    {
+     "text": "take sb. sth. = take sth. to sb",
+     "meaning": "把某物带给某人"
+    },
+    {
+     "text": "take apart",
+     "meaning": "拆开"
+    },
+    {
+     "text": "take away",
+     "meaning": "拿走；带走；使消失"
+    }
    ]
   },
   {
@@ -12807,6 +17879,20 @@
      "pos": "vt.",
      "meaning": "讲；教育 vt.教书"
     }
+   ],
+   "phrases": [
+    {
+     "text": "teach sb. to do sth",
+     "meaning": "教某人做某事"
+    },
+    {
+     "text": "teach sb. sth. = teach sth. to sb",
+     "meaning": "教某人某事"
+    },
+    {
+     "text": "teach sb a lesson",
+     "meaning": "给某人一个教训"
+    }
    ]
   },
   {
@@ -12815,6 +17901,16 @@
     {
      "pos": "n.",
      "meaning": "教学，讲授；教导"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "teaching of + sth",
+     "meaning": "…的教学"
+    },
+    {
+     "text": "teaching in + sth",
+     "meaning": "…领域的教学"
     }
    ]
   },
@@ -12842,6 +17938,20 @@
     {
      "pos": "vt.",
      "meaning": "讲述；吩咐；辨别"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "tell sb. to do sth",
+     "meaning": "告诉某人做某事"
+    },
+    {
+     "text": "tell sb. sth. = tell sth. to sb",
+     "meaning": "告诉某人某事"
+    },
+    {
+     "text": "tell ... apart",
+     "meaning": "区分开"
     }
    ]
   },
@@ -12906,6 +18016,12 @@
      "pos": "n.",
      "meaning": "领土，版图；领域"
     }
+   ],
+   "phrases": [
+    {
+     "text": "territory of sth",
+     "meaning": "…的领土"
+    }
    ]
   },
   {
@@ -12923,6 +18039,16 @@
     {
      "pos": "ad.",
      "meaning": "因此，从而，由此"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "thereby doing sth",
+     "meaning": "从而做某事"
+    },
+    {
+     "text": "thereby reducing sth",
+     "meaning": "从而减少…"
     }
    ]
   },
@@ -12960,6 +18086,20 @@
      "pos": "vt.",
      "meaning": "想；想要；认为"
     }
+   ],
+   "phrases": [
+    {
+     "text": "think about",
+     "meaning": "思考；考虑"
+    },
+    {
+     "text": "think highly of",
+     "meaning": "对…高度评价"
+    },
+    {
+     "text": "think of ... as ",
+     "meaning": "把…看作…；认为…是…"
+    }
    ]
   },
   {
@@ -12996,6 +18136,16 @@
      "pos": "n.",
      "meaning": "威胁，恐吓，凶兆"
     }
+   ],
+   "phrases": [
+    {
+     "text": "threat to sb./sth",
+     "meaning": "对…的威胁"
+    },
+    {
+     "text": "threat of + sth",
+     "meaning": "…的威胁"
+    }
    ]
   },
   {
@@ -13004,6 +18154,16 @@
     {
      "pos": "vt.",
      "meaning": "&vi.威胁，恐吓"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "threaten to do sth",
+     "meaning": "威胁要做某事"
+    },
+    {
+     "text": "threaten sb. with sth",
+     "meaning": "以…威胁某人"
     }
    ]
   },
@@ -13041,6 +18201,20 @@
      "pos": "vt.",
      "meaning": "投，掷，抛，扔"
     }
+   ],
+   "phrases": [
+    {
+     "text": "throw sb. sth. = throw sth. to sb",
+     "meaning": "把某物扔给某人"
+    },
+    {
+     "text": "throw away",
+     "meaning": "扔掉(throw out)；浪费 (金钱等)；放过 (机会等)"
+    },
+    {
+     "text": "throw off",
+     "meaning": "扔掉；摆脱；匆匆脱掉 (衣服)"
+    }
    ]
   },
   {
@@ -13058,6 +18232,20 @@
     {
      "pos": "n.",
      "meaning": "(大)拇指"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "thumb through sth",
+     "meaning": "翻阅…"
+    },
+    {
+     "text": "thumbs up for sth",
+     "meaning": "赞同…"
+    },
+    {
+     "text": "thumb one's nose at sth",
+     "meaning": "蔑视…"
     }
    ]
   },
@@ -13113,6 +18301,16 @@
      "pos": "n.",
      "meaning": "音；腔调；声调"
     }
+   ],
+   "phrases": [
+    {
+     "text": "tone of voice",
+     "meaning": "语气"
+    },
+    {
+     "text": "tone of sth",
+     "meaning": "…的基调"
+    }
    ]
   },
   {
@@ -13158,6 +18356,16 @@
      "pos": "vt.",
      "meaning": "&vi.扔，抛，掷"
     }
+   ],
+   "phrases": [
+    {
+     "text": "toss sth to sb",
+     "meaning": "把…扔给某人"
+    },
+    {
+     "text": "toss sth into sth",
+     "meaning": "把…扔进"
+    }
    ]
   },
   {
@@ -13166,6 +18374,16 @@
     {
      "pos": "n.",
      "meaning": "痕迹；丝毫 vt.跟踪"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "trace of sth",
+     "meaning": "某物的痕迹"
+    },
+    {
+     "text": "trace in sth",
+     "meaning": "某物中留下的痕迹"
     }
    ]
   },
@@ -13176,6 +18394,16 @@
      "pos": "n.",
      "meaning": "悲剧；惨事，惨案"
     }
+   ],
+   "phrases": [
+    {
+     "text": "tragedy of sth",
+     "meaning": "某事的悲剧"
+    },
+    {
+     "text": "tragedy for sb",
+     "meaning": "对某人而言的惨事"
+    }
    ]
   },
   {
@@ -13184,6 +18412,12 @@
     {
      "pos": "n.",
      "meaning": "痕迹；小径 vt.跟踪"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "trail of + sth",
+     "meaning": "…的痕迹；一系列"
     }
    ]
   },
@@ -13212,6 +18446,20 @@
      "pos": "vt.",
      "meaning": "转移；调动 vi.转移"
     }
+   ],
+   "phrases": [
+    {
+     "text": "transfer sth to sth",
+     "meaning": "把…转移到"
+    },
+    {
+     "text": "transfer sb. to sth",
+     "meaning": "把某人调往"
+    },
+    {
+     "text": "transfer from A to B",
+     "meaning": "从甲转到乙"
+    }
    ]
   },
   {
@@ -13220,6 +18468,20 @@
     {
      "pos": "n.",
      "meaning": "变化；改造；转变"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "transformation of sth",
+     "meaning": "某事物的转变"
+    },
+    {
+     "text": "transformation into sth",
+     "meaning": "转变为某物"
+    },
+    {
+     "text": "transformation from A to B",
+     "meaning": "从A到B的转变"
     }
    ]
   },
@@ -13248,6 +18510,16 @@
      "pos": "n.",
      "meaning": "传送;传动;发射"
     }
+   ],
+   "phrases": [
+    {
+     "text": "transmission of sth",
+     "meaning": "…的传播；传输"
+    },
+    {
+     "text": "transmission from A to B",
+     "meaning": "从A到B的传输"
+    }
    ]
   },
   {
@@ -13265,6 +18537,16 @@
     {
      "pos": "n.",
      "meaning": "运输，运送，客运"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "transportation of sth",
+     "meaning": "…的运输"
+    },
+    {
+     "text": "transportation to sth",
+     "meaning": "通往…的交通"
     }
    ]
   },
@@ -13292,6 +18574,16 @@
     {
      "pos": "n.",
      "meaning": "条约；协议，协定"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "treaty with sb",
+     "meaning": "与某方签订的条约"
+    },
+    {
+     "text": "treaty on sth",
+     "meaning": "关于某事的条约"
     }
    ]
   },
@@ -13401,6 +18693,12 @@
      "pos": "n.",
      "meaning": "隧道，坑道，地道"
     }
+   ],
+   "phrases": [
+    {
+     "text": "tunnel through sth",
+     "meaning": "穿过某物的隧道"
+    }
    ]
   },
   {
@@ -13455,6 +18753,12 @@
      "pos": "a.",
      "meaning": "最后的，最终的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be ultimate in sth",
+     "meaning": "在…上达到极致"
+    }
    ]
   },
   {
@@ -13482,6 +18786,16 @@
      "pos": "vt.",
      "meaning": "经历，经受，忍受"
     }
+   ],
+   "phrases": [
+    {
+     "text": "undergo sth. for sth",
+     "meaning": "因某病接受某治疗"
+    },
+    {
+     "text": "undergo sth. in sth",
+     "meaning": "在某过程中经历某事"
+    }
    ]
   },
   {
@@ -13508,6 +18822,16 @@
     {
      "pos": "vt.",
      "meaning": "懂；获悉 vi.懂得"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "understand doing sth",
+     "meaning": "理解做某事"
+    },
+    {
+     "text": "make oneself understood",
+     "meaning": "[尤指用另一种语 言] 把自己的意思说清楚"
     }
    ]
   },
@@ -13554,6 +18878,12 @@
      "pos": "a.",
      "meaning": "想不到的，意外的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be unexpected to sb",
+     "meaning": "出乎某人意料"
+    }
    ]
   },
   {
@@ -13562,6 +18892,20 @@
     {
      "pos": "n.",
      "meaning": "单一；统一；团结"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "unity with sth",
+     "meaning": "与…的团结"
+    },
+    {
+     "text": "unity among sb",
+     "meaning": "…之间的团结"
+    },
+    {
+     "text": "unity of sth",
+     "meaning": "…的统一"
     }
    ]
   },
@@ -13589,6 +18933,12 @@
     {
      "pos": "a.",
      "meaning": "未必的，未必可能的"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be unlikely to do sth",
+     "meaning": "不太可能做某事"
     }
    ]
   },
@@ -13680,6 +19030,16 @@
      "pos": "a.",
      "meaning": "直到最近/现代的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be up-to-date with sth",
+     "meaning": "了解…的最新情况"
+    },
+    {
+     "text": "be up-to-date on sth",
+     "meaning": "掌握…最新动态"
+    }
    ]
   },
   {
@@ -13715,6 +19075,16 @@
     {
      "pos": "n.",
      "meaning": "效用，有用，实用"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "utility of sth",
+     "meaning": "…的实用性"
+    },
+    {
+     "text": "utility for sth",
+     "meaning": "对…的用处"
     }
    ]
   },
@@ -13770,6 +19140,16 @@
      "pos": "vi.",
      "meaning": "突然不见，消失"
     }
+   ],
+   "phrases": [
+    {
+     "text": "vanish from sth",
+     "meaning": "从…消失"
+    },
+    {
+     "text": "vanish into thin air",
+     "meaning": "消失得无影无踪"
+    }
    ]
   },
   {
@@ -13788,6 +19168,12 @@
      "pos": "n.",
      "meaning": "汽，蒸气"
     }
+   ],
+   "phrases": [
+    {
+     "text": "vapour from sth",
+     "meaning": "来自…的蒸汽"
+    }
    ]
   },
   {
@@ -13796,6 +19182,12 @@
     {
      "pos": "a.",
      "meaning": "易变的 n.变量"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "be variable in + sth",
+     "meaning": "在…上多变"
     }
    ]
   },
@@ -13806,6 +19198,12 @@
      "pos": "n.",
      "meaning": "变化，变动；变异"
     }
+   ],
+   "phrases": [
+    {
+     "text": "variation in sth",
+     "meaning": "在某方面的变化"
+    }
    ]
   },
   {
@@ -13814,6 +19212,12 @@
     {
      "pos": "vt.",
      "meaning": "改变；使多样化"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "vary from ... to ",
+     "meaning": "由……到……不等"
     }
    ]
   },
@@ -13851,6 +19255,16 @@
      "pos": "n.",
      "meaning": "&vi.冒险 vt.敢于"
     }
+   ],
+   "phrases": [
+    {
+     "text": "venture with sb",
+     "meaning": "与某方合办的项目"
+    },
+    {
+     "text": "venture into sth",
+     "meaning": "对某领域的尝试"
+    }
    ]
   },
   {
@@ -13878,6 +19292,12 @@
      "pos": "n.",
      "meaning": "容器；船，飞船；管"
     }
+   ],
+   "phrases": [
+    {
+     "text": "vessel for sth",
+     "meaning": "用于盛某物的容器"
+    }
    ]
   },
   {
@@ -13886,6 +19306,12 @@
     {
      "pos": "n.",
      "meaning": "老兵，老手"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "veteran of sth",
+     "meaning": "…的老兵；…的老手"
     }
    ]
   },
@@ -13977,6 +19403,16 @@
      "pos": "a.",
      "meaning": "可见的，看得见的"
     }
+   ],
+   "phrases": [
+    {
+     "text": "be visible to sb",
+     "meaning": "对某人可见"
+    },
+    {
+     "text": "be visible in sth",
+     "meaning": "在…中明显"
+    }
    ]
   },
   {
@@ -13985,6 +19421,16 @@
     {
      "pos": "n.",
      "meaning": "视；想象力；梦幻"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "vision of + sth",
+     "meaning": "…的愿景"
+    },
+    {
+     "text": "vision for + sth",
+     "meaning": "对…的构想"
     }
    ]
   },
@@ -14022,6 +19468,16 @@
      "pos": "n.",
      "meaning": "卷，册；容积；音量"
     }
+   ],
+   "phrases": [
+    {
+     "text": "volume of sth",
+     "meaning": "…的数量；音量"
+    },
+    {
+     "text": "volume of sales",
+     "meaning": "销售量"
+    }
    ]
   },
   {
@@ -14040,6 +19496,16 @@
      "pos": "vi.",
      "meaning": "醒，醒来 vt.唤醒"
     }
+   ],
+   "phrases": [
+    {
+     "text": "wake up",
+     "meaning": "醒来；叫醒"
+    },
+    {
+     "text": "wake sb. up",
+     "meaning": "唤醒某人"
+    }
    ]
   },
   {
@@ -14057,6 +19523,16 @@
     {
      "pos": "vt.",
      "meaning": "警告 vi.发生警告"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "warn sb. to do sth",
+     "meaning": "警告某人做某事"
+    },
+    {
+     "text": "warn sb. of sth",
+     "meaning": "警告某人有某情况"
     }
    ]
   },
@@ -14103,6 +19579,16 @@
      "pos": "n.",
      "meaning": "武器，兵器"
     }
+   ],
+   "phrases": [
+    {
+     "text": "weapon against sb",
+     "meaning": "对付某人的武器"
+    },
+    {
+     "text": "weapon of + sth",
+     "meaning": "…武器"
+    }
    ]
   },
   {
@@ -14111,6 +19597,12 @@
     {
      "pos": "vt.",
      "meaning": "穿着，戴；磨损"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "wear off",
+     "meaning": "逐渐减少；逐渐消失"
     }
    ]
   },
@@ -14229,6 +19721,12 @@
      "pos": "ad.",
      "meaning": "广，广泛"
     }
+   ],
+   "phrases": [
+    {
+     "text": "widely regarded as",
+     "meaning": "被广泛认为"
+    }
    ]
   },
   {
@@ -14264,6 +19762,12 @@
     {
      "pos": "vi.",
      "meaning": "获胜，赢 vt.赢得"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "win ... back",
+     "meaning": "赢回；重新获得"
     }
    ]
   },
@@ -14337,6 +19841,16 @@
      "pos": "n.",
      "meaning": "车间，工场；创作室"
     }
+   ],
+   "phrases": [
+    {
+     "text": "workshop on sth",
+     "meaning": "关于某主题的研讨会"
+    },
+    {
+     "text": "workshop for sb",
+     "meaning": "为某人开设的工作坊"
+    }
    ]
   },
   {
@@ -14363,6 +19877,20 @@
     {
      "pos": "vt.",
      "meaning": "裹，包，捆 n.披肩"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "wrap sth in sth",
+     "meaning": "用…包住某物"
+    },
+    {
+     "text": "wrap sth around sth",
+     "meaning": "把…缠在…上"
+    },
+    {
+     "text": "wrap up sth",
+     "meaning": "结束；包好"
     }
    ]
   },
@@ -14391,6 +19919,16 @@
      "pos": "n.",
      "meaning": "作者，作家，文学家"
     }
+   ],
+   "phrases": [
+    {
+     "text": "writer of + sth",
+     "meaning": "…的作者"
+    },
+    {
+     "text": "writer for + sth",
+     "meaning": "…的撰稿人"
+    }
    ]
   },
   {
@@ -14408,6 +19946,16 @@
     {
      "pos": "vt.",
      "meaning": "&vi.出产 n.产量"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "yield to sth",
+     "meaning": "屈服于"
+    },
+    {
+     "text": "yield sth to sb",
+     "meaning": "把…让给某人"
     }
    ]
   },
@@ -23571,6 +29119,12 @@
      "pos": "phr.",
      "meaning": "过去经常(做)..., 过去有规律地发生"
     }
+   ],
+   "phrases": [
+    {
+     "text": "used to do sth",
+     "meaning": "过去常常做某事"
+    }
    ]
   },
   {
@@ -26954,6 +32508,12 @@
     {
      "pos": "phr.",
      "meaning": "花时间"
+    }
+   ],
+   "phrases": [
+    {
+     "text": "spend time (in) doing sth",
+     "meaning": "花时间做某事"
     }
    ]
   },
