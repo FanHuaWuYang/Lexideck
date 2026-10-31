@@ -23,9 +23,9 @@ pub const HIDE_KEYS: [&str; 6] = [
     "note",
 ];
 
-/// 区块键 → 给人看的中文名
+/// 区块键 → 给人看的中文名（英文界面时自动换成英文，见 src/lang.rs）
 pub fn hide_label(key: &str) -> &'static str {
-    match key {
+    let zh = match key {
         "senses" => "词义",
         "forms" => "变形",
         "derivations" => "同根词",
@@ -33,7 +33,8 @@ pub fn hide_label(key: &str) -> &'static str {
         "sentences" => "例句",
         "note" => "备注",
         _ => "未知区块",
-    }
+    };
+    crate::lang::l(zh)
 }
 
 pub fn is_hide_key(key: &str) -> bool {
@@ -151,25 +152,31 @@ impl Entry {
     pub fn summary(&self) -> String {
         let mut parts: Vec<String> = Vec::new();
         if !self.senses.is_empty() {
-            parts.push(format!("{} 个义项", self.senses.len()));
+            parts.push(crate::lang::tf("{n} 个义项", &[("n", &self.senses.len())]));
         }
         if self.forms_line().is_some() {
             parts.push("变形".into());
         }
         if !self.derivations.is_empty() {
-            parts.push(format!("{} 个同根词", self.derivations.len()));
+            parts.push(crate::lang::tf(
+                "{n} 个同根词",
+                &[("n", &self.derivations.len())],
+            ));
         }
         if !self.phrases.is_empty() {
-            parts.push(format!("{} 个短语", self.phrases.len()));
+            parts.push(crate::lang::tf("{n} 个短语", &[("n", &self.phrases.len())]));
         }
         if !self.sentences.is_empty() {
-            parts.push(format!("{} 条例句", self.sentences.len()));
+            parts.push(crate::lang::tf(
+                "{n} 条例句",
+                &[("n", &self.sentences.len())],
+            ));
         }
         if !self.note.trim().is_empty() {
             parts.push("备注".into());
         }
         if parts.is_empty() {
-            "（没有内容）".into()
+            crate::lang::l("（没有内容）").into()
         } else {
             parts.join("，")
         }
@@ -510,7 +517,7 @@ fn dedup_in_place<T: PartialEq>(v: &mut Vec<T>) {
 fn field_word(v: &serde_json::Value) -> String {
     v.get("word")
         .and_then(|x| x.as_str())
-        .unwrap_or("(无名)")
+        .unwrap_or(crate::lang::l("(无名)"))
         .to_string()
 }
 
@@ -590,7 +597,7 @@ pub fn sanitize(deck: &mut Deck) -> Vec<String> {
     // P2：展示时间项记住"来自哪份文件"（只作展示，不参与冲突判定）。空白的用 deck_name 兜底。
     let deck_name = deck.deck_name.trim().to_string();
     let fallback = if deck_name.is_empty() {
-        "未命名".to_string()
+        crate::lang::l("未命名").to_string()
     } else {
         deck_name
     };

@@ -110,6 +110,11 @@ pub struct LexideckApp {
     panel: PanelState,
     selected: HashSet<String>,
     expanded: HashSet<String>,
+    /// 词表行的缓存（2026-10-11）：几千条时每帧重建（排序+过滤）是纯浪费，
+    /// 指纹（词库版本/搜索/筛选/选择/展开）没变就直接复用。
+    word_rows_cache: Option<(WordRowsFp, Vec<WordRow>)>,
+    /// 词库内容的版本号：加载/重载/导入时 +1，用来给上面那个缓存做指纹
+    lib_rev: u64,
     // ── 卡片 ──
     floats: Vec<FloatWin>,
     next_id: usize,
@@ -187,6 +192,28 @@ pub struct LexideckApp {
 /// 关闭拦截里「再点一次」提示的固定文案（和底栏确认文案同一件事，过期后要认得出来）
 const EXIT_CONFIRM_HINT: &str = "再点一次 ✕ 就退出（5 秒内有效）";
 
+/// 集合的指纹（顺序无关的哈希和）：判断选择/展开集合有没有变化
+fn set_fingerprint(set: &std::collections::HashSet<String>) -> u64 {
+    use std::hash::{Hash, Hasher};
+    let mut acc: u64 = 0;
+    for k in set {
+        let mut h = std::collections::hash_map::DefaultHasher::new();
+        k.hash(&mut h);
+        acc = acc.wrapping_add(h.finish());
+    }
+    acc
+}
+
+/// 词表行缓存的指纹：任一输入变化才重建（几千条的排序/过滤不能每帧跑）
+#[derive(PartialEq)]
+struct WordRowsFp {
+    lib_rev: u64,
+    search: String,
+    filter: control::WordFilter,
+    sel: u64,
+    exp: u64,
+}
+
 impl LexideckApp {
     /// 「收进托盘」时面板挪去的屏幕外位置（在常规多屏布局之外；见 hide_panel）
     const PARK_POS: egui::Pos2 = egui::Pos2::new(-32000.0, -32000.0);
@@ -219,6 +246,8 @@ impl LexideckApp {
             panel: PanelState::default(),
             selected: HashSet::new(),
             expanded: HashSet::new(),
+            word_rows_cache: None,
+            lib_rev: 0,
             floats: Vec::new(),
             next_id: 1,
             shown_fit: 0,
@@ -259,6 +288,7 @@ impl LexideckApp {
     fn reload_library(&mut self) {
         let loaded = library::load(&self.lib_path);
         self.lib = loaded.deck;
+        self.lib_rev = self.lib_rev.wrapping_add(1);
         self.lib_corrupt = loaded.corrupt;
         self.lib_missing = loaded.missing;
         self.warns = loaded.warns;
@@ -345,6 +375,17 @@ impl LexideckApp {
         idx
     }
 
+    /// 词表行缓存的指纹：任一输入变化才重建（几千条的排序/过滤不能每帧跑）
+    fn word_rows_fp(&self) -> WordRowsFp {
+        WordRowsFp {
+            lib_rev: self.lib_rev,
+            search: self.panel.search.clone(),
+            filter: self.panel.filter,
+            sel: set_fingerprint(&self.selected),
+            exp: set_fingerprint(&self.expanded),
+        }
+    }
+
     fn build_word_rows(&self) -> Vec<WordRow> {
         let q = self.panel.search.trim().to_lowercase();
         self.sorted_indices()
@@ -353,6 +394,7 @@ impl LexideckApp {
                 let e = &self.lib.words[i];
                 let key = e.key();
                 let sel = self.selected.contains(&key);
+                let expanded = self.expanded.contains(&key);
                 match self.panel.filter {
                     WordFilter::Selected if !sel => return None,
                     WordFilter::Unselected if sel => return None,
@@ -365,92 +407,96 @@ impl LexideckApp {
                     }
                 }
                 let mut details: Vec<(String, String)> = Vec::new();
-                if !e.senses.is_empty() {
-                    details.push((
-                        "词义".into(),
-                        e.senses
-                            .iter()
-                            .map(|s| {
-                                let p = s.pos.trim();
-                                let m = s.meaning.trim();
-                                if p.is_empty() {
-                                    m.to_string()
-                                } else {
-                                    format!("{p} {m}")
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if let Some(f) = e.forms_line() {
-                    details.push(("变形".into(), f));
-                }
-                if !e.derivations.is_empty() {
-                    details.push((
-                        "同根词".into(),
-                        e.derivations
-                            .iter()
-                            .map(|d| {
-                                let m = d
-                                    .senses
-                                    .iter()
-                                    .map(|s| {
-                                        let p = s.pos.trim();
-                                        if p.is_empty() {
-                                            s.meaning.trim().to_string()
-                                        } else {
-                                            format!("{p} {}", s.meaning.trim())
-                                        }
-                                    })
-                                    .collect::<Vec<_>>()
-                                    .join("；");
-                                if m.is_empty() {
-                                    d.word.clone()
-                                } else {
-                                    format!("{} {}", d.word, m)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.phrases.is_empty() {
-                    details.push((
-                        "短语".into(),
-                        e.phrases
-                            .iter()
-                            .map(|p| {
-                                let m = p.meaning.trim();
-                                if m.is_empty() {
-                                    p.text.clone()
-                                } else {
-                                    format!("{} {}", p.text, m)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.sentences.is_empty() {
-                    details.push((
-                        "例句".into(),
-                        e.sentences
-                            .iter()
-                            .map(|s| {
-                                let z = s.zh.trim();
-                                if z.is_empty() {
-                                    s.en.clone()
-                                } else {
-                                    format!("{}（{z}）", s.en)
-                                }
-                            })
-                            .collect::<Vec<_>>()
-                            .join("　｜　"),
-                    ));
-                }
-                if !e.note.trim().is_empty() {
-                    details.push(("备注".into(), e.note.clone()));
+                // 明细字符串只在展开行构建：6510 条的词库下，每帧给全部词条
+                // join 这些字符串+建行结构是纯浪费（实测常态 CPU 42% 的大头）。
+                if expanded {
+                    if !e.senses.is_empty() {
+                        details.push((
+                            "词义".into(),
+                            e.senses
+                                .iter()
+                                .map(|s| {
+                                    let p = s.pos.trim();
+                                    let m = s.meaning.trim();
+                                    if p.is_empty() {
+                                        m.to_string()
+                                    } else {
+                                        format!("{p} {m}")
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if let Some(f) = e.forms_line() {
+                        details.push(("变形".into(), f));
+                    }
+                    if !e.derivations.is_empty() {
+                        details.push((
+                            "同根词".into(),
+                            e.derivations
+                                .iter()
+                                .map(|d| {
+                                    let m = d
+                                        .senses
+                                        .iter()
+                                        .map(|s| {
+                                            let p = s.pos.trim();
+                                            if p.is_empty() {
+                                                s.meaning.trim().to_string()
+                                            } else {
+                                                format!("{p} {}", s.meaning.trim())
+                                            }
+                                        })
+                                        .collect::<Vec<_>>()
+                                        .join("；");
+                                    if m.is_empty() {
+                                        d.word.clone()
+                                    } else {
+                                        format!("{} {}", d.word, m)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.phrases.is_empty() {
+                        details.push((
+                            "短语".into(),
+                            e.phrases
+                                .iter()
+                                .map(|p| {
+                                    let m = p.meaning.trim();
+                                    if m.is_empty() {
+                                        p.text.clone()
+                                    } else {
+                                        format!("{} {}", p.text, m)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.sentences.is_empty() {
+                        details.push((
+                            "例句".into(),
+                            e.sentences
+                                .iter()
+                                .map(|s| {
+                                    let z = s.zh.trim();
+                                    if z.is_empty() {
+                                        s.en.clone()
+                                    } else {
+                                        format!("{}（{z}）", s.en)
+                                    }
+                                })
+                                .collect::<Vec<_>>()
+                                .join("　｜　"),
+                        ));
+                    }
+                    if !e.note.trim().is_empty() {
+                        details.push(("备注".into(), e.note.clone()));
+                    }
                 }
                 Some(WordRow {
                     key: key.clone(),
@@ -498,7 +544,7 @@ impl LexideckApp {
                     source: a
                         .map(|a| a.source.clone())
                         .filter(|s| !s.is_empty())
-                        .unwrap_or_else(|| "手动展示".to_string()),
+                        .unwrap_or_else(|| crate::lang::l("手动展示").to_string()),
                     hide,
                 }
             })
@@ -513,19 +559,19 @@ impl LexideckApp {
             for r in &it.ranges {
                 let state = schedule::range_state(r, today);
                 let why = match state {
-                    schedule::RangeState::Active => "今天生效".to_string(),
+                    schedule::RangeState::Active => crate::lang::l("今天生效").to_string(),
                     schedule::RangeState::Future => {
                         let d = schedule::days_between(
                             today,
                             deck::parse_date(&r.from).unwrap_or(today),
                         );
                         if d <= 1 {
-                            "明天开始".to_string()
+                            crate::lang::l("明天开始").to_string()
                         } else {
-                            format!("还有 {d} 天开始")
+                            crate::lang::tf("还有 {d} 天开始", &[("d", &d)])
                         }
                     }
-                    schedule::RangeState::Past => "已结束".to_string(),
+                    schedule::RangeState::Past => crate::lang::l("已结束").to_string(),
                 };
                 out.push(PlanRow {
                     word: it.word.clone(),
@@ -901,6 +947,9 @@ impl LexideckApp {
         // 摘掉 WS_EX_APPWINDOW、置成 WS_EX_TOOLWINDOW —— 任务栏和 Alt+Tab 里都不再出现，
         // 但窗口本身仍是「可见」的，所有帧走正常路径（新建浮窗不会踩 eframe 那条旁路）。
         window::set_taskbar_visible(self.panel_hwnd, false);
+        // 顺带把工作集还给系统（实测 132MB → 9MB）：收进托盘后绝大多数页都闲着，
+        // 留着白占内存；缺页时系统自己换回来，唤出无感。
+        trim_working_set();
         self.panel_visible = false;
     }
 
@@ -945,7 +994,7 @@ impl LexideckApp {
             ctx.send_viewport_cmd(ViewportCommand::CancelClose);
             self.hide_panel(ctx);
             self.status =
-                Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
+                Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再次启动 Lexideck）".into());
             return;
         }
         // 直接退出（或托盘不可用时的退化路径）：沿用已有的 5 秒二次确认
@@ -956,7 +1005,7 @@ impl LexideckApp {
         ctx.send_viewport_cmd(ViewportCommand::CancelClose);
         self.confirm_exit = true;
         self.confirm_at = Some(Instant::now());
-        self.status = Some(EXIT_CONFIRM_HINT.into());
+        self.status = Some(crate::lang::l(EXIT_CONFIRM_HINT).into());
     }
 
     /// 托盘自检节奏：建好之后隔这么久查第一次，之后每次再隔这么久重查。
@@ -1019,10 +1068,7 @@ impl LexideckApp {
                 Err(e) => {
                     // 失败原因照实写出来（含 crate 给的细节）—— 用户看不到图标时，
                     // 这一行就是唯一线索；面板底部状态栏一直在。
-                    self.status = Some(format!(
-                        "托盘图标创建失败（第 {} 次）：{e}；关闭窗口按「直接退出」处理，稍后自动重试",
-                        self.tray_attempts
-                    ));
+                    self.status = Some(crate::lang::tf("托盘图标创建失败（第 {n} 次）：{e}；关闭窗口按「直接退出」处理，稍后自动重试", &[("n", &self.tray_attempts), ("e", &e)]));
                 }
             }
         }
@@ -1110,7 +1156,7 @@ impl LexideckApp {
                 if self.panel_visible {
                     self.hide_panel(ctx);
                     self.status = Some(
-                        "面板已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）"
+                        "面板已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再次启动 Lexideck）"
                             .into(),
                     );
                 } else {
@@ -1281,7 +1327,10 @@ impl LexideckApp {
             self.screen = Screen::Auto;
             self.floats.clear();
             let (_, words, _) = schedule::today_counts(&self.lib, self.today, &self.sc);
-            self.status = Some(format!("已回到今日展示：今日生效 {words} 个"));
+            self.status = Some(crate::lang::tf(
+                "已回到今日展示：今日生效 {n} 个",
+                &[("n", &words)],
+            ));
         }
         // 卡片页的两档内容来源（面板切「按今日展示 / 手动展示」）
         if let Some(auto) = res.set_screen_auto {
@@ -1289,13 +1338,20 @@ impl LexideckApp {
             if auto {
                 self.screen = Screen::Auto;
                 let (_, words, _) = schedule::today_counts(&self.lib, self.today, &self.sc);
-                self.status = Some(format!("已切回按今日展示：今日生效 {words} 个词"));
+                self.status = Some(crate::lang::tf(
+                    "已切回按今日展示：今日生效 {n} 个词",
+                    &[("n", &words)],
+                ));
             } else {
                 self.screen = Screen::Manual;
                 self.status = Some(if self.cfg.shown.is_empty() {
-                    "已切到手动展示（还没勾词 —— 去「词表」勾几个词点「立即展示」）".into()
+                    crate::lang::l("已切到手动展示（还没勾词 —— 去「词表」勾几个词点「立即展示」）")
+                        .into()
                 } else {
-                    format!("已切到手动展示：显示勾选的 {} 个词", self.cfg.shown.len())
+                    crate::lang::tf(
+                        "已切到手动展示：显示勾选的 {n} 个词",
+                        &[("n", &self.cfg.shown.len())],
+                    )
                 });
             }
         }
@@ -1315,8 +1371,9 @@ impl LexideckApp {
             if self.use_tray() {
                 // 托盘模式：面板的 ✕ 首击 = 收进托盘（不进入退出确认）
                 self.hide_panel(ctx);
-                self.status =
-                    Some("已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再双击一次 exe）".into());
+                self.status = Some(
+                    "已收进托盘（图标在右下角 ^ 折叠区；右键唤回，或再次启动 Lexideck）".into(),
+                );
             } else {
                 self.confirm_exit = true;
             }
@@ -1357,14 +1414,15 @@ impl LexideckApp {
                     self.cfg.autostart = on;
                     config::save(&config::settings_path(), &self.cfg);
                     self.status = Some(if on {
-                        format!("开机自启动已开启：{}", exe.display())
+                        crate::lang::tf("开机自启动已开启：{p}", &[("p", &exe.display())])
                     } else {
-                        "开机自启动已关闭（启动项已删掉）".into()
+                        crate::lang::l("开机自启动已关闭（启动项已删掉）").into()
                     });
                 }
                 Err(e) => {
-                    self.status = Some(format!(
-                        "开机自启动没改成：{e}（开关位置显示的是注册表里的实际状态）"
+                    self.status = Some(crate::lang::tf(
+                        "开机自启动没改成：{e}（开关位置显示的是注册表里的实际状态）",
+                        &[("e", &e)],
                     ));
                 }
             }
@@ -1376,7 +1434,10 @@ impl LexideckApp {
     fn toggle_strategy(&mut self, word: &str, rng: &deck::Range) {
         if !self.sc_ok {
             self.status = Some(
-                "状态文件读不懂，已拒绝写入（避免覆盖坏文件）；请先修好或删掉 状态.json".into(),
+                crate::lang::l(
+                    "状态文件读不懂，已拒绝写入（避免覆盖坏文件）；请先修好或删掉 状态.json",
+                )
+                .into(),
             );
             return;
         }
@@ -1385,9 +1446,9 @@ impl LexideckApp {
         match schedule::save_state(&self.sc_path, &self.sc) {
             Ok(()) => {
                 self.status = Some(if now_off {
-                    format!("已关闭「{word}」这条策略（在「策略」页可随时重新打开）")
+                    crate::lang::tf("已关闭「{word}」这条策略", &[("word", &word)])
                 } else {
-                    format!("已打开「{word}」这条策略")
+                    crate::lang::tf("已打开「{word}」这条策略", &[("word", &word)])
                 });
                 // 如果是 Auto，重建卡片（下一帧按新集合上屏）
                 if self.screen == Screen::Auto {
@@ -1397,7 +1458,7 @@ impl LexideckApp {
             Err(e) => {
                 // 写盘失败就把内存里的改动退回去，别让两边不一致
                 self.sc.set_off(word, rng, !now_off);
-                self.status = Some(format!("保存状态失败：{e}"));
+                self.status = Some(crate::lang::tf("保存状态失败：{e}", &[("e", &e)]));
             }
         }
     }
@@ -1406,8 +1467,8 @@ impl LexideckApp {
 
     fn pick_import(&mut self) {
         let picked = rfd::FileDialog::new()
-            .set_title("选择要导入的词表（.json）")
-            .add_filter("词表文件", &["json"])
+            .set_title(crate::lang::l("选择要导入的词表（.json）"))
+            .add_filter(crate::lang::l("词表文件"), &["json"])
             .pick_file();
         let Some(path) = picked else {
             return;
@@ -1415,11 +1476,11 @@ impl LexideckApp {
         let name = path
             .file_name()
             .map(|s| s.to_string_lossy().into_owned())
-            .unwrap_or_else(|| "词表".into());
+            .unwrap_or_else(|| crate::lang::l("词表").into());
         match deck::load_file(&path) {
             Err(errs) => {
                 self.import_error = Some((name, errs));
-                self.status = Some("导入失败：文件格式不对，主库未改动".into());
+                self.status = Some(crate::lang::l("导入失败：文件格式不对，主库未改动").into());
             }
             Ok((incoming, _warns)) => {
                 let sess = import::Session::new(name, incoming, &self.lib.words);
@@ -1468,6 +1529,7 @@ impl LexideckApp {
         match library::save(&self.lib_path, &next) {
             Ok(()) => {
                 self.lib = next;
+                self.lib_rev = self.lib_rev.wrapping_add(1);
                 self.lib_mtime = library::mtime(&self.lib_path);
                 self.prune_selection();
                 self.prune_state();
@@ -1478,7 +1540,10 @@ impl LexideckApp {
                 self.status = Some(import::Session::summary_line(&file, &summary));
             }
             Err(e) => {
-                self.status = Some(format!("导入失败：写入主库出错（{e}），主库未改动"));
+                self.status = Some(crate::lang::tf(
+                    "导入失败：写入主库出错（{e}），主库未改动",
+                    &[("e", &e)],
+                ));
             }
         }
     }
@@ -1506,6 +1571,8 @@ impl eframe::App for LexideckApp {
         fps_tick(&ctx, "root");
         // 面板句柄每帧记一次：收进托盘时要靠它摘任务栏按钮（见 hide_panel）
         self.panel_hwnd = panel_hwnd(frame);
+        // 界面语言跟着设置走（每帧同步一次；设置页切换后下一帧生效）
+        crate::lang::set(crate::lang::Lang::parse(&self.cfg.lang));
 
         // P3a：托盘懒创建 + 收事件；关闭拦截必须在 place_once 之前
         // （CancelClose 必须和 close_requested 同帧发出，eframe 只认那一帧）
@@ -1534,7 +1601,10 @@ impl eframe::App for LexideckApp {
                 self.floats.clear();
             }
             let (_, words, _) = schedule::today_counts(&self.lib, self.today, &self.sc);
-            self.status = Some(format!("日期变了：今日生效 {words} 个"));
+            self.status = Some(crate::lang::tf(
+                "日期变了：今日生效 {n} 个",
+                &[("n", &words)],
+            ));
         }
         // 退出确认只在 5 秒内有效
         if self.confirm_exit {
@@ -1543,7 +1613,7 @@ impl eframe::App for LexideckApp {
                     self.confirm_exit = false;
                     self.confirm_at = None;
                     // 确认过期就别在底栏留「再点一次…」的过期提示
-                    if self.status.as_deref() == Some(EXIT_CONFIRM_HINT) {
+                    if self.status.as_deref() == Some(crate::lang::l(EXIT_CONFIRM_HINT)) {
                         self.status = None;
                     }
                 }
@@ -1569,15 +1639,30 @@ impl eframe::App for LexideckApp {
         if let Some(n) = self.pending_show.take() {
             // 「立即展示」的收尾：等 reconcile 之后报真实上屏张数
             // （勾选 20 个只放得下 16 张时，报的 N 要和平铺结果、和「卡片」页统计一致）
-            self.status = Some(format!(
-                "已让 {n} 个词上屏（本次放得下 {} 张；放不下的排在后面，见「卡片」页）",
-                self.floats.len()
+            let fit = self.floats.len();
+            self.status = Some(crate::lang::tf(
+                "已让 {n} 个词上屏（本次放得下 {fit} 张；放不下的排在后面，见「卡片」页）",
+                &[("n", &n), ("fit", &fit)],
             ));
         }
         self.draw_floats(&ctx, &th);
         self.draw_menu(&ctx, &th);
 
-        let rows = self.build_word_rows();
+        // 词表行：只在指纹变化（词库版本/搜索/筛选/选择/展开）时重建
+        let fp = self.word_rows_fp();
+        if self
+            .word_rows_cache
+            .as_ref()
+            .map(|(f, _)| f != &fp)
+            .unwrap_or(true)
+        {
+            let rows = self.build_word_rows();
+            self.word_rows_cache = Some((fp, rows));
+        }
+        let rows: &[WordRow] = match &self.word_rows_cache {
+            Some((_, rows)) => rows,
+            None => &[],
+        };
         let card_rows = self.build_card_rows();
         let plan_rows = self.build_plan_rows();
         let today_label = format!(
@@ -1640,8 +1725,14 @@ impl eframe::App for LexideckApp {
         // 面板自己不必全速重绘：卡片动画是由各自的浮窗视口用 request_repaint_of
         // 驱动的（见 draw_floats）。这里如果写成「有卡片在动画就 ctx.request_repaint()」，
         // 会把每帧绘制很重的面板一起拉进全速渲染，反而把卡片入场动画的帧率拖下来
-        // —— 表现就是「动画卡卡的」。面板 5fps 足够（点一下会立刻触发重绘）。
-        ctx.request_repaint_after(Duration::from_millis(300));
+        // —— 表现就是「动画卡卡的」。
+        //
+        // 空闲节奏由托盘心跳线程（1s）统一保证：它每拍一次就唤醒一帧。
+        // 2026-10-11 起心跳 250ms→1000ms：它每次唤醒都是全量重绘（面板+每张卡），
+        // 250ms 时空闲 CPU 实测 ~10%（面板本身的 OR 叠加），1s 拍降到 ~2.5%。
+        // 这里只留一个慢速兜底：万一托盘创建失败没有心跳线程，也保证 2s 内出帧
+        // （跨日切换、外部文件变化这类"非交互"的刷新不至于没人管）。
+        ctx.request_repaint_after(Duration::from_millis(2000));
     }
 }
 
@@ -1656,6 +1747,17 @@ fn open_taskbar_settings() {
     let _ = std::process::Command::new("cmd")
         .args(["/C", "start", "", "ms-settings:taskbar"])
         .spawn();
+}
+
+/// 把本进程的工作集还给系统（EmptyWorkingSet）。
+/// 用在「收进托盘」之后：页都闲着，留着白占内存；再唤出时缺页换回来，无感。
+/// 实测一个 132MB 工作集的实例调用后掉到 ~9MB，且之后照常出帧不反弹。
+fn trim_working_set() {
+    use windows_sys::Win32::System::ProcessStatus::EmptyWorkingSet;
+    use windows_sys::Win32::System::Threading::GetCurrentProcess;
+    unsafe {
+        EmptyWorkingSet(GetCurrentProcess());
+    }
 }
 
 /// 面板窗口句柄（托盘唤醒要用，见 tray.rs 文件头）。拿不到就回 0 ——
