@@ -261,7 +261,7 @@ pub fn load_state(path: &Path) -> (State, bool) {
 
 pub fn save_state(path: &Path, s: &State) -> Result<(), String> {
     let text = serde_json::to_string_pretty(s).map_err(|e| e.to_string())?;
-    std::fs::write(path, text).map_err(|e| e.to_string())
+    crate::util::write_atomic(path, &text).map_err(|e| e.to_string())
 }
 
 // ────────────────────────── 今天上屏什么 ──────────────────────────

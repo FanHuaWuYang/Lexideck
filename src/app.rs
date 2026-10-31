@@ -120,8 +120,14 @@ pub struct LexideckApp {
     next_id: usize,
     /// 屏幕上真正放得下的张数
     shown_fit: usize,
+    /// 「立即展示」后待报的勾选数：等 reconcile 算出真实上屏张数再写状态栏
+    /// （以前直接报勾选数，和平铺截断后的实际张数对不上，见 ui() 的说明）
+    pending_show: Option<usize>,
     /// 主库文件存在但读不懂：此时禁止任何写盘，免得把坏文件覆盖掉
     lib_corrupt: bool,
+    /// 主库文件当前不在（被删/改名/原子保存间隙/被隔离）：也禁止写盘与状态清理，
+    /// 保留内存里那份等着文件回来（见 poll_library / prune_state 的说明）
+    lib_missing: bool,
     // ── 展示时间（P2）──
     /// 被永久关闭的展示策略（exe 同目录 `状态.json`）
     sc: schedule::State,
@@ -155,6 +161,8 @@ pub struct LexideckApp {
     tray_check_at: Option<Instant>,
     /// 这轮自检已经查了几次（外壳确认之前最多查 TRAY_CHECK_MAX 次）
     tray_check_tries: u32,
+    /// 托盘低频复检的下一次时刻（None = 没排期；面板露着时每 TRAY_RECHECK_GAP 查一次，见 tray_tick）
+    tray_recheck_at: Option<Instant>,
     /// 面板窗口当前是否可见（自己维护：ViewportInfo 里拿不到 Visible(false) 的状态）
     panel_visible: bool,
     /// 收进托盘前的位置（窗口被挪到屏幕外；唤回时放回去）
@@ -173,6 +181,8 @@ pub struct LexideckApp {
     menu_need_focus: bool,
     /// 菜单这一辈子拿到过焦点没有（拿到后失焦才判定为「点了别处」）
     menu_got_focus: bool,
+    /// 菜单已开多少帧：没拿到焦点时每隔 15 帧重新要一次（见 draw_menu）
+    menu_frames: u32,
     // ── 单实例（P3c）──
     /// 唤回事件的等待线程（有人又启动了一次 → 把面板拿到前台）。字段只为「持有」而存在。
     #[allow(dead_code)]
@@ -212,7 +222,8 @@ impl LexideckApp {
         setup_fonts(cc);
         let path = library::lib_path();
         let loaded = library::load(&path);
-        let (lib, warns, corrupt) = (loaded.deck, loaded.warns, loaded.corrupt);
+        let (lib, warns, corrupt, missing) =
+            (loaded.deck, loaded.warns, loaded.corrupt, loaded.missing);
         // 展示时间引擎：读关闭状态（读不懂 → sc_ok = false，之后拒绝写盘）、
         // 清掉主库里已经不存在的关闭项、定下"今天"
         let sc_path = schedule::state_path();
@@ -224,6 +235,7 @@ impl LexideckApp {
             lib_path: path,
             lib_mtime: None,
             lib_corrupt: corrupt,
+            lib_missing: missing,
             sc,
             sc_path,
             sc_ok,
@@ -239,6 +251,7 @@ impl LexideckApp {
             floats: Vec::new(),
             next_id: 1,
             shown_fit: 0,
+            pending_show: None,
             import: None,
             import_error: None,
             status: None,
@@ -252,6 +265,7 @@ impl LexideckApp {
             tray_next_try: None,
             tray_check_at: None,
             tray_check_tries: 0,
+            tray_recheck_at: None,
             panel_visible: true,
             panel_home: None,
             exiting: false,
@@ -260,6 +274,7 @@ impl LexideckApp {
             menu_pos: None,
             menu_need_focus: false,
             menu_got_focus: false,
+            menu_frames: 0,
             single_watch: single::watch(&cc.egui_ctx),
         };
         app.lib_mtime = library::mtime(&app.lib_path);
@@ -275,6 +290,7 @@ impl LexideckApp {
         self.lib = loaded.deck;
         self.lib_rev = self.lib_rev.wrapping_add(1);
         self.lib_corrupt = loaded.corrupt;
+        self.lib_missing = loaded.missing;
         self.warns = loaded.warns;
         self.lib_mtime = library::mtime(&self.lib_path);
         self.prune_selection();
@@ -285,9 +301,9 @@ impl LexideckApp {
     }
 
     /// 主库里已经不存在的关闭项清掉（启动 / 重载 / 导入后）。
-    /// 主库读不懂时不动它：否则会拿空库把状态里的关闭项全删掉。
+    /// 主库读不懂**或不在**时都不动它：否则会拿空库把状态里的关闭项全删掉。
     fn prune_state(&mut self) {
-        if self.lib_corrupt {
+        if self.lib_corrupt || self.lib_missing {
             return;
         }
         if self.sc.prune(&self.lib) && self.sc_ok {
@@ -297,6 +313,9 @@ impl LexideckApp {
 
     /// 勾选状态里已经不存在的词（导入/重载后）清掉
     fn prune_selection(&mut self) {
+        if self.lib_missing {
+            return; // 主库不在：别拿空库把勾选/展示清单清掉（等文件回来）
+        }
         let keys: HashSet<String> = self.lib.words.iter().map(|w| w.key()).collect();
         self.selected.retain(|k| keys.contains(k));
         self.expanded.retain(|k| keys.contains(k));
@@ -324,14 +343,20 @@ impl LexideckApp {
         if m == self.lib_mtime {
             return;
         }
-        // 文件被删/改名也要反应（m 变 None）
-        let gone = m.is_none();
+        if m.is_none() {
+            // 文件不见（被删/改名/编辑器「原子保存」的几毫秒间隙/被安全软件隔离）：
+            // 保留内存里那份继续用，**绝不**换成空库去过 prune/写盘（那会把
+            // 状态.json 里所有「已永久关闭」清掉）；记下当前状态，文件一回来
+            // （m 变 Some）就走下面的重读分支。
+            self.lib_mtime = None;
+            self.lib_missing = true;
+            self.status = Some(
+                "主库文件暂时不见了（被删或改名）——继续用内存里那份，文件回来会自动重读".into(),
+            );
+            return;
+        }
         self.reload_library();
-        self.status = Some(if gone {
-            "主库文件不见了（被删或改名），现在用的是内存里那份".into()
-        } else {
-            "主库文件被外部改动，已重新读取".into()
-        });
+        self.status = Some("主库文件被外部改动，已重新读取".into());
     }
 
     // ── 视图行 ──
@@ -794,16 +819,19 @@ impl LexideckApp {
                 .size
                 .unwrap_or(egui::vec2(card::CARD_W * scale, 140.0 * scale));
             let builder = window::float_viewport(f.id, f.pos, level, passthrough, size);
+            // 句柄每帧只查一次，三个用途共用（任务栏自查 / 触摸注册 / 拖拽取位置）。
+            // 以前三次查找都做全桌面 FindWindowW，每卡每帧三次（评审实测指出）。
+            let card_hwnd = window::find_window_by_title(&window::float_title(f.id));
 
             ctx.show_viewport_immediate(vid, builder, |ui, _class| {
                 fps_tick(ui.ctx(), "card");
-                // eframe 0.36 不认 with_taskbar（见 window::ensure_no_taskbar 的说明），
+                // with_taskbar(false) 实测不生效（见 window::ensure_no_taskbar_hwnd 的说明），
                 // 卡片会被塞进任务栏；每帧自查自纠一次，窗口重建也能纠回来
-                window::ensure_no_taskbar(f.id);
+                window::ensure_no_taskbar_hwnd(card_hwnd);
                 // 穿透时卡片要退出「触摸注册」：WM_TOUCH 不认透明（见
-                // window::ensure_touch_state 的说明），注册着就直达卡片、漏不到下面的 PPT。
-                // 与 ensure_no_taskbar 同理：每帧自查自纠，窗口重建也能纠回来。
-                window::ensure_touch_state(f.id, passthrough);
+                // window::ensure_touch_state_hwnd 的说明），注册着就直达卡片、漏不到下面的 PPT。
+                // 与 ensure_no_taskbar_hwnd 同理：每帧自查自纠，窗口重建也能纠回来。
+                window::ensure_touch_state_hwnd(card_hwnd, passthrough);
                 f.start_anim_if_due();
                 if f.anim_at.is_some() {
                     ui.ctx().request_repaint_of(ui.ctx().viewport_id());
@@ -827,7 +855,7 @@ impl LexideckApp {
                     f.plan.as_ref(),
                     th,
                     scale,
-                    f.id,
+                    card_hwnd,
                     &mut f.drag,
                 );
             });
@@ -985,6 +1013,8 @@ impl LexideckApp {
     const TRAY_CHECK_GAP: Duration = Duration::from_millis(700);
     /// 托盘自检最多查几次：外壳可能慢半拍，多给两次机会再判「没进托盘」。
     const TRAY_CHECK_MAX: u32 = 3;
+    /// 托盘低频复检间隔（面板露着时回问外壳一次；见 tray_tick 的复检说明）
+    const TRAY_RECHECK_GAP: Duration = Duration::from_secs(45);
 
     /// 自检判定：`ok` = 外壳这次确认图标在托盘里了吗；`tries` = 已查次数（含这次）。
     /// 返回 true = 还要再查一次（还没确认、但还有机会）；false = 到此为止（确认了、或查够次数判失败）。
@@ -1071,6 +1101,34 @@ impl LexideckApp {
                 }
             }
         }
+        // 低频复检（2026-10-17 评审修复）：Explorer 重启后外壳会把图标重挂，但 crate
+        // 的重挂可能失败，而「一次性自检」察觉不到 —— 面板还露着时每 45 秒回问外壳
+        // 一次；失联就按「丢图标」处理、走已有的重试路径重建，避免出现
+        // 「状态栏说已就绪、实际点图标唤不回」的假状态。
+        if self.panel_visible && self.tray.is_some() {
+            let due = self
+                .tray_recheck_at
+                .map(|t| Instant::now() >= t)
+                .unwrap_or(true);
+            if due {
+                self.tray_recheck_at = Some(Instant::now() + Self::TRAY_RECHECK_GAP);
+                // 初检进行中的那支自己管着；这里只复检「已通过初检」的
+                if self.tray_check_at.is_none() {
+                    let ok = self.tray.as_ref().is_some_and(|t| t.re_verify());
+                    if !ok {
+                        self.tray = None;
+                        self.tray_next_try =
+                            Some(Instant::now() + Self::tray_retry_gap(self.tray_attempts));
+                        self.status = Some(
+                            "托盘图标失联了（系统可能重启过桌面）——已按「没有托盘」处理并自动重建"
+                                .into(),
+                        );
+                    }
+                }
+            }
+        } else {
+            self.tray_recheck_at = None;
+        }
         let actions: Vec<tray::TrayAction> = match &self.tray {
             Some(t) => {
                 t.touch(); // 告诉心跳"这一帧来了"（冻住检测用，见 tray.rs 文件头）
@@ -1092,6 +1150,7 @@ impl LexideckApp {
                 self.menu_pos = Some((x, y));
                 self.menu_open = true;
                 self.menu_need_focus = true;
+                self.menu_frames = 0;
             }
             tray::TrayAction::TogglePanel => {
                 if self.panel_visible {
@@ -1130,7 +1189,8 @@ impl LexideckApp {
     /// 冻住、并可能卡成「点不动的幽灵」（tray.rs 文件头有完整实测记录）。
     /// 自绘菜单只是普通的一帧里画出的小窗口：不冻主循环、样式和面板同源。
     /// 关闭条件：点了条目 / ESC / 失焦（点到别处——菜单都拿过一次焦点后才启用，
-    /// 免得新窗口还没拿到焦点就被误判关掉）。
+    /// 免得新窗口还没拿到焦点就被误判关掉；一直没拿到就每 15 帧重试要一次焦点，
+    /// 免得系统前台锁拒绝过一次之后菜单永远关不掉）。
     fn draw_menu(&mut self, ctx: &egui::Context, th: &Theme) {
         if !self.menu_open {
             return;
@@ -1138,18 +1198,28 @@ impl LexideckApp {
         let panel_visible = self.panel_visible;
         let need_focus = self.menu_need_focus;
         self.menu_need_focus = false;
+        self.menu_frames = self.menu_frames.saturating_add(1);
+        let refocus = !self.menu_got_focus && self.menu_frames % 15 == 0;
         let ppp = ctx.pixels_per_point();
         let (x, y) = self.menu_pos.unwrap_or((0.0, 0.0));
         // 光标位置是物理像素、egui 用点；菜单右下角贴住点击处（托盘菜单惯例：向上向左展开）
-        let pos = egui::pos2(x / ppp - menu::W, y / ppp - menu::H);
+        // 再钳进屏幕：图标贴边 / 高缩放时菜单可能被算到屏幕外（纯计算，屏幕内的情况不受影响）
+        let ms = self.monitor_size(ctx);
+        let pos = egui::pos2(
+            (x / ppp - menu::W).clamp(0.0, (ms.x - menu::W).max(0.0)),
+            (y / ppp - menu::H).clamp(0.0, (ms.y - menu::H).max(0.0)),
+        );
         let vid = ViewportId::from_hash_of(("lexideck-menu", 0u8));
         let mut act: Option<tray::TrayAction> = None;
         let mut close = false;
         let mut got_focus = self.menu_got_focus;
         ctx.show_viewport_immediate(vid, window::menu_viewport(pos), |ui, _class| {
-            if need_focus {
+            if need_focus || refocus {
                 ui.ctx().send_viewport_cmd(ViewportCommand::Focus);
             }
+            // 菜单窗口也会被塞进任务栏（with_taskbar 实测不生效，见 window.rs），
+            // 和卡片一样每帧自查自纠一次
+            window::ensure_no_taskbar_by_title(window::MENU_TITLE);
             match ui.input(|i| i.viewport().focused) {
                 Some(true) => got_focus = true,
                 Some(false) if got_focus => close = true,
@@ -1238,10 +1308,8 @@ impl LexideckApp {
                 self.cfg.shown = keys;
                 config::save(&config::settings_path(), &self.cfg);
                 self.screen = Screen::Manual; // 「立即展示」= 手动模式
-                self.status = Some(crate::lang::tf(
-                    "已让 {n} 个词上屏（手动展示）",
-                    &[("n", &n)],
-                ));
+                                              // 状态栏等下一帧 reconcile 之后再报：勾选数 ≠ 平铺放得下的张数
+                self.pending_show = Some(n);
                 // 重建窗（内容变了）
                 self.floats.clear();
             }
@@ -1251,7 +1319,9 @@ impl LexideckApp {
             self.floats.clear();
             self.screen = Screen::Manual;
             config::save(&config::settings_path(), &self.cfg);
-            self.status = Some("已关闭全部卡片".into());
+            self.status = Some(
+                "已关闭全部卡片 · 恢复：底部「按今日展示」按钮，或托盘菜单「显示全部卡片」".into(),
+            );
         }
         if res.back_to_today {
             self.screen = Screen::Auto;
@@ -1509,7 +1579,14 @@ impl eframe::App for LexideckApp {
         self.tray_tick(&ctx, frame);
         // P3c 单实例：别人又启动了一次（第二次双击 exe）→ 敲门线程已置标记，这里把面板唤到前台
         if single::take_wake() {
-            self.show_panel(&ctx);
+            // 面板本来就在屏幕上时**不要**走 show_panel：那会把老师拖到的位置
+            // 挪回默认左下角（show_panel 会无条件重设 OuterPosition）——
+            // 与托盘点击同一语义：已经可见就只拿前台。
+            if !self.panel_visible {
+                self.show_panel(&ctx);
+            } else {
+                ctx.send_viewport_cmd(ViewportCommand::Focus);
+            }
             self.status = Some("Lexideck 已经在跑：把面板唤到了前台".into());
         }
         self.intercept_close(&ctx);
@@ -1559,6 +1636,15 @@ impl eframe::App for LexideckApp {
             .rect_filled(ui.max_rect(), 0.0, control::skin_for(kind).bg);
 
         self.reconcile_floats(&ctx, &th);
+        if let Some(n) = self.pending_show.take() {
+            // 「立即展示」的收尾：等 reconcile 之后报真实上屏张数
+            // （勾选 20 个只放得下 16 张时，报的 N 要和平铺结果、和「卡片」页统计一致）
+            let fit = self.floats.len();
+            self.status = Some(crate::lang::tf(
+                "已让 {n} 个词上屏（本次放得下 {fit} 张；放不下的排在后面，见「卡片」页）",
+                &[("n", &n), ("fit", &fit)],
+            ));
+        }
         self.draw_floats(&ctx, &th);
         self.draw_menu(&ctx, &th);
 

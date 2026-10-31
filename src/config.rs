@@ -122,10 +122,12 @@ pub fn settings_path() -> PathBuf {
     exe_dir().join("设置.txt")
 }
 
-/// 宽容读取：任何一行读不懂就用默认值，绝不失败
+/// 宽容读取：任何一行读不懂就用默认值，绝不失败。
+/// 编码走和词表同一条宽容链路（UTF-8 / 带 BOM / GBK 都能读）——
+/// 记事本按 ANSI 另存过的设置不再整份静默回默认。
 pub fn load(path: &Path) -> Config {
     let mut cfg = Config::default();
-    let Ok(text) = std::fs::read_to_string(path) else {
+    let Some(text) = crate::util::read_text_any_encoding(path) else {
         return cfg;
     };
     let text = text.trim_start_matches('\u{feff}');
@@ -156,14 +158,14 @@ pub fn load(path: &Path) -> Config {
             }
             "window_x" => {
                 if let Ok(v) = val.parse::<f32>() {
-                    if v.is_finite() && v >= 0.0 {
+                    if v.is_finite() && v > -10000.0 {
                         cfg.window_x = Some(v);
                     }
                 }
             }
             "window_y" => {
                 if let Ok(v) = val.parse::<f32>() {
-                    if v.is_finite() && v >= 0.0 {
+                    if v.is_finite() && v > -10000.0 {
                         cfg.window_y = Some(v);
                     }
                 }
@@ -266,7 +268,7 @@ pub fn save(path: &Path, cfg: &Config) {
         "shown = {}\n",
         serde_json::to_string(&cfg.shown).unwrap_or_else(|_| "[]".into())
     ));
-    let _ = std::fs::write(path, s);
+    let _ = crate::util::write_atomic(path, &s);
 }
 
 #[cfg(test)]
@@ -311,6 +313,29 @@ mod tests {
             back.shown,
             vec!["as, well as".to_string(), "hello".to_string()]
         );
+    }
+
+    /// 副屏在主屏左侧/上方时窗口坐标是负数：必须存得进、读得回；
+    /// 收托盘留下的 -32000 脏位置仍要被拒（与 place_once 的判据保持一致）。
+    #[test]
+    fn negative_positions_round_trip_but_park_is_rejected() {
+        let dir = std::env::temp_dir().join(format!("lx-cfg-neg-{}", std::process::id()));
+        let _ = std::fs::create_dir_all(&dir);
+        let p = dir.join("设置.txt");
+        let _ = std::fs::remove_file(&p);
+        let mut c = Config::default();
+        c.window_x = Some(-1200.0);
+        c.window_y = Some(-40.0);
+        save(&p, &c);
+        let back = load(&p);
+        assert_eq!(back.window_x, Some(-1200.0), "负坐标（左屏）要存得住读得回");
+        assert_eq!(back.window_y, Some(-40.0));
+        // 收进托盘时窗口在 (-32000,-32000)：这个脏位置不能当用户位置用
+        std::fs::write(&p, "window_x = -32000\nwindow_y = -32000\n").unwrap();
+        let back = load(&p);
+        assert_eq!(back.window_x, None, "收托盘的屏外位置要被拒");
+        assert_eq!(back.window_y, None);
+        let _ = std::fs::remove_file(&p);
     }
 
     /// 层级两档：新键 layer/passthrough 往返；老键 always_on_top 迁成 layer

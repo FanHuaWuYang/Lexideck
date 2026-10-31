@@ -19,6 +19,24 @@ jobs:
       - name: 缓存编译产物
         uses: Swatinem/rust-cache@v2
 
+      # 打 tag 之前没跑过任何检查：tag 与版本号不一致、代码没格式化、
+      # 测试挂了都会照样发出一个 Release（评审修复：把闸门挪到这里）。
+      - name: 版本号一致性（tag 必须等于 Cargo.toml 的 version）
+        shell: pwsh
+        run: |
+          $tag = $env:GITHUB_REF_NAME.TrimStart('v')
+          $line = Select-String -Path Cargo.toml -Pattern '^version = "(.+)"$' | Select-Object -First 1
+          if (-not $line) { Write-Error "Cargo.toml 里找不到 version"; exit 1 }
+          $ver = $line.Matches[0].Groups[1].Value
+          if ($tag -ne $ver) { Write-Error "tag（$tag）与 Cargo.toml 的 version（$ver）不一致"; exit 1 }
+          Write-Host "版本号一致：$ver"
+
+      - name: 代码格式检查
+        run: cargo fmt --all -- --check
+
+      - name: 单元测试
+        run: cargo test --release --all-targets
+
       - name: 构建 release 版
         run: cargo build --release
 
@@ -33,4 +51,6 @@ jobs:
           if ($LASTEXITCODE -ne 0) {
             gh release create $env:GITHUB_REF_NAME --title $env:GITHUB_REF_NAME --generate-notes
           }
-          gh release upload $env:GITHUB_REF_NAME target/release/lexideck.exe --clobber
+          # 附件：exe + 给老师的两份说明（示例词表、词表填写说明）——
+          # 评审修复：以前只挂 exe，老师拿到手只有一个空面板，没有「怎么开始」。
+          gh release upload $env:GITHUB_REF_NAME target/release/lexideck.exe "docs/示例-词表.json" "docs/英语单词看板-词表填写说明（给英语老师）.md" --clobber
